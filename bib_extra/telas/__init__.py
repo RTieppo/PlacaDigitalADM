@@ -1,6 +1,7 @@
 from PySimpleGUI import PySimpleGUI as sg
 
 # definir fonte
+font_login = ('Berlin Sans FB Demi Negrito', 12)
 font_geral = ('Berlin Sans FB Demi Negrito', 15)
 font_input = ('Berlin Sans FB',10)
 
@@ -9,9 +10,9 @@ def tela_login(user_login = '',user_senha=''):
     sg.theme('DarkBlue2')
 
     janela =[
-        [sg.Text('Usuário:',font=font_geral)],
+        [sg.Text('Usuário:',font=font_login)],
 
-        [sg.Input(user_login, key='-user-', justification='c', font=font_input)],
+        [sg.Input(user_login, key='-user-', justification='c', font=font_input,size=(20,1))],
 
         [sg.Text('Senha:', font=font_geral)],
 
@@ -25,7 +26,7 @@ def tela_login(user_login = '',user_senha=''):
         [sg.Button('Entrar', font=font_geral), sg.Button('Sair', font=font_geral)]
     ]
     return sg.Window('Login', finalize=True, size=(300,250), layout = janela,
-    element_justification='c', text_justification='c',margins=(0,0))
+    element_justification='c',margins=(0,0))
 
 
 def tela_adm(apelido_user=''):
