@@ -22,17 +22,18 @@ while True:
     if window == janela_adm and eventos == '-ST_A-':
 
         janela_adm.extend_layout(janela_adm['-Add-'],
-        [[sg.Text('Local Atendimento:')]])
-
-        janela_adm.extend_layout(janela_adm['-Add-'],
-        [[sg.Radio('Faculdade','-UN-', key='-FC-'),
+        [[sg.Text('Unidade:'), sg.Radio('Faculdade','-UN-', key='-FC-'),
         sg.Radio('Saúde e Beleza','-UN-', key='-SS-')]])
 
         janela_adm.extend_layout(janela_adm['-Add-'],
-        [[sg.Text('Sala ou Setor:')]])
-
-        janela_adm.extend_layout(janela_adm['-Add-'],
-        [[sg.In(key='-local-', justification='c',
-        font=font_input, size=(38,0))]])
-
-        print()
+        [[sg.Text('Sala ou Setor:'), sg.In(key='-local-', justification='c',
+        font=font_input, size=(25,0))]])
+    
+    elif window == janela_adm and eventos == '-ST_H-':
+        feliz = valores['-ST_H-']
+        if feliz >= 20:
+            print('Feliz')
+            window['-img_hu-'].update(r'img\100_100\Feliz_100.png')
+            window['-hu_r-'].update('Feliz',None,'darkgreen')
+        
+        print(feliz)

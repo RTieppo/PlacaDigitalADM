@@ -10,23 +10,29 @@ def tela_login(user_login = '',user_senha=''):
     sg.theme('DarkBlue2')
 
     janela =[
-        [sg.Text('Usuário:',font=font_login)],
+        [sg.Push(),sg.Text('Usuário:',font=font_login), sg.Push(), sg.Push(), sg.Push()],
 
-        [sg.Input(user_login, key='-user-', justification='c', font=font_input,size=(20,1))],
+        [sg.Column([[sg.Input(user_login, key='-user-', justification='c',
+        font=font_input, size=(20,1))]], justification='c')],
 
-        [sg.Text('Senha:', font=font_geral)],
 
-        [sg.Input(user_senha, key='-senha-',password_char='*', justification='c',
-        font=font_input)],
+        [sg.Push(),sg.Text('Senha:', font=font_login), sg.Push(), sg.Push(), sg.Push()],
 
-        [sg.Checkbox('Lembrar',font=font_geral)],
+        [sg.Column([[sg.Input(user_senha, key='-senha-',password_char='*', justification='c',
+        font=font_input, size=(20,1))]], justification='c')],
+
+        [sg.Push() ,sg.Checkbox('Lembrar',font=font_login), sg.Push()],
 
         [sg.Text(' ', key='-info_user-', font=font_geral)],
 
-        [sg.Button('Entrar', font=font_geral), sg.Button('Sair', font=font_geral)]
+        [sg.Column([[sg.Button('Entrar', font=font_login, size=(6,1)),
+        sg.Button('Esqueci', font=font_login, size=(6,1))]], justification='c')],
+
+        [sg.VPush(),sg.Text('GitHub: RTieppo', font=font_input), sg.Push(),
+        sg.Push(), sg.Image('',key='-serve-'), sg.Push(), sg.Push()]
     ]
     return sg.Window('Login', finalize=True, size=(300,250), layout = janela,
-    element_justification='c',margins=(0,0))
+    margins=(0,0))
 
 
 def tela_adm(apelido_user=''):
@@ -49,6 +55,15 @@ def tela_adm(apelido_user=''):
         sg.Radio('Café','ST1',key='-ST_CF-')]
     ]
 
+    humor = [
+        [sg.Text('Qual o seu Humor do dia?', font=font_geral)],
+        [sg.Text('Em uma escala de 0 até 100')],
+        [sg.Slider(range=(0,100), default_value=0, orientation='h',
+        size=(15,20), key='-ST_H-',enable_events=True)],
+        [sg.Image('', key='-img_hu-')],
+        [sg.Text(' ', key='-hu_r-', font=font_login)]
+    ]
+
     janela =[
         [sg.Menu(bara_menu)],
 
@@ -56,18 +71,17 @@ def tela_adm(apelido_user=''):
 
         [sg.Frame('',layout=status_1,element_justification='c',key='-Add-', font=font_input)],
 
-        [sg.Text('=='*50)],
+        [sg.HSeparator()],
 
-        [sg.Text('Qual o seu Humor do dia?', font=font_geral)],
-        [sg.Text('Em uma escala de 0 até 100')],
-        [sg.Slider(range=(0,100), default_value=0, orientation='h',
-        size=(15,20), key='-ST_H-')],
+        [sg.Column(humor,element_justification='c')],
 
-        [sg.Text('=='*50)],
+        [sg.HSeparator()],
 
-        [sg.B('Aplicar', font=font_geral), sg.B('Sair', font=font_geral)]
+        [sg.B('Aplicar', font=font_geral), sg.B('Sair', font=font_geral, size=(6,0))],
 
+        [sg.VPush(),sg.Text('GitHub: RTieppo', font=font_input), sg.Push(),
+        sg.Push(), sg.Image('',key='-serve-'), sg.Push(), sg.Push()]
 
     ]
-    return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,500), layout = janela,
+    return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
     element_justification='c', text_justification='c',margins=(0,0))
