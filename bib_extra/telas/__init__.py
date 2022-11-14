@@ -9,30 +9,35 @@ def tela_login(user_login = '',user_senha=''):
 
     sg.theme('DarkBlue2')
 
-    janela =[
-        [sg.Push(),sg.Text('Usuário:',font=font_login), sg.Push(), sg.Push(), sg.Push()],
+    login_senha = [
+        [sg.Text('Usuário:',font=font_login)],
+        [sg.Input(user_login, key='-user-', font=font_input, size=(20,1))],
 
-        [sg.Column([[sg.Input(user_login, key='-user-', justification='c',
-        font=font_input, size=(20,1))]], justification='c')],
+        [sg.Text('Senha:', font=font_login)],
 
+        [sg.Input(user_senha, key='-senha-',password_char='*', justification='c',
+        font=font_input, size=(20,1))],
 
-        [sg.Push(),sg.Text('Senha:', font=font_login), sg.Push(), sg.Push(), sg.Push()],
+        [sg.Checkbox('Lembrar', key='-save-',font=font_login)]
 
-        [sg.Column([[sg.Input(user_senha, key='-senha-',password_char='*', justification='c',
-        font=font_input, size=(20,1))]], justification='c')],
+    ]
 
-        [sg.Push() ,sg.Checkbox('Lembrar',font=font_login), sg.Push()],
-
+    avi_but = [
         [sg.Text(' ', key='-info_user-', font=font_geral)],
+        [sg.Button('Entrar', font=font_login, size=(7,1)),
+        sg.Button('Esqueci', font=font_login, size=(7,1))]
+    ]
 
-        [sg.Column([[sg.Button('Entrar', font=font_login, size=(6,1)),
-        sg.Button('Esqueci', font=font_login, size=(6,1))]], justification='c')],
+    janela =[
 
-        [sg.VPush(),sg.Text('GitHub: RTieppo', font=font_input), sg.Push(),
-        sg.Push(), sg.Image('',key='-serve-'), sg.Push(), sg.Push()]
+        [sg.Column(layout=login_senha)],
+
+        [sg.Column(layout = avi_but)],
+
+        [sg.Image('',key='-serve-')]
     ]
     return sg.Window('Login', finalize=True, size=(300,250), layout = janela,
-    margins=(0,0))
+    margins=(0,0), element_justification='c')
 
 
 def tela_adm(apelido_user=''):

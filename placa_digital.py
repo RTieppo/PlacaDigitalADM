@@ -2,10 +2,6 @@ from PySimpleGUI import PySimpleGUI as sg
 
 from bib_extra import telas as t
 
-# definir fonte
-font_geral = ('Berlin Sans FB Demi Negrito', 15)
-font_input = ('Berlin Sans FB',10)
-
 janela_login = t.tela_login()
 janela_adm = None
 
@@ -26,8 +22,8 @@ while True:
         sg.Radio('Saúde e Beleza','-UN-', key='-SS-')]])
 
         janela_adm.extend_layout(janela_adm['-Add-'],
-        [[sg.Text('Sala ou Setor:'), sg.In(key='-local-', justification='c',
-        font=font_input, size=(25,0))]])
+        [[sg.Text('Sala ou Setor:'), sg.In(key='-local-', justification='c'
+        , size=(25,0))]])
     
     elif window == janela_adm and eventos == '-ST_H-':
         feliz = valores['-ST_H-']
