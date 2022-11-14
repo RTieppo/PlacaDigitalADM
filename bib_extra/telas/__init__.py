@@ -5,7 +5,7 @@ font_login = ('Berlin Sans FB Demi Negrito', 12)
 font_geral = ('Berlin Sans FB Demi Negrito', 15)
 font_input = ('Berlin Sans FB',10)
 
-def tela_login(user_login = '',user_senha=''):
+def tela_login(user_login = '',user_senha='', status='',memoria=''):
 
     sg.theme('DarkBlue2')
 
@@ -18,7 +18,7 @@ def tela_login(user_login = '',user_senha=''):
         [sg.Input(user_senha, key='-senha-',password_char='*', justification='c',
         font=font_input, size=(20,1))],
 
-        [sg.Checkbox('Lembrar', key='-save-',font=font_login)]
+        [sg.Checkbox('Lembrar', memoria, key='-save-',font=font_login,enable_events=True)]
 
     ]
 
@@ -33,11 +33,10 @@ def tela_login(user_login = '',user_senha=''):
         [sg.Column(layout=login_senha)],
 
         [sg.Column(layout = avi_but)],
-
-        [sg.Image('',key='-serve-')]
     ]
+
     return sg.Window('Login', finalize=True, size=(300,250), layout = janela,
-    margins=(0,0), element_justification='c')
+    margins=(0,0), element_justification='c', icon= status)
 
 
 def tela_adm(apelido_user=''):

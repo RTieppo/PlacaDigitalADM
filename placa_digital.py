@@ -1,8 +1,11 @@
 from PySimpleGUI import PySimpleGUI as sg
 
 from bib_extra import telas as t
+from bib_extra import slq_fun as sql
 
-janela_login = t.tela_login()
+teste_conec = sql.valida_ser()
+
+janela_login = t.tela_login(user_login = '',user_senha='', status= teste_conec[0])
 janela_adm = None
 
 while True:
@@ -11,9 +14,21 @@ while True:
     if window == janela_login and eventos == sg.WIN_CLOSED:
         break
 
+    elif window == janela_login and eventos == 'Esqueci':
+        pass
+
+    elif window == janela_login and eventos == '-save-'
+
     elif window == janela_login and eventos == 'Entrar':
-        janela_adm = t.tela_adm()
-        janela_login.close()
+
+        verifica_user = sql.valida_user(valores['-user-'])
+
+        verifica_senha = sql.valida_senha(valores[str('-senha-')])
+    
+        
+        
+
+
     
     if window == janela_adm and eventos == '-ST_A-':
 
