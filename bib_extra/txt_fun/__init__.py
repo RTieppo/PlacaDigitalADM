@@ -16,8 +16,24 @@ def cria_txt(id=''):
     cria_txt.close()
     return True
 
+def limpa_txt():
+    valida_pasta = os.listdir(r'C:\Users\Public')
+        
+    if 'fileplaca' in valida_pasta:
+        cria_txt = open(r'C:\Users\Public\fileplaca\login.txt', 'w', encoding='utf-8')
+        cria_txt.write(None,False)
+        cria_txt.close()
+    else:
+        pass
+
 def le_txt():
+    valida_pasta = os.listdir(r'C:\Users\Public')
 
-    le = open(r'C:\Users\Public\fileplaca\login.txt', 'r', encoding='utf-8').read().split(',')
+    if 'fileplaca' in valida_pasta:
+        le = open(r'C:\Users\Public\fileplaca\login.txt',
+        'r', encoding='utf-8').read().split(',')
 
-    return le
+        return le,True
+    
+    else:
+        return None,False

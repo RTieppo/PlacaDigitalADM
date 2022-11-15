@@ -11,33 +11,42 @@ def tela_login(user_login = '', status='',memoria=''):
 
     login_senha = [
         [sg.Text('Usuário:',font=font_login)],
-        [sg.Input(user_login, key='-user-', font=font_input, size=(20,1), justification='c')],
+        [sg.Input(user_login, key='-user-', font=font_input, size=(20,1),
+        justification='c'),sg.Image('',key='-img_v_user-')],
 
         [sg.Text('Senha:', font=font_login)],
 
         [sg.Input(key='-senha-',password_char='*', justification='c',
-        font=font_input, size=(20,1))],
+        font=font_input, size=(20,1)),sg.Image('',key='-img_v_senha-')],
 
         [sg.Checkbox('Lembrar', memoria, key='-save-',font=font_login)]
 
     ]
 
     avi_but = [
-        [sg.Text(' ', key='-info_user-', font=font_geral)],
         [sg.Button('Entrar', font=font_login, size=(7,1)),
         sg.Button('Esqueci', font=font_login, size=(7,1))]
+    ]
+
+    status_serv = [
+        [sg.Image(status, key='-img_status-')]
     ]
 
     janela =[
 
         [sg.Column(layout=login_senha)],
 
+        [sg.Text(' ', key='-info_user-',
+        font=font_login, justification='c')],
+
         [sg.Column(layout = avi_but)],
+
+        [sg.Column(layout=status_serv,element_justification='c')]
     ]
 
     return sg.Window('Login', finalize=True, size=(300,250), layout = janela,
-    margins=(0,0), element_justification='c', icon= status)
-
+    margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
+    text_justification='c')
 
 def tela_adm(apelido_user=''):
 
@@ -89,3 +98,7 @@ def tela_adm(apelido_user=''):
     ]
     return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
     element_justification='c', text_justification='c',margins=(0,0))
+
+
+def tela_esqueci():
+    pass
