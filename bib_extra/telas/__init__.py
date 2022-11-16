@@ -97,8 +97,41 @@ def tela_adm(apelido_user=''):
 
     ]
     return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
-    element_justification='c', text_justification='c',margins=(0,0))
+    element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'))
 
 
 def tela_esqueci():
-    pass
+    sg.theme('DarkBlue2')
+
+    login_senha = [
+        [sg.Text('Matrícula:',font=font_input)],
+        [sg.Input(key='-mat-', font=font_input, size=(20,1),
+        justification='c'),sg.Image('',key='-img_v_mat-')],
+
+        [sg.Text('Nova Senha:', font=font_input)],
+        [sg.Input(key='-senhaN1-',password_char='*', justification='c',
+        font=font_input, size=(20,1)),sg.Image('',key='-img_v_ns-')],
+
+        [sg.Text('Confirmar nova senha:', font=font_input)],
+        [sg.Input(key='-senhaN1-',password_char='*', justification='c',
+        font=font_input, size=(20,1)),sg.Image('',key='-img_c_ns-')]
+
+    ]
+
+    avi_but = [
+        [sg.Button('Alterar', font=font_login,size=(7,1),pad=(35,1)),
+        sg.Button('Sair', font=font_login,size=(7,1),pad=(35,1))]
+    ]
+
+    janela =[
+
+        [sg.Column(layout=login_senha)],
+
+        [sg.HSeparator()],
+
+        [sg.VPush(),sg.Column(layout = avi_but)]
+    ]
+
+    return sg.Window('Nova senha', finalize=True, size=(300,250), layout = janela,
+    margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
+    text_justification='c')

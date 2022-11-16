@@ -34,7 +34,7 @@ except mysql.connector.Error:
     sg.popup('        Erro de Conexão!\nVerifique o Banco De Dados',title='Error')
 
 
-janela_adm = None
+janela_adm = janela_esqueci= None
 
 
 while True:
@@ -45,7 +45,9 @@ while True:
         break
 
     elif window == janela_login and eventos == 'Esqueci':
-        pass
+        janela_login.hide()
+        janela_esqueci = t.tela_esqueci()
+        
 
     elif window == janela_login and eventos == 'Entrar':
 
@@ -92,8 +94,9 @@ while True:
             if verifica_user == False:
                 window['-img_v_user-'].update(r'img\20_20\erro.png')
 
-
         else:
+            window['-img_v_user-'].update('')
+            window['-img_v_senha-'].update('')
             window['-info_user-'].update('Informe as Credenciais',None,'darkred')
 
 

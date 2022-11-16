@@ -13,3 +13,6 @@ modify column senha varchar(8) default '12345678';
 
 alter table login
 drop column save_inf;
+
+select apelido from login
+where id_user = 'rtieppo';

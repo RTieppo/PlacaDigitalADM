@@ -63,5 +63,3 @@ def consulta_apelido(host,user, database, password,id_user):
 
     except Error:
         return 'error'
-
-
