@@ -10,31 +10,32 @@ import DadosBancoDeDados as d
 
 janela_login = janela_adm = janela_esqueci =  None
 
-def  start_serve():
-
+def start_serve():
     try:
-        conex = mysql.connector.connect(host=d.host, user=d.user, database=d.database,
-        password=d.password)
+        test_conex = sql.ValidadorBanco(host=d.host, user=d.user, database=d.database,
+        password=d.password)       
 
-        if conex.is_connected():
+        retorno = test_conex.testa_conec_serv()
+        print(retorno)
+
+        if retorno[0] == True:
             abre_txt = txt.le_txt()
             
             if abre_txt[1] == True:
                 if len(abre_txt) > 1:
-                    conex.close()
                     return (t.tela_login(user_login = abre_txt[0][0],
-                    status=(r'img\20_20\verificado.png'), memoria=abre_txt[0][1]))
+                    status=retorno[1], memoria=abre_txt[0][1]))
                 
                 else:
-                    conex.close()
-
                     return (t.tela_login(user_login = '',
-                    status= (r'img\20_20\verificado.png'), memoria=''))
-        
+                    status= retorno[1], memoria=''))
+
             else:
-                conex.close()
-                return (t.tela_login(user_login = '', status= (r'img\20_20\verificado.png'),
+                return (t.tela_login(user_login = '', status= retorno[1],
                 memoria=''))
+
+        else:
+            sg.popup('Erro de Conexão! Verifique o Banco De Dados',title='Error')
 
     except Error as Er:
         sg.popup('Erro de Conexão! Verifique o Banco De Dados',Er,title='Error')
@@ -112,19 +113,26 @@ def roda_app(star):
                 window['-info_user-'].update('Credenciais inválidas!',None,'darkred')
 
         elif window == janela_login and eventos == 'Esqueci':
-
-            test_conex = sql.testa_conec_serv(host=d.host, user=d.user, database=d.database,
+            test_conex = sql.ValidadorBanco(host=d.host, user=d.user, database=d.database,
             password=d.password)
+            retorno = test_conex.testa_conec_serv()
 
-            if test_conex != 'Erro Id':
+            if retorno[0] == True:
                 janela_login.hide()
-                janela_esqueci = t.tela_esqueci(test_conex)
-    
+                janela_esqueci = t.tela_esqueci(retorno[1])
+            
+            elif retorno[0] == False:
+                janela_login.hide()
+                janela_esqueci = t.tela_esqueci(retorno[1])
+
+            else:
+                sg.popup('Erro com o Banco de Dados',retorno,title='Error')
+
+
     #Janela esqueci senha
 
         if window == janela_esqueci and eventos == sg.WIN_CLOSED:
             break
-
 
 
     # janela adm

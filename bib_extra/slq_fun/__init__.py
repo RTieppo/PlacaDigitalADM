@@ -1,23 +1,29 @@
 import mysql.connector
+from PySimpleGUI import popup
 from mysql.connector import Error
 
-def testa_conec_serv(host,user, database, password, user_id=''):
-    try:
-        conex = mysql.connector.connect(host=host, user=user, database=database,
-        password=password)
+class ValidadorBanco:
+    def __init__(self,host,user, database, password):
+        try: 
+            self.conex = mysql.connector.connect(host = host, user = user,
+            database = database, password = password)
 
-        if conex.is_connected():
-            conex.close()
-            return (r'img\20_20\verificado.png')
+        except Error as err:
+            popup('Erro de Conexão! Verifique o Banco De Dados',err ,title='Error')
         
-        else:
-            conex.close()
-            return (r'img\20_20\erro.png')
+    def testa_conec_serv(self):
+        try:
+            if self.conex.is_connected():
+                self.conex.close()
+                return (True,r'img\20_20\verificado.png')
             
-    except Error:
-        conex.close()
-        return 'Erro Id'
-
+            else:
+                self.conex.close()
+                return (False,r'img\20_20\erro.png')
+                
+        except Error as err:
+            self.close()
+            return err
 
 
 def valida_user(host,user, database, password, user_id=''):
