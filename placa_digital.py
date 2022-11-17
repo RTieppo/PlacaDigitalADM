@@ -8,38 +8,30 @@ from bib_extra import txt_fun as txt
 from bib_extra import slq_fun as sql
 import DadosBancoDeDados as d
 
-janela_login = janela_adm = janela_esqueci =  None
-
 def start_serve():
-    try:
-        test_conex = sql.ValidadorBanco(host=d.host, user=d.user, database=d.database,
+    test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
         password=d.password)       
 
-        retorno = test_conex.testa_conec_serv()
-        print(retorno)
+    retorno = test_conex.testa_conec_serv()
 
-        if retorno[0] == True:
-            abre_txt = txt.le_txt()
+    if retorno[0] == True:
+        abre_txt = txt.le_txt()
+        
+        if abre_txt[1] == True:
+            if len(abre_txt) > 1:
+                return (t.tela_login(user_login = abre_txt[0][0],
+                status=retorno[1], memoria=abre_txt[0][1]))
             
-            if abre_txt[1] == True:
-                if len(abre_txt) > 1:
-                    return (t.tela_login(user_login = abre_txt[0][0],
-                    status=retorno[1], memoria=abre_txt[0][1]))
-                
-                else:
-                    return (t.tela_login(user_login = '',
-                    status= retorno[1], memoria=''))
-
             else:
-                return (t.tela_login(user_login = '', status= retorno[1],
-                memoria=''))
+                return (t.tela_login(user_login = '',
+                status= retorno[1], memoria=''))
 
         else:
-            sg.popup('Erro de Conexão! Verifique o Banco De Dados',title='Error')
+            return (t.tela_login(user_login = '', status= retorno[1],
+            memoria=''))
 
-    except Error as Er:
-        sg.popup('Erro de Conexão! Verifique o Banco De Dados',Er,title='Error')
-
+    else:
+        sg.popup_error('Erro de Conexão! Verifique o Banco De Dados',retorno[1],title='Error')
 
 def roda_app(star):
 
@@ -113,8 +105,9 @@ def roda_app(star):
                 window['-info_user-'].update('Credenciais inválidas!',None,'darkred')
 
         elif window == janela_login and eventos == 'Esqueci':
-            test_conex = sql.ValidadorBanco(host=d.host, user=d.user, database=d.database,
+            test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
             password=d.password)
+
             retorno = test_conex.testa_conec_serv()
 
             if retorno[0] == True:
@@ -126,7 +119,7 @@ def roda_app(star):
                 janela_esqueci = t.tela_esqueci(retorno[1])
 
             else:
-                sg.popup('Erro com o Banco de Dados',retorno,title='Error')
+                sg.popup('Erro com o Banco de Dados',retorno[1],title='Error')
 
 
     #Janela esqueci senha
@@ -158,6 +151,7 @@ def roda_app(star):
 
 
 inicia = start_serve()
+
 if inicia != None:
     roda_app(inicia)
 
