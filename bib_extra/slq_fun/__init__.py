@@ -1,6 +1,24 @@
 import mysql.connector
 from mysql.connector import Error
 
+def testa_conec_serv(host,user, database, password, user_id=''):
+    try:
+        conex = mysql.connector.connect(host=host, user=user, database=database,
+        password=password)
+
+        if conex.is_connected():
+            conex.close()
+            return (r'img\20_20\verificado.png')
+        
+        else:
+            conex.close()
+            return (r'img\20_20\erro.png')
+            
+    except Error:
+        conex.close()
+        return 'Erro Id'
+
+
 
 def valida_user(host,user, database, password, user_id=''):
 
@@ -52,8 +70,6 @@ def consulta_apelido(host,user, database, password,id_user):
         password=password)
 
         info = (f"select apelido from login where id_user='{id_user}';")
-
-        print(info)
         cursor = conex.cursor()
         cursor.execute(info)
         linhas = cursor.fetchall()

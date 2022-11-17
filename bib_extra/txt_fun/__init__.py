@@ -20,9 +20,11 @@ def limpa_txt():
     valida_pasta = os.listdir(r'C:\Users\Public')
         
     if 'fileplaca' in valida_pasta:
-        cria_txt = open(r'C:\Users\Public\fileplaca\login.txt', 'w', encoding='utf-8')
-        cria_txt.write(None,False)
-        cria_txt.close()
+        
+        valida_arquivo = os.listdir(r'C:\Users\Public\fileplaca')
+        
+        if 'login.txt' in valida_arquivo:
+            os.remove(r'C:\Users\Public\fileplaca\login.txt')
     else:
         pass
 
@@ -30,11 +32,15 @@ def le_txt():
     valida_pasta = os.listdir(r'C:\Users\Public')
 
     if 'fileplaca' in valida_pasta:
-        le = open(r'C:\Users\Public\fileplaca\login.txt',
-        'r', encoding='utf-8').read().split(',')
+        valida_arquivo = os.listdir(r'C:\Users\Public\fileplaca')
 
-        return le,True
+        if 'login.txt' in valida_arquivo:
+            le = open(r'C:\Users\Public\fileplaca\login.txt',
+            'r', encoding='utf-8').read().split(',')
+
+            return le,True
+        else:
+            return None,False
     
     else:
         return None,False
-

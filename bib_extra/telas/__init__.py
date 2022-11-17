@@ -2,24 +2,27 @@ from PySimpleGUI import PySimpleGUI as sg
 
 # definir fonte
 font_login = ('Berlin Sans FB Demi Negrito', 12)
+font_login2 = ('Berlin Sans FB Demi Negrito', 10)
 font_geral = ('Berlin Sans FB Demi Negrito', 15)
 font_input = ('Berlin Sans FB',10)
+
 
 def tela_login(user_login = '', status='',memoria=''):
 
     sg.theme('DarkBlue2')
 
-    login_senha = [
+    va_login = [
         [sg.Text('Usuário:',font=font_login)],
         [sg.Input(user_login, key='-user-', font=font_input, size=(20,1),
         justification='c'),sg.Image('',key='-img_v_user-')],
 
+    ]
+
+    va_senha = [
+
         [sg.Text('Senha:', font=font_login)],
-
         [sg.Input(key='-senha-',password_char='*', justification='c',
-        font=font_input, size=(20,1)),sg.Image('',key='-img_v_senha-')],
-
-        [sg.Checkbox('Lembrar', memoria, key='-save-',font=font_login)]
+        font=font_input, size=(20,1)),sg.Image('',key='-img_v_senha-')]
 
     ]
 
@@ -34,7 +37,11 @@ def tela_login(user_login = '', status='',memoria=''):
 
     janela =[
 
-        [sg.Column(layout=login_senha)],
+        [sg.Column(layout=va_login)],
+
+        [sg.Checkbox('Lembrar', memoria, key='-save-',font=font_input)],
+
+        [sg.Column(layout = va_senha)],
 
         [sg.Text(' ', key='-info_user-',
         font=font_login, justification='c')],
@@ -44,7 +51,7 @@ def tela_login(user_login = '', status='',memoria=''):
         [sg.Column(layout=status_serv,element_justification='c')]
     ]
 
-    return sg.Window('Login', finalize=True, size=(300,250), layout = janela,
+    return sg.Window('Login', finalize=True, size=(300,260), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c')
 
@@ -99,8 +106,7 @@ def tela_adm(apelido_user=''):
     return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
     element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'))
 
-
-def tela_esqueci():
+def tela_esqueci(status_ser):
     sg.theme('DarkBlue2')
 
     login_senha = [
@@ -119,8 +125,8 @@ def tela_esqueci():
     ]
 
     avi_but = [
-        [sg.Button('Alterar', font=font_login,size=(7,1),pad=(35,1)),
-        sg.Button('Sair', font=font_login,size=(7,1),pad=(35,1))]
+        [sg.Button('Alterar', font=font_login,size=(7,1),pad=(35,10)),
+        sg.Button('Sair', font=font_login,size=(7,1),pad=(35,10))],
     ]
 
     janela =[
@@ -129,9 +135,11 @@ def tela_esqueci():
 
         [sg.HSeparator()],
 
-        [sg.VPush(),sg.Column(layout = avi_but)]
+        [sg.Column(layout = avi_but)],
+
+        [sg.Image(status_ser,key='-img_status_esq-')]
     ]
 
-    return sg.Window('Nova senha', finalize=True, size=(300,250), layout = janela,
+    return sg.Window('Nova senha', finalize=True, size=(300,260), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c')
