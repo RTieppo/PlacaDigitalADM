@@ -138,6 +138,16 @@ def roda_app(star):
             janela_esqueci.close()
             janela_login.un_hide()
 
+        elif window == janela_esqueci and eventos == 'Alterar':
+
+            test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+            password=d.password,matricula=valores['-mat-'])       
+
+            retorno_matricula = test_conex.valida_matricula()
+            print(retorno_matricula)
+            
+            pass
+
     # janela adm
 
         elif window == janela_adm and eventos == '-ST_A-':

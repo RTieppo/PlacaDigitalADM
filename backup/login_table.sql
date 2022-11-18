@@ -16,3 +16,5 @@ drop column save_inf;
 
 select apelido from login
 where id_user = 'rtieppo';
+
+drop database painel_digital;

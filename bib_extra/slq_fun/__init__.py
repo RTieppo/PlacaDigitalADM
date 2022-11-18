@@ -3,7 +3,8 @@ from PySimpleGUI import popup
 from mysql.connector import Error
 
 class BancoDeDados:
-    def __init__(self,host,user, database, password,user_id = None, senha_user = None, id_user = None):
+    def __init__(self,host,user, database, password,user_id = None, senha_user = None,
+    matricula = None):
 
             self.host = host
             self.user = user
@@ -11,7 +12,7 @@ class BancoDeDados:
             self.password = password
             self.user_id = user_id
             self.senha_user = senha_user
-            self.id_user = id_user
+            self.matricula = matricula
 
     def testa_conec_serv(self):
 
@@ -70,7 +71,30 @@ class BancoDeDados:
         except Error:
             return 'Error Senha'
 
+    def valida_matricula(self):
+        
+        try:
+            conex = mysql.connector.connect(host = self.host, user = self.user,
+            database = self.database, password = self.password)
 
+            info = ('select matricula from login order by nome;')
+            cursor = conex.cursor()
+            cursor.execute(info)
+            linhas = cursor.fetchall()
+            
+            for linha in linhas:
+                for le in linha:
+                    converte = str(le)
+
+                    if converte == self.matricula:
+                        return converte
+                
+  
+                
+                
+
+        except Error:
+            return 'Error matricula'
 
 def consulta_apelido(host,user, database, password,id_user):
     try:
