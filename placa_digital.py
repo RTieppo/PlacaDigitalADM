@@ -139,14 +139,81 @@ def roda_app(star):
             janela_login.un_hide()
 
         elif window == janela_esqueci and eventos == 'Alterar':
-
-            test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
-            password=d.password,matricula=valores['-mat-'])       
-
-            retorno_matricula = test_conex.valida_matricula()
-            print(retorno_matricula)
+            window['-info_user_es-'].update('')
+            mat = valores['-mat-']
+            valida_mat = mat.isnumeric()
             
-            pass
+            if valida_mat == True:
+
+                test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+                password=d.password,matricula=valores['-mat-'])       
+                retorno_matricula = test_conex.valida_matricula()
+
+
+                senha_1 = valores['-senhaN1-']
+                senha_2 = valores['-senhaN2-']
+                leitor_s1 = len(valores['-senhaN1-'])
+                leitor_s2 = len(valores['-senhaN2-'])
+                erro = (r'img\20_20\erro.png')
+                verificado = (r'img\20_20\verificado.png')
+                senha_1_ok = senha_2_ok = None
+
+                if retorno_matricula[0] == True:
+                    window['-img_v_mat-'].update(verificado)
+
+                    if leitor_s1 == 4:
+                        valida_num = senha_1.isnumeric()
+                        if valida_num == True:
+                            senha_1_ok = True
+                            window['-img_v_ns-'].update(verificado)
+                        else:
+                            window['-info_user_es-'].update('Digite somente numeros!', 
+                            None,'darkred')
+                            window['-img_v_ns-'].update(erro)
+                    
+                    if leitor_s2 == 4:
+                        valida_num = senha_2.isnumeric()
+                        if valida_num == True:
+                            senha_2_ok = True
+                            window['-img_c_ns-'].update(verificado)
+                        else:
+                            window['-info_user_es-'].update('Digite somente numeros!', 
+                            None,'darkred')
+                            window['-img_c_ns-'].update(erro)
+
+                    if 0 <= leitor_s1 <=3:
+                        window['-img_v_ns-'].update(erro)
+                    
+                    if 0 <= leitor_s2 <=3:
+                        window['-img_c_ns-'].update(erro)
+
+                    if senha_1_ok == True and senha_2_ok == True:
+                        window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
+                        window.refresh()
+                        sleep(2)
+                        window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
+
+
+
+                else:
+                    window['-img_v_mat-'].update(erro)
+
+                    if 0 <= leitor_s1 < 4:
+                        window['-img_v_ns-'].update(erro)
+                    
+                    if leitor_s1 == 4:
+                        window['-img_v_ns-'].update(verificado)
+                        
+                    if 0 <= leitor_s2 < 4:
+                        window['-img_c_ns-'].update(erro)
+
+                    if leitor_s2 == 4:
+                        window['-img_c_ns-'].update(verificado)
+
+            else:
+                window['-img_v_mat-'].update(r'img\20_20\erro.png')
+                window['-info_user_es-'].update('Digite somente numeros!', None,'darkred')
+
 
     # janela adm
 

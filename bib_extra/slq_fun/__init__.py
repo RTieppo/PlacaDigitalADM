@@ -87,7 +87,10 @@ class BancoDeDados:
                     converte = str(le)
 
                     if converte == self.matricula:
-                        return converte
+                        return (True, converte)
+                
+                else:
+                    return (False,None)
                 
   
                 

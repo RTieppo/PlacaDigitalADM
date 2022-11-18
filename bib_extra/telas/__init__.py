@@ -134,7 +134,7 @@ def tela_esqueci(status_ser):
 
         [sg.Column(layout=login_senha)],
 
-        [sg.Text('', key='-info_user_es-')],
+        [sg.Text('', key='-info_user_es-',font=font_login)],
 
         [sg.HSeparator()],
 
