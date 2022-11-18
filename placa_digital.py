@@ -8,6 +8,7 @@ from bib_extra import txt_fun as txt
 from bib_extra import slq_fun as sql
 import DadosBancoDeDados as d
 
+
 def start_serve():
     test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
         password=d.password)       
@@ -47,64 +48,70 @@ def roda_app(star):
             break
 
         elif window == janela_login and eventos == 'Entrar':
+            sg.user_settings_set_entry('-last position-', janela_login.current_location())
             window['-info_user-'].update('')
+    
+            test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+            password=d.password, user_id = valores['-user-'])       
 
-            verifica_user = sql.valida_user(host=d.host, user=d.user, database=d.database,
-            password=d.password, user_id = valores['-user-'])
+            retorno_user = test_conex.valida_user()
 
-            if verifica_user == 'Error ID':
+            if retorno_user == 'Error ID':
                 window['-img_status-'].update(r'img\20_20\erro.png')
 
-            elif verifica_user == True:
+            elif retorno_user[0] == True:
 
-                verifica_senha = sql.valida_senha(host=d.host, user=d.user, database=d.database,
-                password=d.password, senha_user = valores[str('-senha-')])
+                test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+                password=d.password, senha_user = valores['-senha-'],
+                user_id = retorno_user[1])
 
-                if verifica_senha == 'Error Senha':
+                retorno_senha = test_conex.valida_senha()
+
+                if retorno_senha == 'Error Senha':
                     window['-img_status-'].update(r'img\20_20\erro.png')
 
-                elif verifica_user and verifica_senha == True:
 
-                    window['-img_v_user-'].update(r'img\20_20\verificado.png')
-                    window['-img_v_senha-'].update(r'img\20_20\verificado.png')
+                elif retorno_senha == valores['-senha-']:
+                    retorno_senha = True
 
-                    if valores['-save-'] == True:
-                        txt.cria_pasta() 
-                        txt.cria_txt(valores['-user-'])
-                    
-                    elif valores['-save-'] == False:
-                        txt.limpa_txt()
+                    if retorno_user and retorno_senha == True:
 
-                    consulta_apelido = sql.consulta_apelido(host=d.host, user=d.user,
-                    database=d.database, password=d.password,id_user = valores['-user-'])
-
-                    window['-info_user-'].update('Usuário valido',None,'darkgreen')
-                    window.refresh()
-                    sleep(3)
-
-                    janela_login.close()
-                    janela_adm = t.tela_adm(apelido_user=consulta_apelido)
-                
-                elif verifica_user or verifica_senha == True:
-
-                    if verifica_senha == True:
+                        window['-img_v_user-'].update(r'img\20_20\verificado.png')
                         window['-img_v_senha-'].update(r'img\20_20\verificado.png')
 
-                    if verifica_senha == False:
+                        if valores['-save-'] == True:
+                            txt.cria_pasta() 
+                            txt.cria_txt(valores['-user-'])
+                        
+                        elif valores['-save-'] == False:
+                            txt.limpa_txt()
+
+                        consulta_apelido = sql.consulta_apelido(host=d.host, user=d.user,
+                        database=d.database, password=d.password,id_user = valores['-user-'])
+
+                        window['-info_user-'].update('Usuário valido',None,'darkgreen')
+                        window.refresh()
+                        sleep(2)
+
+                        janela_login.close()
+                        janela_adm = t.tela_adm(apelido_user=consulta_apelido)
+                
+                elif retorno_user[0] or retorno_senha == True:
+
+                    if retorno_senha != True:
                         window['-img_v_senha-'].update(r'img\20_20\erro.png')
 
-                    if verifica_user == True:
+                    if retorno_user[0] == True:
                         window['-img_v_user-'].update(r'img\20_20\verificado.png')
+                
+                else:
+                    window['-img_v_senha-'].update(r'img\20_20\erro.png')
 
-                    if verifica_user == False:
-                        window['-img_v_user-'].update(r'img\20_20\erro.png')
-
-            else:
-                window['-img_v_user-'].update('')
-                window['-img_v_senha-'].update('')
-                window['-info_user-'].update('Credenciais inválidas!',None,'darkred')
+            elif retorno_user[0] == False:
+                window['-img_v_user-'].update(r'img\20_20\erro.png')
 
         elif window == janela_login and eventos == 'Esqueci':
+            sg.user_settings_set_entry('-last position-', janela_login.current_location())
             test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
             password=d.password)
 
@@ -121,12 +128,15 @@ def roda_app(star):
             else:
                 sg.popup('Erro com o Banco de Dados',retorno[1],title='Error')
 
-
     #Janela esqueci senha
 
         if window == janela_esqueci and eventos == sg.WIN_CLOSED:
             break
 
+        elif window == janela_esqueci and eventos == 'Sair':
+            sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
+            janela_esqueci.close()
+            janela_login.un_hide()
 
     # janela adm
 
@@ -150,9 +160,8 @@ def roda_app(star):
             print(feliz)
 
 
-inicia = start_serve()
 
-if inicia != None:
-    roda_app(inicia)
+inicia = start_serve()
+roda_app(inicia)
 
 

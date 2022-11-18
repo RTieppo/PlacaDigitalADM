@@ -30,50 +30,47 @@ class BancoDeDados:
         except Error as err:
             return (False,err)
         
+    def valida_user(self):
 
-def valida_user(host,user, database, password, user_id=''):
+        try:
+            conex = mysql.connector.connect(host = self.host, user = self.user,
+            database = self.database, password = self.password)
 
-    try:
-        conex = mysql.connector.connect(host=host, user=user, database=database,
-        password=password)
+            info = ('select id_user from login;')
+            cursor = conex.cursor()
+            cursor.execute(info)
+            linhas = cursor.fetchall()
 
-        info = ('select id_user from login;')
-        cursor = conex.cursor()
-        cursor.execute(info)
-        linhas = cursor.fetchall()
-
-        for linha in linhas:
-            if user_id in linha:
+            for linha in linhas:
+                if self.user_id in linha:
+                    conex.close()
+                    return (True, self.user_id)
+            else:
                 conex.close()
-                return True
-        else:
+                return (False,None)
+
+        except Error:
+            return ('Error ID',None)
+
+    def valida_senha(self):
+
+        try:
+            conex = mysql.connector.connect(host = self.host, user = self.user,
+            database = self.database, password = self.password)
+
+            info = (f"select senha from login where id_user = '{self.user_id}';")
+            cursor = conex.cursor()
+            cursor.execute(info)
+            linhas = cursor.fetchone()
+
             conex.close()
-            return False
+            return (str(linhas[0]))
 
-    except Error:
-        return 'Error ID'
 
-def valida_senha(host,user, database, password,senha_user=''):
+        except Error:
+            return 'Error Senha'
 
-    try:
-        conex = mysql.connector.connect(host=host, user=user, database=database,
-        password=password)
 
-        info = ('select senha from login;')
-        cursor = conex.cursor()
-        cursor.execute(info)
-        linhas = cursor.fetchall()
-
-        for linha in linhas:
-            if senha_user in linha:
-                conex.close()
-                return True
-        else:
-            conex.close()
-            return False
-
-    except Error:
-        return 'Error Senha'
 
 def consulta_apelido(host,user, database, password,id_user):
     try:

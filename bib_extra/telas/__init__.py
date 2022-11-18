@@ -104,7 +104,8 @@ def tela_adm(apelido_user=''):
 
     ]
     return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
-    element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'))
+    element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'),
+    location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
 
 def tela_esqueci(status_ser):
     sg.theme('DarkBlue2')
@@ -119,7 +120,7 @@ def tela_esqueci(status_ser):
         font=font_input, size=(20,1)),sg.Image('',key='-img_v_ns-')],
 
         [sg.Text('Confirmar nova senha:', font=font_input)],
-        [sg.Input(key='-senhaN1-',password_char='*', justification='c',
+        [sg.Input(key='-senhaN2-',password_char='*', justification='c',
         font=font_input, size=(20,1)),sg.Image('',key='-img_c_ns-')]
 
     ]
@@ -133,6 +134,8 @@ def tela_esqueci(status_ser):
 
         [sg.Column(layout=login_senha)],
 
+        [sg.Text('', key='-info_user_es-')],
+
         [sg.HSeparator()],
 
         [sg.Column(layout = avi_but)],
@@ -140,6 +143,8 @@ def tela_esqueci(status_ser):
         [sg.Image(status_ser,key='-img_status_esq-')]
     ]
 
-    return sg.Window('Nova senha', finalize=True, size=(300,260), layout = janela,
+    return sg.Window('Nova senha', finalize=True, size=(300,280), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
-    text_justification='c')
+    text_justification='c',
+    location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
+
