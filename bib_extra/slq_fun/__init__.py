@@ -25,7 +25,6 @@ class BancoDeDados:
                 return (True,r'img\20_20\verificado.png')
             
             else:
-                conex.close()
                 return (False,r'img\20_20\erro.png')
                 
         except Error as err:
@@ -98,6 +97,8 @@ class BancoDeDados:
 
         except Error:
             return 'Error matricula'
+
+
 
 def consulta_apelido(host,user, database, password,id_user):
     try:
