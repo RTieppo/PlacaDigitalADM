@@ -249,9 +249,7 @@ def roda_app(star):
                         window['-img_c_ns-'].update(erro)
 
             else:
-                window['-img_v_mat-'].update(r'img\20_20\erro.png')
                 window['-info_user_es-'].update('Digite somente numeros!', None,'darkred')
-
 
     # janela adm
 
