@@ -10,10 +10,10 @@ import DadosBancoDeDados as d
 
 
 def start_serve():
-    test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+    test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
         password=d.password)       
 
-    retorno = test_conex.testa_conec_serv()
+    retorno = test_conex.consulta_conex()
 
     if retorno[0] == True:
         abre_txt = txt.le_txt()
@@ -51,25 +51,24 @@ def roda_app(star):
             sg.user_settings_set_entry('-last position-', janela_login.current_location())
             window['-info_user-'].update('')
     
-            test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+            test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
             password=d.password, user_id = valores['-user-'])       
 
-            retorno_user = test_conex.valida_user()
+            retorno_user = test_conex.consulta_user()
 
             if retorno_user == 'Error ID':
                 window['-img_status-'].update(r'img\20_20\erro.png')
 
             elif retorno_user[0] == True:
 
-                test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+                test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
                 password=d.password, senha_user = valores['-senha-'],
                 user_id = retorno_user[1])
 
-                retorno_senha = test_conex.valida_senha()
+                retorno_senha = test_conex.consulta_senha()
 
                 if retorno_senha == 'Error Senha':
                     window['-img_status-'].update(r'img\20_20\erro.png')
-
 
                 elif retorno_senha == valores['-senha-']:
                     retorno_senha = True
@@ -112,10 +111,10 @@ def roda_app(star):
 
         elif window == janela_login and eventos == 'Esqueci':
             sg.user_settings_set_entry('-last position-', janela_login.current_location())
-            test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+            test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
             password=d.password)
 
-            retorno = test_conex.testa_conec_serv()
+            retorno = test_conex.consulta_conex()
 
             if retorno[0] == True:
                 janela_login.hide()
@@ -145,10 +144,10 @@ def roda_app(star):
             
             if valida_mat == True:
 
-                test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
-                password=d.password,matricula=valores['-mat-'])       
-                retorno_matricula = test_conex.valida_matricula()
+                test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
+                password=d.password,matricula=valores['-mat-'])
 
+                retorno_matricula = test_conex.consulta_matricula()
 
                 senha_1 = valores['-senhaN1-']
                 senha_2 = valores['-senhaN2-']
@@ -156,7 +155,8 @@ def roda_app(star):
                 leitor_s2 = len(valores['-senhaN2-'])
                 erro = (r'img\20_20\erro.png')
                 verificado = (r'img\20_20\verificado.png')
-                senha_1_ok = senha_2_ok = None
+                senha_1_ok = None
+                senha_2_ok = None
 
                 if retorno_matricula[0] == True:
                     window['-img_v_mat-'].update(verificado)
@@ -188,15 +188,47 @@ def roda_app(star):
                         window['-img_c_ns-'].update(erro)
 
                     if senha_1_ok == True and senha_2_ok == True:
-                        window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
-                        window.refresh()
-                        sleep(2)
-                        window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
+                        if senha_1 == senha_2:
+                            window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
+                            window.refresh()
+                            sleep(2)
+                            window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
 
+                            test_conex = sql.BancoDeDadosAltera(host=d.host, user=d.user, database=d.database,
+                            password=d.password,matricula= retorno_matricula[1])
 
+                            altera_senha = test_conex.altera_senha(n_senha=senha_1)
+                            window.refresh()
+                            sleep(1)
+
+                            if altera_senha == True:
+                                window['-info_user_es-'].update('Senha alterada!', None,'darkgreen')
+                            
+                            elif altera_senha == 'Erro alteração senha':
+                                window['-img_status_esq-'].update(r'img\20_20\erro.png')
+                            
+                            else:
+                                window['-info_user_es-'].update('Erro na alteração!', None,'darkred')
+                        
+                        else:
+                            window['-img_v_ns-'].update(erro)
+                            window['-img_c_ns-'].update(erro)
+                            window['-info_user_es-'].update('Senhas não são iguais', None,'darkred')
+                    
+                    else:
+                        window['-info_user_es-'].update('senha deve conter 4 caracteres', None,'darkred')
+                        
+                        if leitor_s1 > 4:
+                            window['-img_v_ns-'].update(erro)
+                        if leitor_s2 > 4:
+                            window['-img_c_ns-'].update(erro)
 
                 else:
+                    window['-info_user_es-'].update('Matrícula Incorreta!', None,'darkred')
                     window['-img_v_mat-'].update(erro)
+
+                    if retorno_matricula == 'Error matricula':
+                        window['-img_status_esq-'].update(r'img\20_20\erro.png')
 
                     if 0 <= leitor_s1 < 4:
                         window['-img_v_ns-'].update(erro)
@@ -209,6 +241,12 @@ def roda_app(star):
 
                     if leitor_s2 == 4:
                         window['-img_c_ns-'].update(verificado)
+                    
+                    if leitor_s1 > 4:
+                            window['-img_v_ns-'].update(erro)
+                    
+                    if leitor_s2 > 4:
+                        window['-img_c_ns-'].update(erro)
 
             else:
                 window['-img_v_mat-'].update(r'img\20_20\erro.png')
@@ -216,6 +254,9 @@ def roda_app(star):
 
 
     # janela adm
+
+        if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':
+            break
 
         elif window == janela_adm and eventos == '-ST_A-':
 
@@ -236,9 +277,6 @@ def roda_app(star):
             
             print(feliz)
 
-
-
 inicia = start_serve()
 roda_app(inicia)
-
 
