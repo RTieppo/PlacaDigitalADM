@@ -65,7 +65,6 @@ class BancoDeDadosConsultor:
             conex.close()
             return (str(linhas[0]))
 
-
         except Error:
             return 'Error Senha'
 
@@ -83,7 +82,6 @@ class BancoDeDadosConsultor:
             for linha in linhas:
                 for le in linha:
                     converte = str(le)
-                    print(converte)
 
                     if converte == self.matricula:
                         return (True, converte)
@@ -124,7 +122,6 @@ class BancoDeDadosAltera:
         self.senha_user = senha_user
         self.matricula = matricula
 
-    
     def altera_senha(self,n_senha):
         try:
             conex = mysql.connector.connect(host = self.host, user = self.user,
