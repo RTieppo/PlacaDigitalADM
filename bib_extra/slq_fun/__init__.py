@@ -2,7 +2,7 @@ import mysql.connector
 from PySimpleGUI import popup
 from mysql.connector import Error
 
-class BancoDeDadosConsultor:
+class BancoDeDados:
     def __init__(self,host,user, database, password, user_id = None, senha_user = None,
     matricula = None):
         self.host = host
@@ -76,29 +76,28 @@ class BancoDeDadosConsultor:
         except Error:
             return 'Error Senha'
 
-    def consulta_matricula(self):
+    def consulta_matricula(self, matricula):
         
         try:
-            conex = mysql.connector.connect(host = self.host, user = self.user,
-            database = self.database, password = self.password)
+            if conex.is_connected():
 
-            info = ('select matricula from login order by nome;')
-            cursor = conex.cursor()
-            cursor.execute(info)
-            linhas = cursor.fetchall()
-            
-            for linha in linhas:
-                for le in linha:
-                    converte = str(le)
-
-                    if converte == self.matricula:
-                        return (True, converte)
+                info = ('select matricula from login order by nome;')
+                cursor = conex.cursor()
+                cursor.execute(info)
+                linhas = cursor.fetchall()
                 
-            else:
-                return (False,None)
+                for linha in linhas:
+                    for le in linha:
+                        converte = str(le)
+
+                        if converte == matricula:
+                            return (True, converte)
+                    
+                else:
+                    return (False,None)
                 
         except Error:
-            return 'Error matricula'
+            return (False,'Error matricula')
 
     def consulta_apelido(self,id_user):
         try:
@@ -112,32 +111,18 @@ class BancoDeDadosConsultor:
 
         except Error:
             return 'erro apelido'
-
-
-class BancoDeDadosAltera:
-
-    def __init__(self,host,user, database, password,user_id = None, senha_user = None,
-    matricula = None):
-
-        self.host = host
-        self.user = user
-        self.database = database
-        self.password = password
-        self.user_id = user_id
-        self.senha_user = senha_user
-        self.matricula = matricula
-
-    def altera_senha(self,n_senha):
+            
+    def altera_senha(self,n_senha,matricula):
         try:
-            conex = mysql.connector.connect(host = self.host, user = self.user,
-            database = self.database, password = self.password)
+           
+           if conex.is_connected():
 
-            alterador = (f"update login set senha='{n_senha}' where matricula='{self.matricula}';")
-            cursor = conex.cursor()
-            cursor.execute(alterador)
-            conex.commit()
-            conex.close()
-            return True
+                alterador = (f"update login set senha='{n_senha}' where matricula='{matricula}';")
+                cursor = conex.cursor()
+                cursor.execute(alterador)
+                conex.commit()
+                conex.close()
+                return True
 
-        except Error as erro:
+        except Error:
             return 'Erro alteração senha'

@@ -12,7 +12,7 @@ import DadosBancoDeDados as d
 def start_serve():
     global test_conex
 
-    test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
+    test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
         password=d.password)       
 
     retorno = test_conex.conecta()
@@ -139,17 +139,18 @@ def roda_app(star):
             janela_login.un_hide()
 
         elif window == janela_esqueci and eventos == 'Alterar':
+
             window['-info_user_es-'].update('')
+            window['-img_v_mat-'].update('')
+            window['-img_v_ns-'].update('')
+            window['-img_c_ns-'].update('')
+            
             mat = valores['-mat-']
             valida_mat = mat.isnumeric()
             
             if valida_mat == True:
 
-                test_conex = sql.BancoDeDadosConsultor(host=d.host, user=d.user, database=d.database,
-                password=d.password,matricula=valores['-mat-'])
-
-                retorno_matricula = test_conex.consulta_matricula()
-
+                retorno_matricula = test_conex.consulta_matricula(matricula=valores['-mat-'])
                 senha_1 = valores['-senhaN1-']
                 senha_2 = valores['-senhaN2-']
                 leitor_s1 = len(valores['-senhaN1-'])
@@ -159,44 +160,39 @@ def roda_app(star):
 
                 if retorno_matricula[0] == True:
                     window['-img_v_mat-'].update(verificado)
-
-                    if leitor_s1 == 4:
-                        valida_num = senha_1.isnumeric()
-                        if valida_num == True:
+                    
+                    if senha_1.isnumeric():
+                        if leitor_s1 == 4:
                             senha_1_ok = True
                             window['-img_v_ns-'].update(verificado)
+
                         else:
-                            window['-info_user_es-'].update('Digite somente numeros!', 
+
+                            window['-info_user_es-'].update('senha deve conter 4 caracteres', 
                             None,'darkred')
+                            print(1)
                             window['-img_v_ns-'].update(erro)
                     
-                    if leitor_s2 == 4:
-                        valida_num = senha_2.isnumeric()
-                        if valida_num == True:
+                    if senha_2.isnumeric():
+                        if leitor_s2 == 4:
                             senha_2_ok = True
                             window['-img_c_ns-'].update(verificado)
+
                         else:
-                            window['-info_user_es-'].update('Digite somente numeros!', 
+                            window['-info_user_es-'].update('senha deve conter 4 caracteres', 
                             None,'darkred')
                             window['-img_c_ns-'].update(erro)
 
-                    if 0 <= leitor_s1 <=3:
-                        window['-img_v_ns-'].update(erro)
-                    
-                    if 0 <= leitor_s2 <=3:
-                        window['-img_c_ns-'].update(erro)
-
                     if senha_1_ok == True and senha_2_ok == True:
+
                         if senha_1 == senha_2:
                             window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
                             window.refresh()
                             sleep(2)
                             window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
 
-                            test_conex = sql.BancoDeDadosAltera(host=d.host, user=d.user, database=d.database,
-                            password=d.password,matricula= retorno_matricula[1])
 
-                            altera_senha = test_conex.altera_senha(n_senha=senha_1)
+                            altera_senha = test_conex.altera_senha(n_senha=senha_1, matricula=valores['-mat-'])
                             window.refresh()
                             sleep(1)
 
@@ -204,7 +200,7 @@ def roda_app(star):
                                 window['-info_user_es-'].update('Senha alterada!', None,'darkgreen')
                             
                             elif altera_senha == 'Erro alteração senha':
-                                window['-img_status_esq-'].update(r'img\20_20\erro.png')
+                                window['-img_status_esq-'].update(erro)
                             
                             else:
                                 window['-info_user_es-'].update('Erro na alteração!', None,'darkred')
@@ -214,28 +210,34 @@ def roda_app(star):
                             window['-img_c_ns-'].update(erro)
                             window['-info_user_es-'].update('Senhas não são iguais', None,'darkred')
                     
+                    elif senha_1.isalnum() or senha_1.isalpha():
+                        print(1)
+                        window['-info_user_es-'].update('Digite somente números', None,'darkred')
+                    
+                    elif senha_2.isalnum() or senha_2.isalpha():
+                        print(2)
+                        window['-info_user_es-'].update('Digite somente números', None,'darkred')
+
                     else:
-                        window['-info_user_es-'].update('senha deve conter 4 caracteres', None,'darkred')
-                        
-                        if leitor_s1 > 4:
-                            window['-img_v_ns-'].update(erro)
-                        if leitor_s2 > 4:
-                            window['-img_c_ns-'].update(erro)
+                        print(3)
+                        window['-img_v_ns-'].update(erro)
+                        window['-img_c_ns-'].update(erro)
+                        window['-info_user_es-'].update('Informe a nova senha', None,'darkred')
 
                 else:
                     window['-info_user_es-'].update('Matrícula Incorreta!', None,'darkred')
                     window['-img_v_mat-'].update(erro)
 
-                    if retorno_matricula == 'Error matricula':
-                        window['-img_status_esq-'].update(r'img\20_20\erro.png')
+                    if retorno_matricula[1] == 'Error matricula':
+                        window['-img_status_esq-'].update(erro)
 
-                    if 0 <= leitor_s1 < 4:
+                    if 0 <= leitor_s1 <= 3:
                         window['-img_v_ns-'].update(erro)
                     
                     if leitor_s1 == 4:
                         window['-img_v_ns-'].update(verificado)
                         
-                    if 0 <= leitor_s2 < 4:
+                    if 0 <= leitor_s2 <=3:
                         window['-img_c_ns-'].update(erro)
 
                     if leitor_s2 == 4:
