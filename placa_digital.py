@@ -13,7 +13,7 @@ import DadosBancoDeDados as d
 def start_serve():
     global test_conex
 
-    test_conex = sql.BancoDeDados(host=d.host, user=d.user, database=d.database,
+    test_conex = sql.BancoDeDados(host=d.host,user=d.user, database=d.database,
         password=d.password)       
 
     retorno = test_conex.conecta()
@@ -151,7 +151,6 @@ def roda_app(star):
             if matricula[0] == True:
 
                 consulta = test_conex.consulta_matricula(matricula=matricula[1])
-                print(consulta)
 
                 if consulta[0] == True:
                     window['-img_v_mat-'].update(verificado)
@@ -189,7 +188,7 @@ def roda_app(star):
 
                     window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
                     window.refresh()
-                    sleep(2)
+                    sleep(1)
                     window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
                     altera_senha = test_conex.altera_senha(n_senha=senha_1[1], matricula=valores['-mat-'])
                     window.refresh()
@@ -208,7 +207,9 @@ def roda_app(star):
                 else:
                     window['-img_v_ns-'].update(erro)
                     window['-img_c_ns-'].update(erro)
-           
+
+        elif window == janela_esqueci and eventos == 'Ajuda':
+            sg.popup_no_buttons(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(), title='Redefinição de senha') 
     # janela adm
 
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':

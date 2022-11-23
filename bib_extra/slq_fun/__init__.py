@@ -12,13 +12,13 @@ class BancoDeDados:
         self.user_id = user_id
         self.senha_user = senha_user
         self.matricula = matricula
+
     
     def conecta(self):
         global conex
         try:
-            conex = mysql.connector.connect(host = self.host, user = self.user,
+            conex = mysql.connector.connect(host = self.host ,user = self.user,
             database = self.database, password = self.password)
-            print(self.host)
 
             if conex.is_connected():
                 return (True,r'img\20_20\verificado.png')

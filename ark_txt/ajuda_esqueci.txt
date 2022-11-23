@@ -1,0 +1,8 @@
+O que cada campo deve conter?
+
+Matrícula:
+É a sua matrícula de funcionário do Senac.
+O campo deve ser preenchido somente com números.
+
+Nova senha:
+Deve conter 4 caracteres numéricos
