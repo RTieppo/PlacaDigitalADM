@@ -6,6 +6,7 @@ import mysql.connector
 from bib_extra import telas as t
 from bib_extra import txt_fun as txt
 from bib_extra import slq_fun as sql
+from bib_extra import analise_dados as dados
 import DadosBancoDeDados as d
 
 
@@ -144,114 +145,70 @@ def roda_app(star):
             window['-img_v_mat-'].update('')
             window['-img_v_ns-'].update('')
             window['-img_c_ns-'].update('')
-            
-            mat = valores['-mat-']
-            valida_mat = mat.isnumeric()
-            
-            if valida_mat == True:
 
-                retorno_matricula = test_conex.consulta_matricula(matricula=valores['-mat-'])
-                senha_1 = valores['-senhaN1-']
-                senha_2 = valores['-senhaN2-']
-                leitor_s1 = len(valores['-senhaN1-'])
-                leitor_s2 = len(valores['-senhaN2-'])
-                senha_1_ok = None
-                senha_2_ok = None
+            matricula = dados.valida_matricula(valores['-mat-'])
 
-                if retorno_matricula[0] == True:
+            if matricula[0] == True:
+
+                consulta = test_conex.consulta_matricula(matricula=matricula[1])
+                print(consulta)
+
+                if consulta[0] == True:
                     window['-img_v_mat-'].update(verificado)
-                    
-                    if senha_1.isnumeric():
-                        if leitor_s1 == 4:
-                            senha_1_ok = True
-                            window['-img_v_ns-'].update(verificado)
-
-                        else:
-
-                            window['-info_user_es-'].update('senha deve conter 4 caracteres', 
-                            None,'darkred')
-                            print(1)
-                            window['-img_v_ns-'].update(erro)
-                    
-                    if senha_2.isnumeric():
-                        if leitor_s2 == 4:
-                            senha_2_ok = True
-                            window['-img_c_ns-'].update(verificado)
-
-                        else:
-                            window['-info_user_es-'].update('senha deve conter 4 caracteres', 
-                            None,'darkred')
-                            window['-img_c_ns-'].update(erro)
-
-                    if senha_1_ok == True and senha_2_ok == True:
-
-                        if senha_1 == senha_2:
-                            window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
-                            window.refresh()
-                            sleep(2)
-                            window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
-
-
-                            altera_senha = test_conex.altera_senha(n_senha=senha_1, matricula=valores['-mat-'])
-                            window.refresh()
-                            sleep(1)
-
-                            if altera_senha == True:
-                                window['-info_user_es-'].update('Senha alterada!', None,'darkgreen')
-                            
-                            elif altera_senha == 'Erro alteração senha':
-                                window['-img_status_esq-'].update(erro)
-                            
-                            else:
-                                window['-info_user_es-'].update('Erro na alteração!', None,'darkred')
-                        
-                        else:
-                            window['-img_v_ns-'].update(erro)
-                            window['-img_c_ns-'].update(erro)
-                            window['-info_user_es-'].update('Senhas não são iguais', None,'darkred')
-                    
-                    elif senha_1.isalnum() or senha_1.isalpha():
-                        print(1)
-                        window['-info_user_es-'].update('Digite somente números', None,'darkred')
-                    
-                    elif senha_2.isalnum() or senha_2.isalpha():
-                        print(2)
-                        window['-info_user_es-'].update('Digite somente números', None,'darkred')
-
-                    else:
-                        print(3)
-                        window['-img_v_ns-'].update(erro)
-                        window['-img_c_ns-'].update(erro)
-                        window['-info_user_es-'].update('Informe a nova senha', None,'darkred')
-
+                
+                elif consulta[1] == 'Error matricula':
+                    window['-img_status_esq-'].update(erro)
+                
                 else:
-                    window['-info_user_es-'].update('Matrícula Incorreta!', None,'darkred')
                     window['-img_v_mat-'].update(erro)
 
-                    if retorno_matricula[1] == 'Error matricula':
-                        window['-img_status_esq-'].update(erro)
+            else:
+                window['-img_v_mat-'].update(erro)
 
-                    if 0 <= leitor_s1 <= 3:
-                        window['-img_v_ns-'].update(erro)
-                    
-                    if leitor_s1 == 4:
-                        window['-img_v_ns-'].update(verificado)
-                        
-                    if 0 <= leitor_s2 <=3:
-                        window['-img_c_ns-'].update(erro)
-
-                    if leitor_s2 == 4:
-                        window['-img_c_ns-'].update(verificado)
-                    
-                    if leitor_s1 > 4:
-                            window['-img_v_ns-'].update(erro)
-                    
-                    if leitor_s2 > 4:
-                        window['-img_c_ns-'].update(erro)
+            senha_1 = dados.velida_senha_1(valores['-senhaN1-'])
+            if senha_1[0] == True:
+                window['-img_v_ns-'].update(verificado)
 
             else:
-                window['-info_user_es-'].update('Digite somente numeros!', None,'darkred')
+                window['-img_v_ns-'].update(erro)
 
+            senha_2 = dados.valida_senha_2(valores['-senhaN2-'])
+
+            if senha_2[0] == True:
+                window['-img_c_ns-'].update(verificado)
+            
+            else:
+                window['-img_c_ns-'].update(erro)
+
+            window.refresh()
+            sleep(2)
+
+            if senha_1[0] == True and senha_2[0] == True and consulta[0] == True:
+
+                if senha_1[1] == senha_2[1]:
+
+                    window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
+                    window.refresh()
+                    sleep(2)
+                    window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
+                    altera_senha = test_conex.altera_senha(n_senha=senha_1[1], matricula=valores['-mat-'])
+                    window.refresh()
+                    sleep(1)
+
+                    if altera_senha == True:
+                        test_conex.reconecta()
+                        window['-info_user_es-'].update('Senha alterada!', None,'darkgreen')
+                    
+                    elif altera_senha == 'Erro alteração senha':
+                        window['-img_status_esq-'].update(erro)
+                    
+                    else:
+                        window['-info_user_es-'].update('Erro na alteração!', None,'darkred')
+
+                else:
+                    window['-img_v_ns-'].update(erro)
+                    window['-img_c_ns-'].update(erro)
+           
     # janela adm
 
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':

@@ -126,8 +126,9 @@ def tela_esqueci(status_ser):
     ]
 
     avi_but = [
-        [sg.Button('Alterar', font=font_login,size=(7,1),pad=(35,10)),
-        sg.Button('Sair', font=font_login,size=(7,1),pad=(35,10))],
+        [sg.Button('Alterar', font=font_login,size=(7,1),pad=(10,10)),
+        sg.Button('Ajuda', font=font_login,size=(7,1),pad=(10,10)),
+        sg.Button('Sair', font=font_login,size=(7,1),pad=(10,10))],
     ]
 
     janela =[

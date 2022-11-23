@@ -18,6 +18,7 @@ class BancoDeDados:
         try:
             conex = mysql.connector.connect(host = self.host, user = self.user,
             database = self.database, password = self.password)
+            print(self.host)
 
             if conex.is_connected():
                 return (True,r'img\20_20\verificado.png')
@@ -27,6 +28,21 @@ class BancoDeDados:
 
         except Error as erro:
             return popup(erro,title='Erro durante conexão')
+
+    def reconecta(self):
+        try:
+
+            if conex.is_connected():
+                return (True, 'tava')
+            
+            else:
+                conex.connect()
+
+                if conex.is_connected():
+                    return (True,'volto')
+        
+        except Error:
+            return False
 
     def consulta_conex(self):
 
@@ -95,8 +111,8 @@ class BancoDeDados:
                     
                 else:
                     return (False,None)
-                
-        except Error:
+
+        except Error as erro:
             return (False,'Error matricula')
 
     def consulta_apelido(self,id_user):
