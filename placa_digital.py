@@ -42,6 +42,8 @@ def roda_app(star):
 
     janela_adm = janela_esqueci =  None
 
+    limitador_info_atendimento = 0
+
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
     
@@ -217,13 +219,16 @@ def roda_app(star):
 
         elif window == janela_adm and eventos == '-ST_A-':
 
-            janela_adm.extend_layout(janela_adm['-Add-'],
-            [[sg.Text('Unidade:'), sg.Radio('Faculdade','-UN-', key='-FC-'),
-            sg.Radio('Saúde e Beleza','-UN-', key='-SS-')]])
+            if limitador_info_atendimento == 0:
+                limitador_info_atendimento =+1
 
-            janela_adm.extend_layout(janela_adm['-Add-'],
-            [[sg.Text('Sala ou Setor:'), sg.In(key='-local-', justification='c'
-            , size=(25,0))]])
+                janela_adm.extend_layout(janela_adm['-Add-'],
+                [[sg.Text('Unidade:'), sg.Radio('Faculdade','-UN-', key='-FC-'),
+                sg.Radio('Saúde e Beleza','-UN-', key='-SS-')]])
+
+                janela_adm.extend_layout(janela_adm['-Add-'],
+                [[sg.Text('Sala ou Setor:'), sg.In(key='-local-', justification='c'
+                , size=(25,0))]])
             
         elif window == janela_adm and eventos == '-ST_H-':
             feliz = valores['-ST_H-']
