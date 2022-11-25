@@ -239,6 +239,10 @@ def roda_app(star):
             
             print(feliz)
 
+        elif window == janela_adm and eventos == 'About':
+            text = sg.popup_get_text('Enter password', password_char='*')
+            sg.popup(f'Password:{text}')
+            
 inicia = start_serve()
 roda_app(inicia)
 
