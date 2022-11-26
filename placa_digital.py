@@ -120,6 +120,7 @@ def roda_app(star):
                 window['-img_status-'].update(erro)
 
         elif window == janela_login and eventos == 'Esqueci':
+            sg.user_settings_set_entry('-last position-', janela_login.current_location())
 
             retorno = test_conex.consulta_conex()
 
@@ -212,8 +213,30 @@ def roda_app(star):
 
         elif window == janela_esqueci and eventos == 'Ajuda':
             sg.popup_no_buttons(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(), title='Redefinição de senha') 
-    # janela adm
+    
+    #janela adm menu
+        elif window == janela_adm and eventos == 'About':
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
 
+            sg.popup('Duvidas contate o administrador:\nGitHub: Rtieppo\nRamal: ',
+            title='Ajuda!',
+            location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
+            icon='img\icon\ico_p.ico'
+            )
+
+        elif window == janela_adm and eventos == 'ID':
+            sg.popup('ID')
+
+        elif window == janela_adm and eventos =='Senha':
+            sg.popup('Senha')
+        
+        elif window == janela_adm and eventos == 'Apelido':
+            sg.popup('Apelido')
+
+        elif window == janela_adm and eventos == 'Permição':
+            sg.popup('Permi')
+
+    # janela adm
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':
             break
 
@@ -238,10 +261,6 @@ def roda_app(star):
                 window['-hu_r-'].update('Feliz',None,'darkgreen')
             
             print(feliz)
-
-        elif window == janela_adm and eventos == 'About':
-            text = sg.popup_get_text('Enter password', password_char='*')
-            sg.popup(f'Password:{text}')
             
 inicia = start_serve()
 roda_app(inicia)
