@@ -142,3 +142,57 @@ class BancoDeDados:
 
         except Error:
             return 'Erro alteração senha'
+
+    def altera_id_user(self,matricula,nv_id):
+        try:
+
+            if conex.is_connected():
+                alterador= (f"update login set id_user='{nv_id}' where matricula='{matricula}';")
+                cursor = conex.cursor()
+                cursor.execute(alterador)
+                conex.commit()
+                conex.close()
+                return True
+
+        except Error:
+            return'erro_alteração_id'
+
+    def altera_apelido(self,matricula,nv_apel):
+        try:
+
+            if conex.is_connected():
+                alterador= (f"update login set apelido='{nv_apel}' where matricula='{matricula}';")
+                cursor = conex.cursor()
+                cursor.execute(alterador)
+                conex.commit()
+                conex.close()
+                return True
+
+        except Error:
+            return'erro_alteração_apelido'
+
+
+    def coleta_acesso(self,user):
+        try:
+            if conex.is_connected():
+                info = (f"select nivel from login where id_user='{user}';")
+                cursor = conex.cursor()
+                cursor.execute(info)
+                linhas = cursor.fetchall()
+                return linhas[0][0]
+        
+        except Error:
+            return 'erro_nv_acesso'
+
+    def coleta_matricula(self,user):
+        try:
+            if conex.is_connected():
+                info = (f"select matricula from login where id_user='{user}';")
+                cursor = conex.cursor()
+                cursor.execute(info)
+                linhas = cursor.fetchall()
+                return linhas[0][0]
+        
+        except Error:
+            return 'erro_nv_acesso'
+

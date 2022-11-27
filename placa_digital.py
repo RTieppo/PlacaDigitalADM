@@ -43,9 +43,15 @@ def roda_app(star):
     janela_adm = janela_esqueci =  None
 
     limitador_info_atendimento = 0
+    
+    id_ref = ''
+    nv_acesso = ''
+    apelido = ''
+    matri = ''
 
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
+    icone = (r'img\icon\ico_p.ico')
     
     while True:
 
@@ -89,7 +95,10 @@ def roda_app(star):
                             elif valores['-save-'] == False:
                                 txt.limpa_txt()
 
-                            consulta_apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
+                            apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
+                            id_ref = retorno_user[1]
+                            matri = test_conex.coleta_matricula(id_ref)
+                            nv_acesso = test_conex.coleta_acesso(id_ref)
 
                             window['-info_user-'].update('Usuário valido',None,'darkgreen')
                             window.refresh()
@@ -99,8 +108,8 @@ def roda_app(star):
                             sleep(1)
 
                             janela_login.close()
-                            janela_adm = t.tela_adm(apelido_user=consulta_apelido)
-                            #colocar tratamento para erro de apelido
+                            janela_adm = t.tela_adm(apelido_user=apelido)
+                            #colocar tratamento para erro de coleta de informações
                     
                     elif retorno_user[0] or retorno_senha == True:
 
@@ -168,22 +177,17 @@ def roda_app(star):
                 window['-img_v_mat-'].update(erro)
 
             senha_1 = dados.velida_senha_1(valores['-senhaN1-'])
-            if senha_1[0] == True:
-                window['-img_v_ns-'].update(verificado)
-
-            else:
+            if senha_1[0] == False:
                 window['-img_v_ns-'].update(erro)
+
 
             senha_2 = dados.valida_senha_2(valores['-senhaN2-'])
 
-            if senha_2[0] == True:
-                window['-img_c_ns-'].update(verificado)
-            
-            else:
+            if senha_2[0] == False:
                 window['-img_c_ns-'].update(erro)
 
             window.refresh()
-            sleep(2)
+            sleep(1)
 
             if senha_1[0] == True and senha_2[0] == True and consulta[0] == True:
 
@@ -212,29 +216,126 @@ def roda_app(star):
                     window['-img_c_ns-'].update(erro)
 
         elif window == janela_esqueci and eventos == 'Ajuda':
-            sg.popup_no_buttons(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(), title='Redefinição de senha') 
+            sg.popup_no_buttons(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(),
+            title='Redefinição de senha',
+            location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
+            icon= icone
+            ) 
     
     #janela adm menu
         elif window == janela_adm and eventos == 'About':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
 
-            sg.popup('Duvidas contate o administrador:\nGitHub: Rtieppo\nRamal: ',
+            sg.popup('Duvidas contate o administrador:\nGitHub: Rtieppo\nRamal: 3271',
             title='Ajuda!',
             location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
-            icon='img\icon\ico_p.ico'
+            icon= icone
             )
 
         elif window == janela_adm and eventos == 'ID':
-            sg.popup('ID')
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+            novo_id_user = sg.popup_get_text(
+                'O novo ID deve conter até 10 caracteres.\nNovo ID:',
+                title='Novo ID', icon=icone,size=(25,25),
+                location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+            )
+
+            if novo_id_user != None:
+
+                if len(novo_id_user) <= 10 and len(novo_id_user) > 0:
+                    troca_id = test_conex.altera_id_user(matricula=matri,nv_id=novo_id_user)
+
+                    if troca_id == True:
+                        test_conex.reconecta()
+
+                        sg.popup_ok(
+                            'ID alterado com sucesso!', title='Alterado', icon=icone,
+                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                        )
+                    
+                    else:
+                        sg.popup_error(
+                            'Erro na troca do ID',title='Error',icon=icone,
+                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                        )
+                
+                else:
+                    sg.popup_ok(
+                        'ID invalido, fora do padrão\nTente novamente...', title='Error',
+                        icon= icone,
+                        location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                    )
 
         elif window == janela_adm and eventos =='Senha':
-            sg.popup('Senha')
-        
-        elif window == janela_adm and eventos == 'Apelido':
-            sg.popup('Apelido')
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+            nova_senha = sg.popup_get_text(
+                'A senha deve ser númerica e conter\n4 caracteres.\nNova Senha:',
+                title= 'Nova senha',icon=icone,password_char='*', size=(25,25),
+                location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                )
+            
+            if nova_senha != None:
 
-        elif window == janela_adm and eventos == 'Permição':
-            sg.popup('Permi')
+                if nova_senha.isnumeric() and len(nova_senha)==4:
+                    troca_senha = test_conex.altera_senha(matricula=matri, n_senha=nova_senha)
+
+                    if troca_senha == True:
+                        test_conex.reconecta()
+                        sg.popup_ok(
+                            'Senha alterada com sucesso!',title='Alterado',icon=icone,
+                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                        )
+
+                    else:
+                        sg.popup_error(
+                            'Erro na troca da senha!',title='Error',icon=icone,
+                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                        )
+
+                else:
+                    sg.popup_ok(
+                        'Senha informada é invalida\nTente novamente...',title='Error',
+                        icon= icone,
+                        location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                    )
+
+
+        elif window == janela_adm and eventos == 'Apelido':
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+            novo_apelido = sg.popup_get_text(
+                'O Novo apelido deve conter até 10 caracteres.\nNovo Apelido:',
+                title='Novo Apelido', icon=icone, size=(25,25),
+                location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+            )
+
+            if novo_apelido != None:
+                
+                if len(novo_apelido) <= 10 and len(novo_apelido) > 0:
+                    troca_apelido = test_conex.altera_apelido(matricula=matri,nv_apel=novo_apelido)
+
+                    if troca_apelido == True:
+                        test_conex.reconecta()
+
+                        sg.popup_ok(
+                            'Apelido alterado com sucesso!', title='Alterado', icon=icone,
+                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+
+                        )
+                    
+                    else:
+                        sg.popup_error(
+                            'Erro na troca do apelido', title='Error', icon=icone,
+                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                        )
+
+
+                else:
+                    sg.popup_ok(
+                        'Apelido, fora ddo padrão\nTente novamente...', title='Error',
+                        icon=icone,
+                        location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
+                    )
+
 
     # janela adm
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':

@@ -60,8 +60,8 @@ def tela_adm(apelido_user=''):
     sg.theme('DarkBlue2')
 
     bara_menu =[
-        ['Menu',['Alterar',['ID','Senha','Apelido','Permição']]],
-        ['Cadastro',['Novo user','Aviso','Informativo']],
+        ['Menu',['Alterar',['ID','Senha','Apelido'],
+        'Cadastro',['Novo user','Aviso','Informativo']]],
         ['Help',['About']]
     ]
 
@@ -99,8 +99,7 @@ def tela_adm(apelido_user=''):
 
         [sg.B('Aplicar', font=font_geral), sg.B('Sair', font=font_geral, size=(6,0))],
 
-        [sg.VPush(),sg.Text('GitHub: RTieppo', font=font_input), sg.Push(),
-        sg.Push(), sg.Image('',key='-serve-'), sg.Push(), sg.Push()]
+        [sg.Image('',key='-serve-')]
 
     ]
     return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
