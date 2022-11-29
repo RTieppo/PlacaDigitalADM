@@ -40,7 +40,7 @@ def roda_app(star):
 
     janela_login = star
 
-    janela_adm = janela_esqueci =  None
+    janela_adm = janela_esqueci = janela_novo_user = None
 
     limitador_info_atendimento = 0
     
@@ -146,7 +146,7 @@ def roda_app(star):
         if window == janela_esqueci and eventos == sg.WIN_CLOSED:
             break
 
-        elif window == janela_esqueci and eventos == 'Sair':
+        elif window == janela_esqueci and eventos == 'Voltar':
             sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
             janela_esqueci.close()
             janela_login.un_hide()
@@ -192,6 +192,8 @@ def roda_app(star):
             if senha_1[0] == True and senha_2[0] == True and consulta[0] == True:
 
                 if senha_1[1] == senha_2[1]:
+                    window['-img_v_ns-'].update(verificado)
+                    window['-img_c_ns-'].update(verificado)
 
                     window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
                     window.refresh()
@@ -216,6 +218,8 @@ def roda_app(star):
                     window['-img_c_ns-'].update(erro)
 
         elif window == janela_esqueci and eventos == 'Ajuda':
+            sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
+
             sg.popup_no_buttons(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(),
             title='Redefinição de senha',
             location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
@@ -225,11 +229,9 @@ def roda_app(star):
     #janela adm menu
         elif window == janela_adm and eventos == 'About':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-
             sg.popup('Duvidas contate o administrador:\nGitHub: Rtieppo\nRamal: 3271',
-            title='Ajuda!',
+            title='Ajuda!',icon= icone,
             location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
-            icon= icone
             )
 
         elif window == janela_adm and eventos == 'ID':
@@ -299,7 +301,6 @@ def roda_app(star):
                         location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
                     )
 
-
         elif window == janela_adm and eventos == 'Apelido':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
             novo_apelido = sg.popup_get_text(
@@ -336,6 +337,29 @@ def roda_app(star):
                         location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
                     )
 
+        elif window == janela_adm and eventos =='Novo user':
+            janela_adm.hide()
+            janela_novo_user = t.tela_novo_user()
+    
+    #janela novo user
+
+        if window == janela_novo_user and eventos == sg.WIN_CLOSED:
+            break
+
+        elif window == janela_novo_user and eventos == 'Voltar':
+            janela_adm.un_hide()
+            janela_novo_user.close()
+        
+        elif window == janela_novo_user and eventos == 'Aplicar':
+            pass
+
+        elif window == janela_novo_user and eventos == 'Ajuda':
+            sg.user_settings_set_entry('-last position-', janela_novo_user.current_location())
+            sg.popup_no_buttons('',
+            title='Cadastro novo usuário',
+            location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
+            icon= icone
+            )
 
     # janela adm
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':

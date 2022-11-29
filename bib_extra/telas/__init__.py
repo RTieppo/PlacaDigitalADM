@@ -127,7 +127,7 @@ def tela_esqueci(status_ser):
     avi_but = [
         [sg.Button('Alterar', font=font_login,size=(7,1),pad=(10,10)),
         sg.Button('Ajuda', font=font_login,size=(7,1),pad=(10,10)),
-        sg.Button('Sair', font=font_login,size=(7,1),pad=(10,10))],
+        sg.Button('Voltar', font=font_login,size=(7,1),pad=(10,10))],
     ]
 
     janela =[
@@ -147,4 +147,60 @@ def tela_esqueci(status_ser):
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
+
+def tela_novo_user(status_ser=''):
+
+    sg.theme('DarkBlue2')
+
+    entradas = [
+        [sg.Text('Matricula:', font=font_input)],
+        [sg.Input(key='-n_mat-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-img_n_mat-')],
+
+        [sg.Text('Nome:', font=font_input)],
+        [sg.Input(key='-n_nome-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-img_N_nome-')],
+
+        [sg.Text('Apelido:', font=font_input)],
+        [sg.Input(key='-N_apelido-',justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-img_N_apeli-')],
+        
+        [sg.Text('ID:', font=font_input)],
+        [sg.Input(key='-n_id-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-img_n_id-')],
+
+        [sg.Text('Senha:', font=font_input)],
+        [sg.Input(key='-n_user_senha-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-img_n_senha-')],
+
+        [sg.Text('Nível de Acesso:', font=font_input)]
+        
+        ]
+
+    botoes = [
+        [sg.B('Aplicar', font=font_login,size=(7,1),pad=(10,10)),
+        sg.B('Ajuda',font=font_login,size=(7,1),pad=(10,10)),
+        sg.B('Voltar', font=font_login, size=(7,1),pad=(10,10))]
+    ]
+
+    janela =[
+
+        [sg.Column(layout=entradas)],
+
+        [sg.Radio('Full','NV',key='-Nv_full-',font=font_input),
+        sg.Radio('Guest','NV',key='-Nv_guest-',font=font_input)],
+
+        [sg.HSeparator()],
+
+        [sg.Column(layout=botoes)],
+
+        [sg.Image(status_ser,key='-img_status_esq-')]
+
+    ]
+
+    return sg.Window('Novo cadastro', finalize=True, size=(300,400), layout = janela,
+    margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
+    text_justification='c',
+    location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
+
 
