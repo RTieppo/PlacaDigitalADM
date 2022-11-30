@@ -196,3 +196,23 @@ class BancoDeDados:
         except Error:
             return 'erro_nv_acesso'
 
+
+    def verifica_duplicata(self,new_id):
+        try:
+            
+            if conex.is_connected():
+                info = ('select matricula from login;')
+                cursor = conex.cursor()
+                cursor.execute(info)
+                linhas = cursor.fetchall()
+
+                for linha in linhas:
+
+                    if new_id in linha:
+                        return False
+
+                else:
+                    return True
+
+        except Error:
+            return 'Error verificação '

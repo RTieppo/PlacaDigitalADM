@@ -351,15 +351,21 @@ def roda_app(star):
             janela_novo_user.close()
         
         elif window == janela_novo_user and eventos == 'Aplicar':
-            pass
+            consulta_mat = test_conex.verifica_duplicata(new_id=float(valores['-n_mat-']))
+            
+            if consulta_mat == True:
+                pass
+            
 
         elif window == janela_novo_user and eventos == 'Ajuda':
             sg.user_settings_set_entry('-last position-', janela_novo_user.current_location())
-            sg.popup_no_buttons('',
+
+            sg.popup_no_buttons(open(r'ark_txt\ajuda_novo_user.txt','r', encoding='utf-8').read(),
             title='Cadastro novo usuário',
             location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
             icon= icone
             )
+
 
     # janela adm
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':

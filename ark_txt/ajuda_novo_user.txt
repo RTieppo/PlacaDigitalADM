@@ -1,0 +1,34 @@
+O que cada campo deve conter?
+
+Matrícula:
+É a matrícula gerado pelo Senac, disponível para
+consulta no MyPlace.
+
+Nome:
+É o nome completo do funcionário.
+
+Apelido:
+Aplicar o primeiro nome do funcionário, caso
+funcionário tenha algum apelido de preferência
+só cadastrar nesse campo com um limite de 
+10 caracteres.
+
+ID:
+O ID pode ser a primeira letra do nome
+junto com um sobrenome ou segundo nome.
+Esse campo tem um limite de 10 caracteres.
+
+Senha:
+A senha deve ser numérica com com 4
+caracteres. O primeira senha por padrão
+vai ser 1234.
+
+Nível de acesso:
+É dividido em guest e full.
+
+O usuário full pode fazer a alteração
+das informações apresentadas que
+são apresentadas no painel.
+
+O usuário guest consegue apenas
+alterar ID, senha e apelido.
