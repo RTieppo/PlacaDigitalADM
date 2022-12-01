@@ -148,7 +148,7 @@ def tela_esqueci(status_ser):
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
 
-def tela_novo_user(status_ser=''):
+def tela_novo_user(status_ser):
 
     sg.theme('DarkBlue2')
 
@@ -192,13 +192,16 @@ def tela_novo_user(status_ser=''):
 
         [sg.HSeparator()],
 
+        [sg.Text('',key='-info_n_ca-', font=font_login)],
+
         [sg.Column(layout=botoes)],
+
 
         [sg.Image(status_ser,key='-img_status_esq-')]
 
     ]
 
-    return sg.Window('Novo cadastro', finalize=True, size=(300,400), layout = janela,
+    return sg.Window('Novo cadastro', finalize=True, size=(300,440), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))

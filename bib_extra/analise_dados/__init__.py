@@ -1,46 +1,7 @@
 
-def velida_senha_1(senha_1):
+class ValidaDados:
 
-    if senha_1.isnumeric():
-        if len(senha_1) > 1 and len(senha_1) == 4:
-            return (True,senha_1)
-        
-        else:
-            return(False, None)
-    
-    else:
-        return(False,None)
-
-def valida_senha_2(senha_2):
-
-    if senha_2.isnumeric():
-        if len(senha_2)>1 and len(senha_2) == 4:
-            return(True,senha_2)
-        
-        else:
-            return(False, None)
-    
-    else:
-        return (False,None)
-
-def valida_matricula(matricula):
-    
-    if matricula.isnumeric():
-
-        if len(matricula)== 4:
-
-            return (True,matricula)
-
-        else:
-            return(False, None)
-
-    else:
-        return (False, None)
-
-
-class ValidaDadosNovoUser:
-
-    def __init__(self,matricula,nome,apelido,id,senha,nivel):
+    def __init__(self,matricula='',nome='',apelido='',id='',senha='',nivel=''):
 
         self.matricula = matricula
         self.nome = nome
@@ -65,7 +26,7 @@ class ValidaDadosNovoUser:
     def valida_matricula(self):
 
         if self.matricula.isnumeric():
-            if len(self.matricula) >1 and len(self.matricula)== 4:
+            if len(self.matricula)== 4:
                 return True
             
             else:
@@ -83,14 +44,32 @@ class ValidaDadosNovoUser:
             return False
     
     def valida_senha(self):
+        
+        senha1 = senha2 = None
+        print(len(self.senha))
+        print(self.senha)
 
-        if self.senha.isnumeric():
-            if len(self.senha) >1 and len(self.senha) == 4:
+        if len(self.senha) == 2:
+
+            if self.senha[0].isnumeric():
+                senha1 = True
+            else:
+                senha1 = False
+
+            if self.senha[1].isnumeric():
+                senha2 = True
+            
+            else:
+                senha2 = False
+
+            return senha1,senha2
+
+        elif self.senha.isnumeric():
+            if len(self.senha) == 4:
                 return True
             
             else:
                 return False
         else:
             return False
-    
     

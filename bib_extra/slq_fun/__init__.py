@@ -3,16 +3,11 @@ from PySimpleGUI import popup
 from mysql.connector import Error
 
 class BancoDeDados:
-    def __init__(self,host,user, database, password, user_id = None, senha_user = None,
-    matricula = None):
+    def __init__(self,host,user, database, password):
         self.host = host
         self.user = user
         self.database = database
         self.password = password
-        self.user_id = user_id
-        self.senha_user = senha_user
-        self.matricula = matricula
-
     
     def conecta(self):
         global conex
@@ -107,13 +102,13 @@ class BancoDeDados:
                         converte = str(le)
 
                         if converte == matricula:
-                            return (True, converte)
+                            return True
                     
                 else:
-                    return (False,None)
+                    return False
 
-        except Error as erro:
-            return (False,'Error matricula')
+        except Error:
+            return 'Error matricula'
 
     def consulta_apelido(self,id_user):
         try:
@@ -207,8 +202,9 @@ class BancoDeDados:
                 linhas = cursor.fetchall()
 
                 for linha in linhas:
+                    formata = str(linha[0])
 
-                    if new_id in linha:
+                    if formata in new_id:
                         return False
 
                 else:

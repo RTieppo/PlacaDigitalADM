@@ -137,7 +137,7 @@ def roda_app(star):
                 janela_login.hide()
                 janela_esqueci = t.tela_esqueci(verificado)
             
-            elif retorno == False:
+            else:
                 janela_login.hide()
                 janela_esqueci = t.tela_esqueci(erro)
 
@@ -158,48 +158,48 @@ def roda_app(star):
             window['-img_v_ns-'].update('')
             window['-img_c_ns-'].update('')
 
-            matricula = dados.valida_matricula(valores['-mat-'])
+            validaDados = dados.ValidaDados(matricula=valores['-mat-'],
+            senha=(valores['-senhaN1-'],valores['-senhaN2-']))
 
-            if matricula[0] == True:
+            resultadoSenha = validaDados.valida_senha()
+            resultadoMatricula = validaDados.valida_matricula()
 
-                consulta = test_conex.consulta_matricula(matricula=matricula[1])
+            if resultadoMatricula == True:
+                consulta = test_conex.consulta_matricula(matricula=valores['-mat-'])
 
-                if consulta[0] == True:
+                if consulta == True:
                     window['-img_v_mat-'].update(verificado)
                 
-                elif consulta[1] == 'Error matricula':
+                elif consulta == 'Error matricula':
                     window['-img_status_esq-'].update(erro)
                 
                 else:
                     window['-img_v_mat-'].update(erro)
-
             else:
                 window['-img_v_mat-'].update(erro)
+            
 
-            senha_1 = dados.velida_senha_1(valores['-senhaN1-'])
-            if senha_1[0] == False:
+            if resultadoSenha[0] == False:
                 window['-img_v_ns-'].update(erro)
-
-
-            senha_2 = dados.valida_senha_2(valores['-senhaN2-'])
-
-            if senha_2[0] == False:
+            
+            if resultadoSenha[1] == False:
                 window['-img_c_ns-'].update(erro)
+            
+            if resultadoSenha[0] == True and resultadoSenha[1] == True and resultadoMatricula == True:
 
-            window.refresh()
-            sleep(1)
-
-            if senha_1[0] == True and senha_2[0] == True and consulta[0] == True:
-
-                if senha_1[1] == senha_2[1]:
+                if valores['-senhaN1-'] == valores['-senhaN2-']:
                     window['-img_v_ns-'].update(verificado)
                     window['-img_c_ns-'].update(verificado)
 
                     window['-info_user_es-'].update('Dados validos!', None,'darkgreen')
+
                     window.refresh()
                     sleep(1)
+
                     window['-info_user_es-'].update('Atualizando!', None,'darkgreen')
-                    altera_senha = test_conex.altera_senha(n_senha=senha_1[1], matricula=valores['-mat-'])
+                    altera_senha = test_conex.altera_senha(n_senha=valores['-senhaN1-'],
+                    matricula=valores['-mat-'])
+
                     window.refresh()
                     sleep(1)
 
@@ -212,7 +212,7 @@ def roda_app(star):
                     
                     else:
                         window['-info_user_es-'].update('Erro na alteração!', None,'darkred')
-
+                
                 else:
                     window['-img_v_ns-'].update(erro)
                     window['-img_c_ns-'].update(erro)
@@ -338,8 +338,17 @@ def roda_app(star):
                     )
 
         elif window == janela_adm and eventos =='Novo user':
-            janela_adm.hide()
-            janela_novo_user = t.tela_novo_user()
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+
+            consultaConex = test_conex.consulta_conex()
+
+            if consultaConex == True:
+                janela_adm.hide()
+                janela_novo_user = t.tela_novo_user(verificado)
+
+            else:
+                janela_adm.hide()
+                janela_novo_user = t.tela_novo_user(erro)
     
     #janela novo user
 
@@ -351,11 +360,51 @@ def roda_app(star):
             janela_novo_user.close()
         
         elif window == janela_novo_user and eventos == 'Aplicar':
-            consulta_mat = test_conex.verifica_duplicata(new_id=float(valores['-n_mat-']))
-            
-            if consulta_mat == True:
-                pass
-            
+
+            window['-info_n_ca-'].update('')
+            window['-img_n_mat-'].update('')
+            window['-img_N_nome-'].update('')
+
+
+            listaValores = ('-n_mat-','-n_nome-','-N_apelido-','-n_id-','-n_user_senha-')
+
+            for valor in listaValores:
+                if valores[valor] != '':
+                    
+                    if valor == '-n_mat-':
+                        inicia = dados.ValidaDados(matricula=valores['-n_mat-'])
+                        verifica_caracteres = inicia.valida_matricula()
+
+                        if verifica_caracteres == True:
+                            verifica_disponibilidade = test_conex.verifica_duplicata(new_id = valores['-n_mat-'])
+                           
+                            if verifica_disponibilidade == True:
+                                window['-img_n_mat-'].update(verificado)
+
+                            elif verifica_disponibilidade == False:
+                                window['-img_n_mat-'].update(erro)
+                            
+                            else:
+                                window['-img_status_esq-'].update(erro)
+                        
+                        else:
+                            window['-img_n_mat-'].update(erro)
+                        
+                    elif valor == '-n_nome-':
+                        inicia = dados.ValidaDados(nome=valores['-n_nome-'])
+                        verifica_nome = inicia.valida_nome()
+                        print(verifica_nome)
+
+                        if verifica_nome == True:
+                            window['-img_N_nome-'].update(verificado)
+                        
+                        else:
+                            window['-img_N_nome-'].update(erro)
+                    
+
+                else:
+                    window['-info_n_ca-'].update('Preencha Todos os campos',None,'darkred')
+                
 
         elif window == janela_novo_user and eventos == 'Ajuda':
             sg.user_settings_set_entry('-last position-', janela_novo_user.current_location())
