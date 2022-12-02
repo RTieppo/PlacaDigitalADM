@@ -78,7 +78,7 @@ def tela_adm(apelido_user=''):
     humor = [
         [sg.Text('Qual o seu Humor do dia?', font=font_geral)],
         [sg.Text('Em uma escala de 0 até 100')],
-        [sg.Slider(range=(0,100), default_value=0, orientation='h',
+        [sg.Slider(range=(0,5), default_value=0, orientation='h',
         size=(15,20), key='-ST_H-',enable_events=True)],
         [sg.Image('', key='-img_hu-')],
         [sg.Text(' ', key='-hu_r-', font=font_login)]
@@ -167,14 +167,8 @@ def tela_novo_user(status_ser):
         
         [sg.Text('ID:', font=font_input)],
         [sg.Input(key='-n_id-', justification='c',font=font_input,size=(20,1)),
-        sg.Image('',key='-img_n_id-')],
+        sg.Image('',key='-img_n_id-')]
 
-        [sg.Text('Senha:', font=font_input)],
-        [sg.Input(key='-n_user_senha-', justification='c',font=font_input,size=(20,1)),
-        sg.Image('',key='-img_n_senha-')],
-
-        [sg.Text('Nível de Acesso:', font=font_input)]
-        
         ]
 
     botoes = [
@@ -187,11 +181,6 @@ def tela_novo_user(status_ser):
 
         [sg.Column(layout=entradas)],
 
-        [sg.Radio('Full','NV',key='-Nv_full-',font=font_input),
-        sg.Radio('Guest','NV',key='-Nv_guest-',font=font_input)],
-
-        [sg.HSeparator()],
-
         [sg.Text('',key='-info_n_ca-', font=font_login)],
 
         [sg.Column(layout=botoes)],
@@ -201,7 +190,7 @@ def tela_novo_user(status_ser):
 
     ]
 
-    return sg.Window('Novo cadastro', finalize=True, size=(300,440), layout = janela,
+    return sg.Window('Novo cadastro', finalize=True, size=(300,330), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))

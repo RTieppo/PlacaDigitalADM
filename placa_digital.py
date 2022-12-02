@@ -45,7 +45,6 @@ def roda_app(star):
     limitador_info_atendimento = 0
     
     id_ref = ''
-    nv_acesso = ''
     apelido = ''
     matri = ''
 
@@ -204,7 +203,6 @@ def roda_app(star):
                     sleep(1)
 
                     if altera_senha == True:
-                        test_conex.reconecta()
                         window['-info_user_es-'].update('Senha alterada!', None,'darkgreen')
                     
                     elif altera_senha == 'Erro alteração senha':
@@ -248,7 +246,6 @@ def roda_app(star):
                     troca_id = test_conex.altera_id_user(matricula=matri,nv_id=novo_id_user)
 
                     if troca_id == True:
-                        test_conex.reconecta()
 
                         sg.popup_ok(
                             'ID alterado com sucesso!', title='Alterado', icon=icone,
@@ -282,7 +279,7 @@ def roda_app(star):
                     troca_senha = test_conex.altera_senha(matricula=matri, n_senha=nova_senha)
 
                     if troca_senha == True:
-                        test_conex.reconecta()
+
                         sg.popup_ok(
                             'Senha alterada com sucesso!',title='Alterado',icon=icone,
                             location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
@@ -315,7 +312,6 @@ def roda_app(star):
                     troca_apelido = test_conex.altera_apelido(matricula=matri,nv_apel=novo_apelido)
 
                     if troca_apelido == True:
-                        test_conex.reconecta()
 
                         sg.popup_ok(
                             'Apelido alterado com sucesso!', title='Alterado', icon=icone,
@@ -364,9 +360,12 @@ def roda_app(star):
             window['-info_n_ca-'].update('')
             window['-img_n_mat-'].update('')
             window['-img_N_nome-'].update('')
+            window['-img_N_apeli-'].update('')
+            window['-img_n_id-'].update('')
 
+            listaValores = ('-n_mat-','-n_nome-','-N_apelido-','-n_id-')
 
-            listaValores = ('-n_mat-','-n_nome-','-N_apelido-','-n_id-','-n_user_senha-')
+            contadorDeValidação = 0
 
             for valor in listaValores:
                 if valores[valor] != '':
@@ -380,6 +379,7 @@ def roda_app(star):
                            
                             if verifica_disponibilidade == True:
                                 window['-img_n_mat-'].update(verificado)
+                                contadorDeValidação +=1
 
                             elif verifica_disponibilidade == False:
                                 window['-img_n_mat-'].update(erro)
@@ -393,18 +393,61 @@ def roda_app(star):
                     elif valor == '-n_nome-':
                         inicia = dados.ValidaDados(nome=valores['-n_nome-'])
                         verifica_nome = inicia.valida_nome()
-                        print(verifica_nome)
+
 
                         if verifica_nome == True:
+                            contadorDeValidação +=1
                             window['-img_N_nome-'].update(verificado)
                         
                         else:
                             window['-img_N_nome-'].update(erro)
                     
+                    elif valor == '-N_apelido-':
+                        inicia = dados.ValidaDados(apelido=valores['-N_apelido-'])
+                        verifica_apelido = inicia.valida_apelido()
+
+
+                        if verifica_apelido == True:
+                            contadorDeValidação +=1
+                            window['-img_N_apeli-'].update(verificado)
+                        
+                        else:
+                            window['-img_N_apeli-'].update(erro)
+                    
+                    elif valor == '-n_id-':
+                        inicia = dados.ValidaDados(id=valores['-n_id-'])
+                        verifica_n_id = inicia.valida_novo_id()
+
+                        if verifica_n_id == True:
+                            contadorDeValidação +=1
+                            window['-img_n_id-'].update(verificado)
+                        
+                        else:
+                            window['-img_n_id-'].update(erro)
 
                 else:
                     window['-info_n_ca-'].update('Preencha Todos os campos',None,'darkred')
                 
+            if contadorDeValidação == 4:
+                window['-info_n_ca-'].update('Informações validas',None,'darkgreen')
+                window.refresh()
+                sleep(1)
+
+                window['-info_n_ca-'].update('Atualizando...',None,'darkgreen')
+                window.refresh()
+                sleep(1)
+
+                cadastra = test_conex.add_novo_user(Nmat=valores['-n_mat-'],
+                Nnome=valores['-n_nome-'], Napelido=valores['-N_apelido-'],Nid=valores['-n_id-'])
+
+                if cadastra == True:
+                    window['-info_n_ca-'].update('Cadastrado com Sucesso!',None,'darkgreen')
+                
+                elif cadastra == 'Erro ao cadastrar':
+                    window['-img_status_esq-'].update(erro)
+                
+                else:
+                    window['-info_n_ca-'].update('Erro ao cadastrar!',None,'darkred')
 
         elif window == janela_novo_user and eventos == 'Ajuda':
             sg.user_settings_set_entry('-last position-', janela_novo_user.current_location())
@@ -435,8 +478,9 @@ def roda_app(star):
             
         elif window == janela_adm and eventos == '-ST_H-':
             feliz = valores['-ST_H-']
-            if feliz >= 20:
-                print('Feliz')
+            if feliz == 5:
+
+                
                 window['-img_hu-'].update(r'img\100_100\Feliz_100.png')
                 window['-hu_r-'].update('Feliz',None,'darkgreen')
             

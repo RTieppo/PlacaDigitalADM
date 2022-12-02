@@ -132,7 +132,6 @@ class BancoDeDados:
                 cursor = conex.cursor()
                 cursor.execute(alterador)
                 conex.commit()
-                conex.close()
                 return True
 
         except Error:
@@ -146,7 +145,6 @@ class BancoDeDados:
                 cursor = conex.cursor()
                 cursor.execute(alterador)
                 conex.commit()
-                conex.close()
                 return True
 
         except Error:
@@ -160,11 +158,30 @@ class BancoDeDados:
                 cursor = conex.cursor()
                 cursor.execute(alterador)
                 conex.commit()
-                conex.close()
                 return True
 
         except Error:
             return'erro_alteração_apelido'
+
+    def add_novo_user(self,Nmat,Nnome,Napelido,Nid):
+        try:
+
+            if conex.is_connected():
+                print(Nmat,Nnome,Napelido,Nid)
+                novo_user = (f"""
+                insert into login
+                (matricula,nome,apelido,id_user,senha)
+                values
+                ('{Nmat}','{Nnome}','{Napelido}','{Nid}',default);""")
+                print(novo_user)
+                cursor = conex.cursor()
+                cursor.execute(novo_user)
+                conex.commit()
+                return True
+
+        except Error as erro:
+            print(erro)
+            return 'Erro ao cadastrar'
 
 
     def coleta_acesso(self,user):

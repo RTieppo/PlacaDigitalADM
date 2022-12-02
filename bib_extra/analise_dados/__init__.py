@@ -43,11 +43,21 @@ class ValidaDados:
         else:
             return False
     
+    def valida_novo_id(self):
+
+        if self.id.isalpha():
+            if len(self.id) >1 and len (self.id) <=10:
+                return True
+            
+            else:
+                return False
+
+        else:
+            return False
+
     def valida_senha(self):
         
         senha1 = senha2 = None
-        print(len(self.senha))
-        print(self.senha)
 
         if len(self.senha) == 2:
 

@@ -19,16 +19,4 @@ junto com um sobrenome ou segundo nome.
 Esse campo tem um limite de 10 caracteres.
 
 Senha:
-A senha deve ser numérica com com 4
-caracteres. O primeira senha por padrão
-vai ser 1234.
-
-Nível de acesso:
-É dividido em guest e full.
-
-O usuário full pode fazer a alteração
-das informações apresentadas que
-são apresentadas no painel.
-
-O usuário guest consegue apenas
-alterar ID, senha e apelido.
+A primeira senha será 1234 por padrão.
