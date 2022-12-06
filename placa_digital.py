@@ -1,7 +1,5 @@
 from PySimpleGUI import PySimpleGUI as sg
 from time import sleep
-from mysql.connector import Error
-import mysql.connector
 
 from bib_extra import telas as t
 from bib_extra import txt_fun as txt
