@@ -1,19 +1,11 @@
 from PySimpleGUI import PySimpleGUI as sg
 
-
-url = "https://upload.wikimedia.org/wikipedia/commons/d/d9/Test.png"
-response = requests.get(url, stream=True)
-response.raw.decode_content = True
-# img = ImageQt.Image.open(response.raw)
-# data = image_to_data(img)
-img_box = sg.Image(data=response.raw.read())
-
 def tela_exibicao():
 
     sg.theme('DarkBlue2')
 
     janela = [
-        [sg.Image(open("https://drive.google.com/file/d/1bfqXB_KcigWkRwzUZXJCGhxZD7TXaMIb/view?usp=sharing"))]
+        [sg.Image(img,size=(300, 300), key='-IMAGE-')]
     ]
 
 

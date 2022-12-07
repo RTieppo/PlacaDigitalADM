@@ -1,6 +1,6 @@
 from PySimpleGUI import PySimpleGUI as sg
 from time import sleep
-import urllib.request
+
 
 from bib_extra_exibi import tela_principal
 
