@@ -5,7 +5,7 @@ def tela_exibicao():
     sg.theme('DarkBlue2')
 
     janela = [
-        [sg.Image(img,size=(300, 300), key='-IMAGE-')]
+        [sg.Image(size=(300, 300), key='-IMAGE-')]
     ]
 
 

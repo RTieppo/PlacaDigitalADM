@@ -38,7 +38,7 @@ def roda_app(star):
 
     janela_login = star
 
-    janela_adm = janela_esqueci = janela_novo_user = None
+    janela_adm = janela_esqueci = janela_novo_user = janela_emoji = None
 
     limitador_info_atendimento = 0
     
@@ -337,13 +337,30 @@ def roda_app(star):
             consultaConex = test_conex.consulta_conex()
 
             if consultaConex == True:
+
                 janela_adm.hide()
                 janela_novo_user = t.tela_novo_user(verificado)
+
 
             else:
                 janela_adm.hide()
                 janela_novo_user = t.tela_novo_user(erro)
-    
+
+        elif window == janela_adm and eventos == 'Emoji':
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+
+            consultaConex = test_conex.consulta_conex()
+
+            if consultaConex == True:
+                janela_adm.hide()
+                janela_emoji = t.tela_emoji(verificado)
+            
+            else:
+                janela_adm.hide()
+                janela_emoji = t.tela_adm(erro)
+                
+            
+
     #janela novo user
 
         if window == janela_novo_user and eventos == sg.WIN_CLOSED:

@@ -61,7 +61,7 @@ def tela_adm(apelido_user=''):
 
     bara_menu =[
         ['Menu',['Alterar',['ID','Senha','Apelido'],
-        'Cadastro',['Novo user','Aviso','Informativo']]],
+        'Cadastro',['Aviso','Emoji','Informativo','Novo user']]],
         ['Help',['About']]
     ]
 
@@ -77,7 +77,7 @@ def tela_adm(apelido_user=''):
 
     humor = [
         [sg.Text('Qual o seu Humor do dia?', font=font_geral)],
-        [sg.Text('Em uma escala de 0 até 100')],
+        [sg.Text('Em uma escala de 0 até 10')],
         [sg.Slider(range=(0,5), default_value=0, orientation='h',
         size=(15,20), key='-ST_H-',enable_events=True)],
         [sg.Image('', key='-img_hu-')],
@@ -195,4 +195,24 @@ def tela_novo_user(status_ser):
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
 
+def tela_emoji(status_ser):
 
+    sg.theme('DarkBlue2')
+
+    entradas = [
+
+    ]
+
+    botoes = [
+
+    ]
+
+    janela = [
+        [sg.Image(status_ser,key='-img_status_esq-')]
+
+    ]
+
+    return sg.Window('Emoji', finalize=True, size=(300,330), layout = janela,
+    margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
+    text_justification='c',
+    location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
