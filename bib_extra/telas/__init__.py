@@ -203,11 +203,25 @@ def tela_emoji(status_ser):
 
     ]
 
+
+    seletor = [
+        [sg.Radio('Atualização','def', key='-atu-', font=font_input),
+        sg.Radio('Novo cadastro', 'def', key='-new-',  font=font_input)]
+    ]
+
     botoes = [
+        [sg.B('Aplicar', font=font_login,size=(7,1),pad=(10,10)),
+        sg.B('Ajuda',font=font_login,size=(7,1),pad=(10,10)),
+        sg.B('Voltar', font=font_login, size=(7,1),pad=(10,10))]
 
     ]
 
     janela = [
+
+        [sg.Column(layout=seletor)],
+
+        [sg.Column(layout=botoes)],
+
         [sg.Image(status_ser,key='-img_status_esq-')]
 
     ]

@@ -359,7 +359,22 @@ def roda_app(star):
                 janela_adm.hide()
                 janela_emoji = t.tela_adm(erro)
                 
-            
+    #janela emoji
+
+        if window == janela_emoji and eventos == sg.WIN_CLOSED:
+            break
+
+        elif window == janela_emoji and eventos == 'Voltar':
+            sg.user_settings_set_entry('-last position-', janela_emoji.current_location())
+            janela_emoji.close()
+            janela_adm.un_hide()
+
+        elif window == janela_emoji and eventos == 'Aplicar':
+            pass
+
+        elif window == janela_emoji and eventos == 'Ajuda':
+            pass
+
 
     #janela novo user
 
