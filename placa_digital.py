@@ -85,17 +85,16 @@ def roda_app(star):
                             window['-img_v_user-'].update(verificado)
                             window['-img_v_senha-'].update(verificado)
 
+                            apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
+                            id_ref = retorno_user[1]
+                            matri = test_conex.coleta_matricula(id_ref)
+
                             if valores['-save-'] == True:
                                 txt.cria_pasta() 
                                 txt.cria_txt(valores['-user-'])
                             
                             elif valores['-save-'] == False:
                                 txt.limpa_txt()
-
-                            apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
-                            id_ref = retorno_user[1]
-                            matri = test_conex.coleta_matricula(id_ref)
-                            nv_acesso = test_conex.coleta_acesso(id_ref)
 
                             window['-info_user-'].update('Usuário valido',None,'darkgreen')
                             window.refresh()

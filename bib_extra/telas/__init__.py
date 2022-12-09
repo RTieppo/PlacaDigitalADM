@@ -77,7 +77,7 @@ def tela_adm(apelido_user=''):
 
     humor = [
         [sg.Text('Qual o seu Humor do dia?', font=font_geral)],
-        [sg.Text('Em uma escala de 0 até 10')],
+        [sg.Text('Em uma escala de 0 até 5')],
         [sg.Slider(range=(0,5), default_value=0, orientation='h',
         size=(15,20), key='-ST_H-',enable_events=True)],
         [sg.Image('', key='-img_hu-')],
@@ -200,9 +200,31 @@ def tela_emoji(status_ser):
     sg.theme('DarkBlue2')
 
     entradas = [
+        [sg.Text('Matricula:', font=font_input)],
+        [sg.Input(key='-mat_emo-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-img_mat_emo-')],
+
+        [sg.Text('Link Feliz:', font=font_input)],
+        [sg.Input(key='-sta_link_f-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-status_f-')],
+
+        [sg.Text('Link Cansado:', font=font_input)],
+        [sg.Input(key='-sta_link_can-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-status_can-')],
+
+        [sg.Text('Link Concentrado:', font=font_input)],
+        [sg.Input(key='-sta_link_con-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-status_con-')],
+
+        [sg.Text('Link Pensativo:', font=font_input)],
+        [sg.Input(key='-sta_link_p-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-status_p-')],
+
+        [sg.Text('Link Sério:', font=font_input)],
+        [sg.Input(key='-sta_link_se-', justification='c',font=font_input,size=(20,1)),
+        sg.Image('',key='-status_se-')],
 
     ]
-
 
     seletor = [
         [sg.Radio('Atualização','def', key='-atu-', font=font_input),
@@ -218,7 +240,11 @@ def tela_emoji(status_ser):
 
     janela = [
 
+        [sg.Column(layout= entradas)],
+
         [sg.Column(layout=seletor)],
+
+        [sg.Text('',key='-info_emoji-', font=font_input)],
 
         [sg.Column(layout=botoes)],
 
@@ -226,7 +252,7 @@ def tela_emoji(status_ser):
 
     ]
 
-    return sg.Window('Emoji', finalize=True, size=(300,330), layout = janela,
+    return sg.Window('Emoji', finalize=True, size=(300,450), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))

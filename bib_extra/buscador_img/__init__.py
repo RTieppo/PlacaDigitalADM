@@ -1,6 +1,10 @@
 import zlib
+import urllib.request
+import os
+
 
 def crc32(fileName):
+
     with open(fileName, 'rb') as fh:
         hash = 0
         while True:
@@ -11,15 +15,49 @@ def crc32(fileName):
         return "%08X" % (hash & 0xFFFFFFFF)
 
 
-eu = crc32('NASA2.png')
-print(eu)
+def baixa_img():
+
+    img = open(r'','wb')
+
+    img.write(urllib.request.urlopen('').read())
+    img.close()
 
 
+def verifica_pasta_geral():
+
+    verifica_pasta = os.listdir(r'C:\Users\Public')
+    
+    pasta = 'fileplaca'
+    
+    if pasta in verifica_pasta:
+        return True
+    
+    else:
+        return False
 
 
-import urllib.request
+def verifica_verifica_pasta_user(matricula):
 
-f = open('NASA2.png','wb')
-f.write(urllib.request.urlopen('https://images2.imgbox.com/e9/94/kgkGn9E6_o.png').read())
-f.close()
-print("download successful")
+    verifica_pasta = os.listdir(r'C:\Users\Public\fileplaca')
+
+    if matricula in verifica_pasta:
+        return True
+    
+    else:
+        return False
+
+
+def cria_pasta_user(matricula):
+    pass
+
+i = verifica_pasta_geral()
+
+if i == True:
+    print(1+1)
+
+    mat = verifica_verifica_pasta_user(3090)
+   
+    print(mat)
+
+else:
+    print(i)
