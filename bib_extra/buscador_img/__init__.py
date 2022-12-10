@@ -48,16 +48,9 @@ def verifica_verifica_pasta_user(matricula):
 
 
 def cria_pasta_user(matricula):
-    pass
 
-i = verifica_pasta_geral()
+    caminho = os.path.join(r'C:\Users\Public\fileplaca',matricula)
 
-if i == True:
-    print(1+1)
+    os.makedirs(caminho)
 
-    mat = verifica_verifica_pasta_user(3090)
-   
-    print(mat)
-
-else:
-    print(i)
+ 
