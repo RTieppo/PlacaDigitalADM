@@ -228,4 +228,17 @@ class BancoDeDados:
                     return True
 
         except Error:
-            return 'Error verificação '
+            return 'Error verificação'
+
+
+    def coleta_links(self,matricula):
+        try:
+            if conex.is_connected():
+                info = (f"select * from emoji where matricula='{matricula}';")
+                cursor = conex.cursor()
+                cursor.execute(info)
+                linhas = cursor.fetchall()
+                return linhas
+        
+        except Error:
+            return 'erro_nv_acesso'

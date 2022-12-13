@@ -15,7 +15,7 @@ def crc32(fileName):
         return "%08X" % (hash & 0xFFFFFFFF)
 
 
-def baixa_img():
+def baixa_img_temp(caminho,link,pasta):
 
     img = open(r'','wb')
 
@@ -47,10 +47,30 @@ def verifica_verifica_pasta_user(matricula):
         return False
 
 
+def verifica_os_ark(matricula):
+
+    caminho = os.path.join(r'C:\Users\Public\fileplaca',matricula)
+
+    conta_ark = len(os.listdir(caminho))
+
+    if conta_ark > 0:
+        return True
+    
+    else:
+        return False
+
+
+
 def cria_pasta_user(matricula):
 
     caminho = os.path.join(r'C:\Users\Public\fileplaca',matricula)
 
     os.makedirs(caminho)
 
- 
+
+def cria_pasta_temp():
+    pass
+
+
+def deleta_temp():
+    pass

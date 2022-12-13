@@ -5,6 +5,7 @@ from bib_extra import telas as t
 from bib_extra import txt_fun as txt
 from bib_extra import slq_fun as sql
 from bib_extra import analise_dados as dados
+from bib_extra import buscador_img as img
 import DadosBancoDeDados as d
 
 
@@ -88,6 +89,26 @@ def roda_app(star):
                             apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
                             id_ref = retorno_user[1]
                             matri = test_conex.coleta_matricula(id_ref)
+
+
+
+
+                            verifica_pasta_g = img.verifica_pasta_geral()
+
+                            if verifica_pasta_g == True:
+
+                                verifica_pasta_u = img.verifica_verifica_pasta_user(matricula=matri)
+
+                                if verifica_pasta_u == True:
+                                    verifica_ark = img.verifica_os_ark(matricula=matri)
+
+                                    if verifica_ark == True:
+                                        img.cria_pasta_temp()           
+
+
+
+
+
 
                             if valores['-save-'] == True:
                                 txt.cria_pasta() 
