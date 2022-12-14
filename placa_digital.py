@@ -6,6 +6,7 @@ from bib_extra import txt_fun as txt
 from bib_extra import slq_fun as sql
 from bib_extra import analise_dados as dados
 from bib_extra import buscador_img as img
+from bib_extra import criador_pasta as pasta
 import DadosBancoDeDados as d
 
 
@@ -22,14 +23,17 @@ def start_serve():
         
         if abre_txt[1] == True:
             if len(abre_txt) > 1:
+                pasta.cria_pasta_geral()
                 return (t.tela_login(user_login = abre_txt[0][0],
                 status=retorno[1], memoria=abre_txt[0][1]))
             
             else:
+                pasta.cria_pasta_geral()
                 return (t.tela_login(user_login = '',
                 status= retorno[1], memoria=''))
 
         else:
+            pasta.cria_pasta_geral()
             return (t.tela_login(user_login = '', status= retorno[1],
             memoria=''))
 
@@ -85,38 +89,28 @@ def roda_app(star):
 
                             window['-img_v_user-'].update(verificado)
                             window['-img_v_senha-'].update(verificado)
+                            window['-info_user-'].update('Atualizando dados...',None,'yellow')
+                            window.refresh()
 
                             apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
                             id_ref = retorno_user[1]
-                            matri = test_conex.coleta_matricula(id_ref)
+                            matri = str(test_conex.coleta_matricula(id_ref))
 
+                            verifica_pasta_u = img.verifica_pasta_user(matricula=matri)
 
-
-
-                            verifica_pasta_g = img.verifica_pasta_geral()
-
-                            if verifica_pasta_g == True:
-
-                                verifica_pasta_u = img.verifica_verifica_pasta_user(matricula=matri)
-
-                                if verifica_pasta_u == True:
-                                    verifica_ark = img.verifica_os_ark(matricula=matri)
-
-                                    if verifica_ark == True:
-                                        img.cria_pasta_temp()
-                                        coleta_link = test_conex.coleta_link(matricula=matri)
-                                        coleta_cr32 = test_conex.coleta_crc32(matricula=matri)
-                                        img.baixa_img_temp(link=coleta_link)
-                                        
-
-
-
-
-
+                            if verifica_pasta_u == True:
+                                coleta_link = test_conex.coleta_link(matricula=matri)
+                                if coleta_link != None:
+                                    img.baixa_img(link=coleta_link,mat=matri)
+                            
+                            else:
+                                pasta.cria_pasta_user(matricula=matri)
+                                coleta_link = test_conex.coleta_link(matricula=matri)
+                                if coleta_link != None:
+                                    img.baixa_img(link=coleta_link,mat=matri)
 
 
                             if valores['-save-'] == True:
-                                txt.cria_pasta() 
                                 txt.cria_txt(valores['-user-'])
                             
                             elif valores['-save-'] == False:

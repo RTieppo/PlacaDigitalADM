@@ -3,6 +3,7 @@ import mysql.connector
 
 import zlib
 import urllib.request
+import urllib.error
 import os
 
 conex = mysql.connector.connect(host=d.host,user=d.user, database=d.database,
@@ -14,31 +15,10 @@ if conex.is_connected():
     cursor.execute(info)
     linhas = cursor.fetchall()
 
-dados_crc32 = list()
-
-for num in linhas:
-    for separa in num[1:]:
-        converte = str(separa)
-        if converte.isalnum():
-            dados_crc32.append(converte)
- 
-print(dados_crc32)
-
-
-
-
-
-
-if conex.is_connected():
-    info = (f"select * from emoji where matricula=3090;")
-    cursor = conex.cursor()
-    cursor.execute(info)
-    linhas = cursor.fetchall()
-
 dados_link = list()
 
 for num in linhas:
-    for separa in num[2:]:
+    for separa in num:
         converte = str(separa)
         if len(converte) > 8:
             dados_link.append(converte)
@@ -46,19 +26,28 @@ for num in linhas:
 print(dados_link)
 
 
-def baixa_img_temp(link):
-    ark =(r'C:\Users\Public\fileplaca\temp\feliz.png',
-    r'C:\Users\Public\fileplaca\temp\cansado.png',r'C:\Users\Public\fileplaca\temp\concentrado.png',
-    r'C:\Users\Public\fileplaca\temp\pensativo.png',r'C:\Users\Public\fileplaca\temp\serio.png')
-    
-    conta = 0
+def baixa_img_temp(link,mat):
+    try:
+        caminho_geral = (r'C:\Users\Public\AppPlaca')
 
-    while conta <5:
-        img = open(f"{ark[conta]}",'wb')
-        img.write(urllib.request.urlopen(link[conta]).read())
-        img.close()
-        conta += 1
-    
-    print('ok')
+        nome_save = ('feliz.png','cansado.png','concentrado.png','pensativo.png','serio.png')
 
-baixa_img_temp(dados_link)
+        conta = 0
+
+        while conta <5:
+            unifica = os.path.join(caminho_geral,mat,nome_save[conta])
+
+            img = open(f"{unifica}",'wb')
+            img.write(urllib.request.urlopen(link[conta]).read())
+            img.close()
+            conta += 1
+        
+        return True
+    
+    except urllib.error:
+        return 'Erro_ao_baixar'
+    
+
+eu = baixa_img_temp(link=dados_link,mat='3090')
+
+print(eu)

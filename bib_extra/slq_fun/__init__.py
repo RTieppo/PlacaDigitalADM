@@ -218,28 +218,6 @@ class BancoDeDados:
         except Error:
             return 'Error verificação'
 
-
-    def coleta_crc32(self,matricula):
-        try:
-           if conex.is_connected():
-            info = (f"select * from emoji where matricula='{matricula}';")
-            cursor = conex.cursor()
-            cursor.execute(info)
-            linhas = cursor.fetchall()
-
-            dados_crc32 = list()
-
-            for num in linhas:
-                for separa in num[1:]:
-                    converte = str(separa)
-                    if converte.isalnum():
-                        dados_crc32.append(converte)
-                    
-                    return dados_crc32
-        
-        except Error:
-            return 'erro_coleta_crc32'
-    
     def coleta_link(self,matricula):
         try:
             if conex.is_connected():
@@ -251,11 +229,12 @@ class BancoDeDados:
                 dados_link = list()
 
                 for num in linhas:
-                    for separa in num[3:]:
+                    for separa in num:
                         converte = str(separa)
                         if len(converte) > 8:
                             dados_link.append(converte)
                         
-                        return dados_link
+                    return dados_link
+                        
         except Error:
             return 'erro_coleta_de_links'
