@@ -184,18 +184,6 @@ class BancoDeDados:
             return 'Erro ao cadastrar'
 
 
-    def coleta_acesso(self,user):
-        try:
-            if conex.is_connected():
-                info = (f"select nivel from login where id_user='{user}';")
-                cursor = conex.cursor()
-                cursor.execute(info)
-                linhas = cursor.fetchall()
-                return linhas[0][0]
-        
-        except Error:
-            return 'erro_nv_acesso'
-
     def coleta_matricula(self,user):
         try:
             if conex.is_connected():
@@ -231,14 +219,43 @@ class BancoDeDados:
             return 'Error verificação'
 
 
-    def coleta_links(self,matricula):
+    def coleta_crc32(self,matricula):
+        try:
+           if conex.is_connected():
+            info = (f"select * from emoji where matricula='{matricula}';")
+            cursor = conex.cursor()
+            cursor.execute(info)
+            linhas = cursor.fetchall()
+
+            dados_crc32 = list()
+
+            for num in linhas:
+                for separa in num[1:]:
+                    converte = str(separa)
+                    if converte.isalnum():
+                        dados_crc32.append(converte)
+                    
+                    return dados_crc32
+        
+        except Error:
+            return 'erro_coleta_crc32'
+    
+    def coleta_link(self,matricula):
         try:
             if conex.is_connected():
                 info = (f"select * from emoji where matricula='{matricula}';")
                 cursor = conex.cursor()
                 cursor.execute(info)
                 linhas = cursor.fetchall()
-                return linhas
-        
+
+                dados_link = list()
+
+                for num in linhas:
+                    for separa in num[3:]:
+                        converte = str(separa)
+                        if len(converte) > 8:
+                            dados_link.append(converte)
+                        
+                        return dados_link
         except Error:
-            return 'erro_nv_acesso'
+            return 'erro_coleta_de_links'

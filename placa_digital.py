@@ -103,7 +103,12 @@ def roda_app(star):
                                     verifica_ark = img.verifica_os_ark(matricula=matri)
 
                                     if verifica_ark == True:
-                                        img.cria_pasta_temp()           
+                                        img.cria_pasta_temp()
+                                        coleta_link = test_conex.coleta_link(matricula=matri)
+                                        coleta_cr32 = test_conex.coleta_crc32(matricula=matri)
+                                        img.baixa_img_temp(link=coleta_link)
+                                        
+
 
 
 

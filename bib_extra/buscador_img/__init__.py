@@ -15,12 +15,17 @@ def crc32(fileName):
         return "%08X" % (hash & 0xFFFFFFFF)
 
 
-def baixa_img_temp(caminho,link,pasta):
-
-    img = open(r'','wb')
-
-    img.write(urllib.request.urlopen('').read())
-    img.close()
+def baixa_img_temp(link):
+    ark =(r'C:\Users\Public\fileplaca\temp\feliz.png',
+    r'C:\Users\Public\fileplaca\temp\cansado.png',r'C:\Users\Public\fileplaca\temp\concentrado.png',
+    r'C:\Users\Public\fileplaca\temp\pensativo.png',r'C:\Users\Public\fileplaca\temp\serio.png')
+    
+    conta = 0
+    while conta <5:
+        img = open(f"{ark[conta]}",'wb')
+        img.write(urllib.request.urlopen(link[conta]).read())
+        img.close()
+        conta += 1
 
 
 def verifica_pasta_geral():
@@ -69,8 +74,11 @@ def cria_pasta_user(matricula):
 
 
 def cria_pasta_temp():
-    pass
+    os.makedirs(r'C:\Users\Public\fileplaca\temp')
 
+
+def deleta_ark_temp():
+    pass
 
 def deleta_temp():
     pass
