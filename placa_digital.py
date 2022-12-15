@@ -43,14 +43,15 @@ def roda_app(star):
 
     janela_login = star
 
-    janela_adm = janela_esqueci = janela_novo_user = janela_emoji = None
+    janela_adm = janela_esqueci = janela_novo_user = janela_emoji = janela_popup = None
 
     limitador_info_atendimento = 0
     
-    id_ref = ''
-    apelido = ''
-    matri = ''
+    id_ref = apelido = matri = ''
 
+    salva_janela_referencia = valor_coletado = tamanho_atual = None
+
+    button = ('OK','Aplicar')
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
     icone = (r'img\icon\ico_p.ico')
@@ -157,6 +158,18 @@ def roda_app(star):
                 janela_login.hide()
                 janela_esqueci = t.tela_esqueci(erro)
 
+    #janela popup
+
+        if window == janela_popup and eventos == sg.WIN_CLOSED or eventos == 'OK':
+            salva_janela_referencia.un_hide()
+            janela_popup.close()
+        
+        elif window == janela_popup and eventos == 'Aplicar':
+            valor_coletado = valores['-entrada_padrao-']
+            janela_popup.close()
+
+
+
     #Janela esqueci senha
 
         if window == janela_esqueci and eventos == sg.WIN_CLOSED:
@@ -233,54 +246,88 @@ def roda_app(star):
                     window['-img_c_ns-'].update(erro)
 
         elif window == janela_esqueci and eventos == 'Ajuda':
-            sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
 
-            sg.popup_no_titlebar(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(),
-            title='Redefinição de senha',icon= icone,
-            location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
+            sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
             
-            ) 
+            tamanho_atual = window.Size
+            
+            texto = open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read()
+            janela_esqueci.hide()
+            salva_janela_referencia = janela_esqueci
+            
+            janela_popup = t.tela_popup(tamanho=tamanho_atual, info=texto,
+            tipo_button=button[0],nome_janela='Ajuda senha')
     
+
     #janela adm menu
         elif window == janela_adm and eventos == 'About':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            sg.popup('Duvidas contate o administrador:\nGitHub: Rtieppo\nRamal: 3271',
-            title='Ajuda!',icon= icone,
-            location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
-            )
+
+            tamanho_atual = window.Size
+
+            ajuste_x = (f'{tamanho_atual[0]/2}')
+            ajuste_y = (f'{tamanho_atual[1]/4}')
+            texto = 'Duvidas? Contate\no administrador:\nGitHub: Rtieppo\nRamal: 3271'
+            janela_adm.hide()
+            salva_janela_referencia = janela_adm
+            
+            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+            info=texto,tipo_button=button[0],nome_janela='Ajuda')
 
         elif window == janela_adm and eventos == 'ID':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            novo_id_user = sg.popup_get_text(
-                'O novo ID deve conter até 10 caracteres.\nNovo ID:',
-                title='Novo ID', icon=icone,size=(25,25),
-                location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-            )
 
-            if novo_id_user != None:
+            tamanho_atual = window.Size
 
-                if len(novo_id_user) <= 10 and len(novo_id_user) > 0:
-                    troca_id = test_conex.altera_id_user(matricula=matri,nv_id=novo_id_user)
+            ajuste_x = (f'{tamanho_atual[0]/2}')
+            ajuste_y = (f'{tamanho_atual[1]/3}')
+            texto = 'O novo ID deve conter\naté 10 caracteres.'
+            janela_adm.hide()
+            salva_janela_referencia = janela_adm
+            
+            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+            info=texto,tipo_button=button[1], entra_info=True,
+            texto_entrada='Novo ID:',nome_janela='Novo ID')
 
-                    if troca_id == True:
+        if valor_coletado != None:
 
-                        sg.popup_ok(
-                            'ID alterado com sucesso!', title='Alterado', icon=icone,
-                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                        )
+            if len(valor_coletado) <= 10 and len(valor_coletado) > 0 and valor_coletado.isalpha():
+                troca_id = test_conex.altera_id_user(matricula=matri,nv_id=valor_coletado)
+
+                if troca_id == True:
                     
-                    else:
-                        sg.popup_error(
-                            'Erro na troca do ID',title='Error',icon=icone,
-                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                        )
-                
+                    ajuste_x = (f'{tamanho_atual[0]/2}')
+                    ajuste_y = (f'{tamanho_atual[1]/5}')
+                    texto = 'ID alterado com sucesso!'
+                    janela_adm.hide()
+                    salva_janela_referencia = janela_adm
+                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                    info=texto,tipo_button=button[0],nome_janela='Alterado')
+
+                    valor_coletado = None
+
                 else:
-                    sg.popup_ok(
-                        'ID invalido, fora do padrão\nTente novamente...', title='Error',
-                        icon= icone,
-                        location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                    )
+                    ajuste_x = (f'{tamanho_atual[0]/2}')
+                    ajuste_y = (f'{tamanho_atual[1]/5}')
+                    texto = 'Erro na troca do ID'
+                    janela_adm.hide()
+                    salva_janela_referencia = janela_adm
+                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                    info=texto,tipo_button=button[0],nome_janela='Erro')
+
+                    valor_coletado = None
+
+            else:
+                ajuste_x = (f'{tamanho_atual[0]/2}')
+                ajuste_y = (f'{tamanho_atual[1]/4}')
+                texto = 'ID invalido, fora do padrão\nTente novamente...'
+                janela_adm.hide()
+                salva_janela_referencia = janela_adm
+                janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                info=texto,tipo_button=button[0], nome_janela='ID invalido')
+
+                valor_coletado = None
+               
 
         elif window == janela_adm and eventos =='Senha':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())

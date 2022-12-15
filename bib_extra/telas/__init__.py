@@ -256,3 +256,38 @@ def tela_emoji(status_ser):
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
+
+
+def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entrada=''):
+    sg.theme('DarkBlue2')
+    
+    info_txt = [
+        [sg.Text(info,font=font_input)]
+    ]
+
+    button = [
+        [sg.Button(tipo_button,size=(7,1))]
+    ]
+
+    if entra_info == True:
+        entrada = [
+            [sg.Text(texto_entrada, font=font_input)],
+            [sg.Input(key='-entrada_padrao-',size=(20,1))],
+        ]
+    
+    else:
+        entrada = ''
+
+    janela = [
+
+        [sg.Column(layout=info_txt)],
+
+        [sg.Column(layout=entrada)],
+
+        [sg.Column(layout=button)]
+    ]
+
+    return sg.Window(nome_janela, finalize=True, size=tamanho, layout = janela,
+    margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
+    text_justification='c',
+    location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
