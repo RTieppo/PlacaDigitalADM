@@ -235,10 +235,10 @@ def roda_app(star):
         elif window == janela_esqueci and eventos == 'Ajuda':
             sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
 
-            sg.popup_no_buttons(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(),
-            title='Redefinição de senha',
+            sg.popup_no_titlebar(open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read(),
+            title='Redefinição de senha',icon= icone,
             location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
-            icon= icone
+            
             ) 
     
     #janela adm menu

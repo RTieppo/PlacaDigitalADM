@@ -4,7 +4,7 @@ from PySimpleGUI import PySimpleGUI as sg
 font_login = ('Berlin Sans FB Demi Negrito', 12)
 font_login2 = ('Berlin Sans FB Demi Negrito', 10)
 font_geral = ('Berlin Sans FB Demi Negrito', 15)
-font_input = ('Berlin Sans FB',10)
+font_input = ('Berlin Sans FB',12)
 
 
 def tela_login(user_login = '', status='',memoria=''):
@@ -51,7 +51,7 @@ def tela_login(user_login = '', status='',memoria=''):
         [sg.Column(layout=status_serv,element_justification='c')]
     ]
 
-    return sg.Window('Login', finalize=True, size=(300,260), layout = janela,
+    return sg.Window('Login', finalize=True, size=(300,280), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c')
 
@@ -102,7 +102,7 @@ def tela_adm(apelido_user=''):
         [sg.Image('',key='-serve-')]
 
     ]
-    return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,520), layout = janela,
+    return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,540), layout = janela,
     element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'),
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
 
@@ -143,7 +143,7 @@ def tela_esqueci(status_ser):
         [sg.Image(status_ser,key='-img_status_esq-')]
     ]
 
-    return sg.Window('Nova senha', finalize=True, size=(300,280), layout = janela,
+    return sg.Window('Nova senha', finalize=True, size=(300,300), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
@@ -190,7 +190,7 @@ def tela_novo_user(status_ser):
 
     ]
 
-    return sg.Window('Novo cadastro', finalize=True, size=(300,330), layout = janela,
+    return sg.Window('Novo cadastro', finalize=True, size=(300,350), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
@@ -252,7 +252,7 @@ def tela_emoji(status_ser):
 
     ]
 
-    return sg.Window('Emoji', finalize=True, size=(300,450), layout = janela,
+    return sg.Window('Emoji', finalize=True, size=(300,470), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
