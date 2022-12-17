@@ -51,7 +51,6 @@ def roda_app(star):
 
     salva_janela_referencia = valor_coletado = tamanho_atual = None
 
-    button = ('OK','Aplicar')
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
     icone = (r'img\icon\ico_p.ico')
@@ -256,7 +255,7 @@ def roda_app(star):
             salva_janela_referencia = janela_esqueci
             
             janela_popup = t.tela_popup(tamanho=tamanho_atual, info=texto,
-            tipo_button=button[0],nome_janela='Ajuda senha')
+            tipo_button='OK',nome_janela='Ajuda senha')
     
 
     #janela adm menu
@@ -272,7 +271,7 @@ def roda_app(star):
             salva_janela_referencia = janela_adm
             
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-            info=texto,tipo_button=button[0],nome_janela='Ajuda')
+            info=texto,tipo_button='OK',nome_janela='Ajuda')
 
         elif window == janela_adm and eventos == 'ID':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
@@ -286,11 +285,10 @@ def roda_app(star):
             salva_janela_referencia = janela_adm
             
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-            info=texto,tipo_button=button[1], entra_info=True,
+            info=texto,tipo_button='Aplicar', entra_info=True,
             texto_entrada='Novo ID:',nome_janela='Novo ID')
 
         if valor_coletado != None:
-
             if len(valor_coletado) <= 10 and len(valor_coletado) > 0 and valor_coletado.isalpha():
                 troca_id = test_conex.altera_id_user(matricula=matri,nv_id=valor_coletado)
 
@@ -299,21 +297,24 @@ def roda_app(star):
                     ajuste_x = (f'{tamanho_atual[0]/2}')
                     ajuste_y = (f'{tamanho_atual[1]/5}')
                     texto = 'ID alterado com sucesso!'
-                    janela_adm.hide()
+
                     salva_janela_referencia = janela_adm
+
                     janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button=button[0],nome_janela='Alterado')
+                    info=texto,tipo_button='Aplicar',nome_janela='Alterado')
 
                     valor_coletado = None
+
 
                 else:
                     ajuste_x = (f'{tamanho_atual[0]/2}')
                     ajuste_y = (f'{tamanho_atual[1]/5}')
                     texto = 'Erro na troca do ID'
-                    janela_adm.hide()
+
                     salva_janela_referencia = janela_adm
+
                     janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button=button[0],nome_janela='Erro')
+                    info=texto,tipo_button='OK',nome_janela='Erro')
 
                     valor_coletado = None
 
@@ -321,14 +322,14 @@ def roda_app(star):
                 ajuste_x = (f'{tamanho_atual[0]/2}')
                 ajuste_y = (f'{tamanho_atual[1]/4}')
                 texto = 'ID invalido, fora do padrão\nTente novamente...'
-                janela_adm.hide()
+
                 salva_janela_referencia = janela_adm
+
                 janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                info=texto,tipo_button=button[0], nome_janela='ID invalido')
+                info=texto,tipo_button='OK', nome_janela='ID invalido')
 
                 valor_coletado = None
                
-
         elif window == janela_adm and eventos =='Senha':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
             nova_senha = sg.popup_get_text(

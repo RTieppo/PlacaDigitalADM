@@ -289,5 +289,5 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
 
     return sg.Window(nome_janela, finalize=True, size=tamanho, layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
-    text_justification='c',
+    text_justification='c',modal=True,
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
