@@ -258,7 +258,7 @@ def tela_emoji(status_ser):
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
 
 
-def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entrada=''):
+def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entrada='',senha=''):
     sg.theme('DarkBlue2')
     
     info_txt = [
@@ -272,7 +272,7 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
     if entra_info == True:
         entrada = [
             [sg.Text(texto_entrada, font=font_input)],
-            [sg.Input(key='-entrada_padrao-',size=(20,1))],
+            [sg.Input(key='-entrada_padrao-',size=(20,1),password_char=senha)],
         ]
     
     else:

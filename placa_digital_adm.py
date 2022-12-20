@@ -89,6 +89,10 @@ def roda_app(star):
 
                             window['-img_v_user-'].update(verificado)
                             window['-img_v_senha-'].update(verificado)
+                            window['-info_user-'].update('Usuário valido',None,'darkgreen')
+                            window.refresh()
+                            sleep(1)
+                            
                             window['-info_user-'].update('Atualizando dados...',None,'yellow')
                             window.refresh()
 
@@ -116,9 +120,7 @@ def roda_app(star):
                             elif valores['-save-'] == False:
                                 txt.limpa_txt()
 
-                            window['-info_user-'].update('Usuário valido',None,'darkgreen')
-                            window.refresh()
-                            sleep(1)
+                            
                             window['-info_user-'].update('Acessando...',None,'darkgreen')
                             window.refresh()
                             sleep(1)
@@ -213,10 +215,99 @@ def roda_app(star):
                     janela_ref_popup = None
 
             elif janela_ref_popup == 'Senha':
-                pass
+
+                if valor_coletado.isnumeric() and len(valor_coletado)==4:
+
+                    troca_senha = test_conex.altera_senha(matricula=matri, n_senha=valor_coletado)
+
+                    if troca_senha == True:
+
+                        ajuste_x = (f'{tamanho_atual[0]/2}')
+                        ajuste_y = (f'{tamanho_atual[1]/5}')
+                        texto = 'Senha alterada com sucesso!'
+
+                        salva_janela_referencia = janela_adm
+
+                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                        info=texto,tipo_button='OK',nome_janela='Alterado')
+
+                        valor_coletado = None
+                        janela_ref_popup = None
+
+                    else:
+
+                        ajuste_x = (f'{tamanho_atual[0]/2}')
+                        ajuste_y = (f'{tamanho_atual[1]/5}')
+                        texto = 'Erro na troca da senha!'
+
+                        salva_janela_referencia = janela_adm
+
+                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                        info=texto,tipo_button='OK',nome_janela='Error')
+
+                        valor_coletado = None
+                        janela_ref_popup = None
+                else:
+
+                    ajuste_x = (f'{tamanho_atual[0]/2}')
+                    ajuste_y = (f'{tamanho_atual[1]/5}')
+                    texto = 'Senha informada é invalida\nTente novamente...'
+
+                    salva_janela_referencia = janela_adm
+
+                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                    info=texto,tipo_button='OK',nome_janela='Error')
+
+                    valor_coletado = None
+                    janela_ref_popup = None
+
 
             elif janela_ref_popup == 'Apelido':
-                pass
+                
+                if len(valor_coletado) <= 10 and len(valor_coletado) > 0:
+                    troca_apelido = test_conex.altera_apelido(matricula=matri,nv_apel=valor_coletado)
+
+                    if troca_apelido == True:
+
+                        ajuste_x = (f'{tamanho_atual[0]/2}')
+                        ajuste_y = (f'{tamanho_atual[1]/5}')
+                        texto = 'Apelido alterada com sucesso!'
+
+                        salva_janela_referencia = janela_adm
+
+                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                        info=texto,tipo_button='OK',nome_janela='Alterado')
+
+                        valor_coletado = None
+                        janela_ref_popup = None
+                    
+                    else:
+
+                        ajuste_x = (f'{tamanho_atual[0]/2}')
+                        ajuste_y = (f'{tamanho_atual[1]/5}')
+                        texto = 'Erro na troca do apelido'
+
+                        salva_janela_referencia = janela_adm
+
+                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                        info=texto,tipo_button='OK',nome_janela='Erro')
+
+                        valor_coletado = None
+                        janela_ref_popup = None
+
+                else:
+
+                    ajuste_x = (f'{tamanho_atual[0]/2}')
+                    ajuste_y = (f'{tamanho_atual[1]/5}')
+                    texto = 'Apelido, fora do padrão\nTente novamente...'
+
+                    salva_janela_referencia = janela_adm
+
+                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                    info=texto,tipo_button='OK',nome_janela='Erro')
+
+                    valor_coletado = None
+                    janela_ref_popup = None
 
     #Janela esqueci senha
 
@@ -325,6 +416,7 @@ def roda_app(star):
         elif window == janela_adm and eventos == 'ID':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
             tamanho_atual = window.Size
+
             ajuste_x = (f'{tamanho_atual[0]/2}')
             ajuste_y = (f'{tamanho_atual[1]/3}')
             texto = 'O novo ID deve conter\naté 10 caracteres.'
@@ -338,71 +430,34 @@ def roda_app(star):
                    
         elif window == janela_adm and eventos =='Senha':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            nova_senha = sg.popup_get_text(
-                'A senha deve ser númerica e conter\n4 caracteres.\nNova Senha:',
-                title= 'Nova senha',icon=icone,password_char='*', size=(25,25),
-                location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                )
-            
-            if nova_senha != None:
+            tamanho_atual = window.Size
 
-                if nova_senha.isnumeric() and len(nova_senha)==4:
-                    troca_senha = test_conex.altera_senha(matricula=matri, n_senha=nova_senha)
+            ajuste_x = (f'{tamanho_atual[0]/2}')
+            ajuste_y = (f'{tamanho_atual[1]/3}')
+            texto = 'A senha deve ser númerica e conter\n4 caracteres.'
+            janela_adm.hide()
+            janela_ref_popup = 'Senha'
+            salva_janela_referencia = janela_adm
 
-                    if troca_senha == True:
-
-                        sg.popup_ok(
-                            'Senha alterada com sucesso!',title='Alterado',icon=icone,
-                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                        )
-
-                    else:
-                        sg.popup_error(
-                            'Erro na troca da senha!',title='Error',icon=icone,
-                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                        )
-
-                else:
-                    sg.popup_ok(
-                        'Senha informada é invalida\nTente novamente...',title='Error',
-                        icon= icone,
-                        location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                    )
-
+            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+            info=texto,tipo_button='Aplicar', entra_info=True,
+            texto_entrada='Novo Senha:',nome_janela='Novo Senha', senha='*')
+        
         elif window == janela_adm and eventos == 'Apelido':
+
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            novo_apelido = sg.popup_get_text(
-                'O Novo apelido deve conter até 10 caracteres.\nNovo Apelido:',
-                title='Novo Apelido', icon=icone, size=(25,25),
-                location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-            )
+            tamanho_atual = window.Size
 
-            if novo_apelido != None:
-                
-                if len(novo_apelido) <= 10 and len(novo_apelido) > 0:
-                    troca_apelido = test_conex.altera_apelido(matricula=matri,nv_apel=novo_apelido)
+            ajuste_x = (f'{tamanho_atual[0]/2}')
+            ajuste_y = (f'{tamanho_atual[1]/3}')
+            texto = 'O Novo apelido deve conter até 10 caracteres.'
+            janela_adm.hide()
+            janela_ref_popup = 'Apelido'
+            salva_janela_referencia = janela_adm
 
-                    if troca_apelido == True:
-
-                        sg.popup_ok(
-                            'Apelido alterado com sucesso!', title='Alterado', icon=icone,
-                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-
-                        )
-                    
-                    else:
-                        sg.popup_error(
-                            'Erro na troca do apelido', title='Error', icon=icone,
-                            location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                        )
-
-
-                else:
-                    sg.popup_ok(
-                        'Apelido, fora ddo padrão\nTente novamente...', title='Error',
-                        icon=icone,
-                        location=tuple(sg.user_settings_get_entry('-last position-', (None, None)))
-                    )
+            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+            info=texto,tipo_button='Aplicar', entra_info=True,
+            texto_entrada='Novo apelido',nome_janela='Novo apelido')
 
         elif window == janela_adm and eventos =='Novo user':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
