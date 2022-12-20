@@ -7,6 +7,7 @@ from bib_extra import slq_fun as sql
 from bib_extra import analise_dados as dados
 from bib_extra import buscador_img as img
 from bib_extra import criador_pasta as pasta
+from bib_extra import popup_personalizado as popup
 import DadosBancoDeDados as d
 
 
@@ -49,7 +50,7 @@ def roda_app(star):
     
     id_ref = apelido = matri = ''
 
-    salva_janela_referencia = valor_coletado = tamanho_atual = None
+    salva_janela_referencia = valor_coletado = tamanho_atual = janela_ref_popup = None
 
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
@@ -167,7 +168,52 @@ def roda_app(star):
             valor_coletado = valores['-entrada_padrao-']
             janela_popup.close()
 
+            if janela_ref_popup == 'ID':
+                if len(valor_coletado) <= 10 and len(valor_coletado) > 0 and valor_coletado.isalpha():
+                    troca_id = test_conex.altera_id_user(matricula=matri,nv_id=valor_coletado)
 
+                    if troca_id == True:
+                        
+                        ajuste_x = (f'{tamanho_atual[0]/2}')
+                        ajuste_y = (f'{tamanho_atual[1]/5}')
+                        texto = 'ID alterado com sucesso!'
+
+                        salva_janela_referencia = janela_adm
+
+                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                        info=texto,tipo_button='OK',nome_janela='Alterado')
+
+                        valor_coletado = None
+                        janela_ref_popup = None
+
+
+                    else:
+                        ajuste_x = (f'{tamanho_atual[0]/2}')
+                        ajuste_y = (f'{tamanho_atual[1]/5}')
+                        texto = 'Erro na troca do ID'
+
+                        salva_janela_referencia = janela_adm
+
+                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                        info=texto,tipo_button='OK',nome_janela='Erro')
+
+                        valor_coletado = None
+                        janela_ref_popup = None
+
+                else:
+                    ajuste_x = (f'{tamanho_atual[0]/2}')
+                    ajuste_y = (f'{tamanho_atual[1]/4}')
+                    texto = 'ID invalido, fora do padrão\nTente novamente...'
+
+                    salva_janela_referencia = janela_adm
+
+                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+                    info=texto,tipo_button='OK',nome_janela='ID invalido')
+
+                    valor_coletado = None
+                    janela_ref_popup = None
+
+            
 
     #Janela esqueci senha
 
@@ -253,9 +299,9 @@ def roda_app(star):
             texto = open(r'ark_txt\ajuda_esqueci.txt','r', encoding='utf-8').read()
             janela_esqueci.hide()
             salva_janela_referencia = janela_esqueci
-            
-            janela_popup = t.tela_popup(tamanho=tamanho_atual, info=texto,
-            tipo_button='OK',nome_janela='Ajuda senha')
+
+            janela_popup = t.tela_popup(tamanho=tamanho_atual,
+            info=texto,tipo_button='OK',nome_janela='Ajuda senha')
     
 
     #janela adm menu
@@ -269,66 +315,25 @@ def roda_app(star):
             texto = 'Duvidas? Contate\no administrador:\nGitHub: Rtieppo\nRamal: 3271'
             janela_adm.hide()
             salva_janela_referencia = janela_adm
-            
+
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='OK',nome_janela='Ajuda')
 
+
         elif window == janela_adm and eventos == 'ID':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-
             tamanho_atual = window.Size
-
             ajuste_x = (f'{tamanho_atual[0]/2}')
             ajuste_y = (f'{tamanho_atual[1]/3}')
             texto = 'O novo ID deve conter\naté 10 caracteres.'
             janela_adm.hide()
+            janela_ref_popup = 'ID'
             salva_janela_referencia = janela_adm
-            
+
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='Aplicar', entra_info=True,
             texto_entrada='Novo ID:',nome_janela='Novo ID')
-
-        if valor_coletado != None:
-            if len(valor_coletado) <= 10 and len(valor_coletado) > 0 and valor_coletado.isalpha():
-                troca_id = test_conex.altera_id_user(matricula=matri,nv_id=valor_coletado)
-
-                if troca_id == True:
-                    
-                    ajuste_x = (f'{tamanho_atual[0]/2}')
-                    ajuste_y = (f'{tamanho_atual[1]/5}')
-                    texto = 'ID alterado com sucesso!'
-
-                    salva_janela_referencia = janela_adm
-
-                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button='Aplicar',nome_janela='Alterado')
-
-                    valor_coletado = None
-
-
-                else:
-                    ajuste_x = (f'{tamanho_atual[0]/2}')
-                    ajuste_y = (f'{tamanho_atual[1]/5}')
-                    texto = 'Erro na troca do ID'
-
-                    salva_janela_referencia = janela_adm
-
-                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button='OK',nome_janela='Erro')
-
-                    valor_coletado = None
-
-            else:
-                ajuste_x = (f'{tamanho_atual[0]/2}')
-                ajuste_y = (f'{tamanho_atual[1]/4}')
-                texto = 'ID invalido, fora do padrão\nTente novamente...'
-
-                salva_janela_referencia = janela_adm
-
-                janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                info=texto,tipo_button='OK', nome_janela='ID invalido')
-
-                valor_coletado = None
+            
                
         elif window == janela_adm and eventos =='Senha':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
@@ -575,6 +580,7 @@ def roda_app(star):
             
         elif window == janela_adm and eventos == '-ST_H-':
             feliz = valores['-ST_H-']
+
             if feliz == 5:
 
                 
