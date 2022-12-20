@@ -7,7 +7,6 @@ from bib_extra import slq_fun as sql
 from bib_extra import analise_dados as dados
 from bib_extra import buscador_img as img
 from bib_extra import criador_pasta as pasta
-from bib_extra import popup_personalizado as popup
 import DadosBancoDeDados as d
 
 
@@ -213,7 +212,11 @@ def roda_app(star):
                     valor_coletado = None
                     janela_ref_popup = None
 
-            
+            elif janela_ref_popup == 'Senha':
+                pass
+
+            elif janela_ref_popup == 'Apelido':
+                pass
 
     #Janela esqueci senha
 
@@ -319,7 +322,6 @@ def roda_app(star):
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='OK',nome_janela='Ajuda')
 
-
         elif window == janela_adm and eventos == 'ID':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
             tamanho_atual = window.Size
@@ -333,8 +335,7 @@ def roda_app(star):
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='Aplicar', entra_info=True,
             texto_entrada='Novo ID:',nome_janela='Novo ID')
-            
-               
+                   
         elif window == janela_adm and eventos =='Senha':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
             nova_senha = sg.popup_get_text(
