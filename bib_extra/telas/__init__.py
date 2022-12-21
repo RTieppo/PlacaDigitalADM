@@ -21,7 +21,7 @@ def tela_login(user_login = '', status='',memoria=''):
     va_senha = [
 
         [sg.Text('Senha:', font=font_login)],
-        [sg.Input(key='-senha-',password_char='*', justification='c',
+        [sg.Input(key='-senha-',enable_events=True,password_char='*', justification='c',
         font=font_input, size=(20,1)),sg.Image('',key='-img_v_senha-')]
 
     ]
@@ -60,7 +60,7 @@ def tela_adm(apelido_user=''):
     sg.theme('DarkBlue2')
 
     bara_menu =[
-        ['Menu',['Alterar',['ID','Senha','Apelido'],
+        ['Menu',['Alterar',['Senha'],
         'Cadastro',['Aviso','Emoji','Informativo','Novo user']]],
         ['Help',['About']]
     ]
@@ -112,15 +112,15 @@ def tela_esqueci(status_ser):
     login_senha = [
         [sg.Text('Matrícula:',font=font_input)],
         [sg.Input(key='-mat-', font=font_input, size=(20,1),
-        justification='c'),sg.Image('',key='-img_v_mat-')],
+        justification='c',enable_events=True),sg.Image('',key='-img_v_mat-')],
 
         [sg.Text('Nova Senha:', font=font_input)],
         [sg.Input(key='-senhaN1-',password_char='*', justification='c',
-        font=font_input, size=(20,1)),sg.Image('',key='-img_v_ns-')],
+        font=font_input, size=(20,1), enable_events=True),sg.Image('',key='-img_v_ns-')],
 
         [sg.Text('Confirmar nova senha:', font=font_input)],
         [sg.Input(key='-senhaN2-',password_char='*', justification='c',
-        font=font_input, size=(20,1)),sg.Image('',key='-img_c_ns-')]
+        font=font_input, size=(20,1),enable_events=True),sg.Image('',key='-img_c_ns-')]
 
     ]
 
@@ -154,16 +154,10 @@ def tela_novo_user(status_ser):
 
     entradas = [
         [sg.Text('Matricula:', font=font_input)],
-        [sg.Input(key='-n_mat-', justification='c',font=font_input,size=(20,1)),
+        [sg.Input(key='-n_mat-', justification='c',font=font_input,size=(20,1),
+        enable_events=True),
         sg.Image('',key='-img_n_mat-')],
 
-        [sg.Text('Nome:', font=font_input)],
-        [sg.Input(key='-n_nome-', justification='c',font=font_input,size=(20,1)),
-        sg.Image('',key='-img_N_nome-')],
-
-        [sg.Text('Apelido:', font=font_input)],
-        [sg.Input(key='-N_apelido-',justification='c',font=font_input,size=(20,1)),
-        sg.Image('',key='-img_N_apeli-')],
         
         [sg.Text('ID:', font=font_input)],
         [sg.Input(key='-n_id-', justification='c',font=font_input,size=(20,1)),
@@ -190,7 +184,7 @@ def tela_novo_user(status_ser):
 
     ]
 
-    return sg.Window('Novo cadastro', finalize=True, size=(300,350), layout = janela,
+    return sg.Window('Novo cadastro', finalize=True, size=(300,250), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
@@ -265,18 +259,24 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
         [sg.Text(info,font=font_input)]
     ]
 
-    button = [
-        [sg.Button(tipo_button,size=(7,1))]
-    ]
-
     if entra_info == True:
         entrada = [
             [sg.Text(texto_entrada, font=font_input)],
-            [sg.Input(key='-entrada_padrao-',size=(20,1),password_char=senha)],
-        ]
+            [sg.Input(key='-entrada_padrao-',size=(20,1),password_char=senha,
+            justification='c',enable_events=True)]
+            ]
+
+        voltar =[
+            [sg.Button('Voltar',size=(7,1), font=font_input)]
+            ]
     
     else:
         entrada = ''
+        voltar = ''
+
+    button = [
+        [sg.Button(tipo_button,size=(7,1),font=font_input)]
+        ]
 
     janela = [
 
@@ -284,7 +284,7 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
 
         [sg.Column(layout=entrada)],
 
-        [sg.Column(layout=button)]
+        [sg.Column(layout=button),sg.Column(layout=voltar)]
     ]
 
     return sg.Window(nome_janela, finalize=True, size=tamanho, layout = janela,

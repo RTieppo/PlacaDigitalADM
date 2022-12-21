@@ -55,13 +55,13 @@ class BancoDeDados:
 
         try:
             if conex.is_connected():
-                info = ('select id_user from login;')
+                info = ('select id from login;')
                 cursor = conex.cursor()
                 cursor.execute(info)
                 linhas = cursor.fetchall()
 
                 for linha in linhas:
-                    if user_id in linha:
+                    if user_id == linha[0]:
                         return (True, user_id)
                 else:
                     return (False,None)
@@ -69,7 +69,8 @@ class BancoDeDados:
             else:
                 return(False,None)
 
-        except Error:
+        except Error as error:
+            print(error)
             return ('Error ID',None)
 
     def consulta_senha(self,user_id):
@@ -77,7 +78,7 @@ class BancoDeDados:
         try:
             if conex.is_connected():
 
-                info = (f"select senha from login where id_user = '{user_id}';")
+                info = (f"select senha from login where id = '{user_id}';")
                 cursor = conex.cursor()
                 cursor.execute(info)
                 linhas = cursor.fetchone()
@@ -92,7 +93,7 @@ class BancoDeDados:
         try:
             if conex.is_connected():
 
-                info = ('select matricula from login order by nome;')
+                info = ('select matricula from login order by id;')
                 cursor = conex.cursor()
                 cursor.execute(info)
                 linhas = cursor.fetchall()
@@ -109,20 +110,7 @@ class BancoDeDados:
 
         except Error:
             return 'Error matricula'
-
-    def consulta_apelido(self,id_user):
-        try:
-            if conex.is_connected():
-
-                info = (f"select apelido from login where id_user='{id_user}';")
-                cursor = conex.cursor()
-                cursor.execute(info)
-                linhas = cursor.fetchall()
-                return linhas[0][0]
-
-        except Error:
-            return 'erro apelido'
-            
+          
     def altera_senha(self,n_senha,matricula):
         try:
            
@@ -137,19 +125,6 @@ class BancoDeDados:
         except Error:
             return 'Erro alteração senha'
 
-    def altera_id_user(self,matricula,nv_id):
-        try:
-
-            if conex.is_connected():
-                alterador= (f"update login set id_user='{nv_id}' where matricula='{matricula}';")
-                cursor = conex.cursor()
-                cursor.execute(alterador)
-                conex.commit()
-                return True
-
-        except Error:
-            return'erro_alteração_id'
-
     def altera_apelido(self,matricula,nv_apel):
         try:
 
@@ -163,17 +138,15 @@ class BancoDeDados:
         except Error:
             return'erro_alteração_apelido'
 
-    def add_novo_user(self,Nmat,Nnome,Napelido,Nid):
+    def add_novo_user(self,Nmat,Nid):
         try:
 
             if conex.is_connected():
-                print(Nmat,Nnome,Napelido,Nid)
                 novo_user = (f"""
                 insert into login
-                (matricula,nome,apelido,id_user,senha)
+                (matricula,id,senha)
                 values
-                ('{Nmat}','{Nnome}','{Napelido}','{Nid}',default);""")
-                print(novo_user)
+                ('{Nmat}','{Nid}',default);""")
                 cursor = conex.cursor()
                 cursor.execute(novo_user)
                 conex.commit()
@@ -187,7 +160,7 @@ class BancoDeDados:
     def coleta_matricula(self,user):
         try:
             if conex.is_connected():
-                info = (f"select matricula from login where id_user='{user}';")
+                info = (f"select matricula from login where id='{user}';")
                 cursor = conex.cursor()
                 cursor.execute(info)
                 linhas = cursor.fetchall()

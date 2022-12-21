@@ -1,22 +1,10 @@
 O que cada campo deve conter?
-
 Matrícula:
-É a matrícula gerado pelo Senac, disponível para
+É a matrícula gerado pelo Senac,
+disponível para
 consulta no MyPlace.
-
-Nome:
-É o nome completo do funcionário.
-
-Apelido:
-Aplicar o primeiro nome do funcionário, caso
-funcionário tenha algum apelido de preferência
-só cadastrar nesse campo com um limite de 
-10 caracteres.
-
 ID:
-O ID pode ser a primeira letra do nome
-junto com um sobrenome ou segundo nome.
-Esse campo tem um limite de 10 caracteres.
-
-Senha:
-A primeira senha será 1234 por padrão.
+O ID é o nome e sobrenome igual
+ao do email exemplo
+pedrinho.souza@sc.senac.br o ID
+ficaria pedrinho.souza

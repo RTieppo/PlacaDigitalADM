@@ -1,27 +1,13 @@
+import re
 
 class ValidaDados:
 
-    def __init__(self,matricula='',nome='',apelido='',id='',senha='',nivel=''):
+    def __init__(self,matricula='',id='',senha=''):
 
         self.matricula = matricula
-        self.nome = nome
-        self.apelido = apelido
         self.id = id
         self.senha = senha
-        self.nivel = nivel
-    
 
-    def valida_nome(self):
-
-        if self.nome.isalpha():
-
-            if len(self.nome) >1 and len(self.nome) <=30:
-                return True
-            
-            else:
-                return False
-        else:
-            return False
     
     def valida_matricula(self):
 
@@ -35,24 +21,16 @@ class ValidaDados:
         else:
             return False
 
-    def valida_apelido(self):
-        
-        if len(self.apelido) >1 and len (self.apelido) <=10:
-            return True
-        
-        else:
-            return False
-    
+  
     def valida_novo_id(self):
 
-        if self.id.isalpha():
-            if len(self.id) >1 and len (self.id) <=10:
-                return True
-            
-            else:
-                return False
+        padrao = re.compile('\.')
+        valida = padrao.findall(self.id)
 
-        else:
+        if valida[0] == '.' and self.id.islower():
+            return True
+
+        else: 
             return False
 
     def valida_senha(self):

@@ -54,10 +54,17 @@ def roda_app(star):
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
     icone = (r'img\icon\ico_p.ico')
+
+    limitador_caracter = ('-senha-','-entrada_padrao-','-senhaN1-','-senhaN2-','-n_mat-','-mat-')
     
     while True:
 
         window, eventos, valores = sg.read_all_windows()
+
+        for limita in limitador_caracter:
+            if eventos == limita and len(valores[limita])>4:
+                window.Element(limita).update(valores[limita][:-1])
+
 
         if window == janela_login and eventos == sg.WIN_CLOSED:
             break
@@ -71,7 +78,7 @@ def roda_app(star):
             if retorno_test == True:
 
                 retorno_user = test_conex.consulta_user(user_id = valores['-user-'])
-
+            
                 if retorno_user == 'Error ID':
                     window['-img_status-'].update(r'img\20_20\erro.png')
 
@@ -96,7 +103,8 @@ def roda_app(star):
                             window['-info_user-'].update('Atualizando dados...',None,'yellow')
                             window.refresh()
 
-                            apelido = test_conex.consulta_apelido(id_user = valores['-user-'])
+                            ajusta_apelido = str (retorno_user[1]).split('.')
+                            apelido = str(ajusta_apelido[0]).capitalize()
                             id_ref = retorno_user[1]
                             matri = str(test_conex.coleta_matricula(id_ref))
 
@@ -165,56 +173,15 @@ def roda_app(star):
             salva_janela_referencia.un_hide()
             janela_popup.close()
         
-        elif window == janela_popup and eventos == 'Aplicar':
-            valor_coletado = valores['-entrada_padrao-']
+        elif window == janela_popup and eventos == 'Voltar':
+            salva_janela_referencia.un_hide()
             janela_popup.close()
 
-            if janela_ref_popup == 'ID':
-                if len(valor_coletado) <= 10 and len(valor_coletado) > 0 and valor_coletado.isalpha():
-                    troca_id = test_conex.altera_id_user(matricula=matri,nv_id=valor_coletado)
+        elif window == janela_popup and eventos == 'Aplicar':
+            valor_coletado = valores['-entrada_padrao-']
+            janela_popup.hide()
 
-                    if troca_id == True:
-                        
-                        ajuste_x = (f'{tamanho_atual[0]/2}')
-                        ajuste_y = (f'{tamanho_atual[1]/5}')
-                        texto = 'ID alterado com sucesso!'
-
-                        salva_janela_referencia = janela_adm
-
-                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                        info=texto,tipo_button='OK',nome_janela='Alterado')
-
-                        valor_coletado = None
-                        janela_ref_popup = None
-
-
-                    else:
-                        ajuste_x = (f'{tamanho_atual[0]/2}')
-                        ajuste_y = (f'{tamanho_atual[1]/5}')
-                        texto = 'Erro na troca do ID'
-
-                        salva_janela_referencia = janela_adm
-
-                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                        info=texto,tipo_button='OK',nome_janela='Erro')
-
-                        valor_coletado = None
-                        janela_ref_popup = None
-
-                else:
-                    ajuste_x = (f'{tamanho_atual[0]/2}')
-                    ajuste_y = (f'{tamanho_atual[1]/4}')
-                    texto = 'ID invalido, fora do padrão\nTente novamente...'
-
-                    salva_janela_referencia = janela_adm
-
-                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button='OK',nome_janela='ID invalido')
-
-                    valor_coletado = None
-                    janela_ref_popup = None
-
-            elif janela_ref_popup == 'Senha':
+            if janela_ref_popup == 'Senha':
 
                 if valor_coletado.isnumeric() and len(valor_coletado)==4:
 
@@ -226,7 +193,6 @@ def roda_app(star):
                         ajuste_y = (f'{tamanho_atual[1]/5}')
                         texto = 'Senha alterada com sucesso!'
 
-                        salva_janela_referencia = janela_adm
 
                         janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
                         info=texto,tipo_button='OK',nome_janela='Alterado')
@@ -240,8 +206,6 @@ def roda_app(star):
                         ajuste_y = (f'{tamanho_atual[1]/5}')
                         texto = 'Erro na troca da senha!'
 
-                        salva_janela_referencia = janela_adm
-
                         janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
                         info=texto,tipo_button='OK',nome_janela='Error')
 
@@ -250,70 +214,20 @@ def roda_app(star):
                 else:
 
                     ajuste_x = (f'{tamanho_atual[0]/2}')
-                    ajuste_y = (f'{tamanho_atual[1]/5}')
+                    ajuste_y = (f'{tamanho_atual[1]/3}')
                     texto = 'Senha informada é invalida\nTente novamente...'
 
-                    salva_janela_referencia = janela_adm
-
                     janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button='OK',nome_janela='Error')
-
-                    valor_coletado = None
-                    janela_ref_popup = None
+                    info=texto,tipo_button='Aplicar',nome_janela='Error',
+                    entra_info=True, texto_entrada='Novo Senha:',senha='*')
 
 
-            elif janela_ref_popup == 'Apelido':
-                
-                if len(valor_coletado) <= 10 and len(valor_coletado) > 0:
-                    troca_apelido = test_conex.altera_apelido(matricula=matri,nv_apel=valor_coletado)
-
-                    if troca_apelido == True:
-
-                        ajuste_x = (f'{tamanho_atual[0]/2}')
-                        ajuste_y = (f'{tamanho_atual[1]/5}')
-                        texto = 'Apelido alterada com sucesso!'
-
-                        salva_janela_referencia = janela_adm
-
-                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                        info=texto,tipo_button='OK',nome_janela='Alterado')
-
-                        valor_coletado = None
-                        janela_ref_popup = None
-                    
-                    else:
-
-                        ajuste_x = (f'{tamanho_atual[0]/2}')
-                        ajuste_y = (f'{tamanho_atual[1]/5}')
-                        texto = 'Erro na troca do apelido'
-
-                        salva_janela_referencia = janela_adm
-
-                        janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                        info=texto,tipo_button='OK',nome_janela='Erro')
-
-                        valor_coletado = None
-                        janela_ref_popup = None
-
-                else:
-
-                    ajuste_x = (f'{tamanho_atual[0]/2}')
-                    ajuste_y = (f'{tamanho_atual[1]/5}')
-                    texto = 'Apelido, fora do padrão\nTente novamente...'
-
-                    salva_janela_referencia = janela_adm
-
-                    janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-                    info=texto,tipo_button='OK',nome_janela='Erro')
-
-                    valor_coletado = None
-                    janela_ref_popup = None
-
+ 
     #Janela esqueci senha
 
         if window == janela_esqueci and eventos == sg.WIN_CLOSED:
             break
-
+    
         elif window == janela_esqueci and eventos == 'Voltar':
             sg.user_settings_set_entry('-last position-', janela_esqueci.current_location())
             janela_esqueci.close()
@@ -334,6 +248,7 @@ def roda_app(star):
 
             if resultadoMatricula == True:
                 consulta = test_conex.consulta_matricula(matricula=valores['-mat-'])
+                print(consulta)
 
                 if consulta == True:
                     window['-img_v_mat-'].update(verificado)
@@ -412,22 +327,7 @@ def roda_app(star):
 
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='OK',nome_janela='Ajuda')
-
-        elif window == janela_adm and eventos == 'ID':
-            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            tamanho_atual = window.Size
-
-            ajuste_x = (f'{tamanho_atual[0]/2}')
-            ajuste_y = (f'{tamanho_atual[1]/3}')
-            texto = 'O novo ID deve conter\naté 10 caracteres.'
-            janela_adm.hide()
-            janela_ref_popup = 'ID'
-            salva_janela_referencia = janela_adm
-
-            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-            info=texto,tipo_button='Aplicar', entra_info=True,
-            texto_entrada='Novo ID:',nome_janela='Novo ID')
-                   
+         
         elif window == janela_adm and eventos =='Senha':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
             tamanho_atual = window.Size
@@ -443,22 +343,6 @@ def roda_app(star):
             info=texto,tipo_button='Aplicar', entra_info=True,
             texto_entrada='Novo Senha:',nome_janela='Novo Senha', senha='*')
         
-        elif window == janela_adm and eventos == 'Apelido':
-
-            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            tamanho_atual = window.Size
-
-            ajuste_x = (f'{tamanho_atual[0]/2}')
-            ajuste_y = (f'{tamanho_atual[1]/3}')
-            texto = 'O Novo apelido deve conter até 10 caracteres.'
-            janela_adm.hide()
-            janela_ref_popup = 'Apelido'
-            salva_janela_referencia = janela_adm
-
-            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
-            info=texto,tipo_button='Aplicar', entra_info=True,
-            texto_entrada='Novo apelido',nome_janela='Novo apelido')
-
         elif window == janela_adm and eventos =='Novo user':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
 
@@ -517,11 +401,9 @@ def roda_app(star):
 
             window['-info_n_ca-'].update('')
             window['-img_n_mat-'].update('')
-            window['-img_N_nome-'].update('')
-            window['-img_N_apeli-'].update('')
             window['-img_n_id-'].update('')
 
-            listaValores = ('-n_mat-','-n_nome-','-N_apelido-','-n_id-')
+            listaValores = ('-n_mat-','-n_id-')
 
             contadorDeValidação = 0
 
@@ -548,30 +430,6 @@ def roda_app(star):
                         else:
                             window['-img_n_mat-'].update(erro)
                         
-                    elif valor == '-n_nome-':
-                        inicia = dados.ValidaDados(nome=valores['-n_nome-'])
-                        verifica_nome = inicia.valida_nome()
-
-
-                        if verifica_nome == True:
-                            contadorDeValidação +=1
-                            window['-img_N_nome-'].update(verificado)
-                        
-                        else:
-                            window['-img_N_nome-'].update(erro)
-                    
-                    elif valor == '-N_apelido-':
-                        inicia = dados.ValidaDados(apelido=valores['-N_apelido-'])
-                        verifica_apelido = inicia.valida_apelido()
-
-
-                        if verifica_apelido == True:
-                            contadorDeValidação +=1
-                            window['-img_N_apeli-'].update(verificado)
-                        
-                        else:
-                            window['-img_N_apeli-'].update(erro)
-                    
                     elif valor == '-n_id-':
                         inicia = dados.ValidaDados(id=valores['-n_id-'])
                         verifica_n_id = inicia.valida_novo_id()
@@ -586,7 +444,7 @@ def roda_app(star):
                 else:
                     window['-info_n_ca-'].update('Preencha Todos os campos',None,'darkred')
                 
-            if contadorDeValidação == 4:
+            if contadorDeValidação == 2:
                 window['-info_n_ca-'].update('Informações validas',None,'darkgreen')
                 window.refresh()
                 sleep(1)
@@ -596,7 +454,7 @@ def roda_app(star):
                 sleep(1)
 
                 cadastra = test_conex.add_novo_user(Nmat=valores['-n_mat-'],
-                Nnome=valores['-n_nome-'], Napelido=valores['-N_apelido-'],Nid=valores['-n_id-'])
+                Nid=valores['-n_id-'])
 
                 if cadastra == True:
                     window['-info_n_ca-'].update('Cadastrado com Sucesso!',None,'darkgreen')
@@ -610,11 +468,15 @@ def roda_app(star):
         elif window == janela_novo_user and eventos == 'Ajuda':
             sg.user_settings_set_entry('-last position-', janela_novo_user.current_location())
 
-            sg.popup_no_buttons(open(r'ark_txt\ajuda_novo_user.txt','r', encoding='utf-8').read(),
-            title='Cadastro novo usuário',
-            location=tuple(sg.user_settings_get_entry('-last position-', (None, None))),
-            icon= icone
-            )
+            tamanho_atual = window.Size
+
+            texto = open(r'ark_txt\ajuda_novo_user.txt','r', encoding='utf-8').read()
+            janela_novo_user.hide()
+
+            salva_janela_referencia = janela_novo_user
+
+            janela_popup = t.tela_popup(tamanho=tamanho_atual,
+            info=texto,tipo_button='OK',nome_janela='Ajuda cadastro')
 
 
     # janela adm
