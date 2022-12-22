@@ -52,9 +52,24 @@ def baixa_img_temp(link,mat):
         return 'Erro_ao_baixar'
 
 texto = 'ricardo.martins@sc.senac'
-padrao = re.compile(r'[a-z0-9]+\.[a-z0-9]+')
-validos = padrao.finditer(texto)
 
-for valido in validos:
-    print(valido)
+padrao = re.compile('\.')
+valida = padrao.findall(texto)
 
+if valida[0] == '.':
+    ajusta = texto.split('.')
+   
+    if len(ajusta) == 2:
+        conta = 0
+        for vare in ajusta:
+            if vare.isalpha() and vare.islower():
+                conta += 1
+        
+        if conta == 2:
+            print(True)
+
+        else:
+    
+            print(False)
+    else:
+        print(False)

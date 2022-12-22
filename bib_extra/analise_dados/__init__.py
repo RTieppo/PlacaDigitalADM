@@ -27,11 +27,23 @@ class ValidaDados:
         padrao = re.compile('\.')
         valida = padrao.findall(self.id)
 
-        if valida[0] == '.' and self.id.islower():
-            return True
+        if valida[0] == '.':
+            ajusta = self.id.split('.')
 
-        else: 
-            return False
+            if len(ajusta) == 2:
+                conta = 0
+                for vare in ajusta:
+                    if vare.isalpha() and vare.islower():
+                        conta += 1
+                
+                if conta == 2:
+                    return True
+
+                else:
+            
+                    return False
+            else:
+                return False
 
     def valida_senha(self):
         
