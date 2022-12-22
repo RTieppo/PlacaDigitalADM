@@ -2,6 +2,8 @@ import urllib.request
 import urllib.error
 from os import listdir,path
 
+import cv2
+
 
 def baixa_img(link,mat):
 
@@ -36,3 +38,15 @@ def verifica_pasta_user(matricula):
     
     else:
         return False
+
+
+def ajusta_img():
+    
+    imagem = cv2.imread(r'img\original\3090\cansado.png')
+
+    imagem = cv2.resize(imagem[150,150])
+
+    temp = ('temp/img.png')
+
+    cv2.imwrite(temp,imagem)
+    

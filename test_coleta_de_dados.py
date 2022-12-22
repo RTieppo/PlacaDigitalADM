@@ -51,25 +51,27 @@ def baixa_img_temp(link,mat):
     except urllib.error:
         return 'Erro_ao_baixar'
 
-texto = 'ricardo.martins@sc.senac'
 
-padrao = re.compile('\.')
-valida = padrao.findall(texto)
+def valida_user():
+    texto = 'ricardo.martins@sc.senac'
 
-if valida[0] == '.':
-    ajusta = texto.split('.')
-   
-    if len(ajusta) == 2:
-        conta = 0
-        for vare in ajusta:
-            if vare.isalpha() and vare.islower():
-                conta += 1
-        
-        if conta == 2:
-            print(True)
+    padrao = re.compile('\.')
+    valida = padrao.findall(texto)
 
-        else:
+    if valida[0] == '.':
+        ajusta = texto.split('.')
     
+        if len(ajusta) == 2:
+            conta = 0
+            for vare in ajusta:
+                if vare.isalpha() and vare.islower():
+                    conta += 1
+            
+            if conta == 2:
+                print(True)
+
+            else:
+        
+                print(False)
+        else:
             print(False)
-    else:
-        print(False)
