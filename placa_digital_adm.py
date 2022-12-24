@@ -482,18 +482,6 @@ def roda_app(star):
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':
             break
 
-        elif window == janela_adm and eventos == '-ST_A-':
-
-            if limitador_info_atendimento == 0:
-                limitador_info_atendimento =+1
-
-                janela_adm.extend_layout(janela_adm['-Add-'],
-                [[sg.Text('Unidade:'), sg.Radio('Faculdade','-UN-', key='-FC-'),
-                sg.Radio('Saúde e Beleza','-UN-', key='-SS-')]])
-
-                janela_adm.extend_layout(janela_adm['-Add-'],
-                [[sg.Text('Sala ou Setor:'), sg.In(key='-local-', justification='c'
-                , size=(25,0))]])
             
         elif window == janela_adm and eventos == '-ST_H-':
             feliz = valores['-ST_H-']
