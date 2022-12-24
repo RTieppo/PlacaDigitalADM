@@ -53,25 +53,32 @@ def baixa_img_temp(link,mat):
 
 
 def valida_user():
-    texto = 'ricardo.martins@sc.senac'
+    texto = 'ricardo.martíns'
+    padrao = r'[àèìòùáéíóúýâêîôûãñõäëïöüÿçå]'
 
-    padrao = re.compile('\.')
-    valida = padrao.findall(texto)
-
-    if valida[0] == '.':
-        ajusta = texto.split('.')
-    
-        if len(ajusta) == 2:
-            conta = 0
-            for vare in ajusta:
-                if vare.isalpha() and vare.islower():
-                    conta += 1
-            
-            if conta == 2:
-                print(True)
-
-            else:
-        
-                print(False)
-        else:
+    if '.' in texto:
+        if re.search(padrao,texto):
             print(False)
+        
+        else:
+            ajusta = texto.split('.')
+
+            if len(ajusta) == 2:
+                conta = 0
+                for vare in ajusta:
+                    if vare.isalpha() and vare.islower():
+                        conta += 1
+                
+                if conta == 2:
+                    print(True)
+
+                else:
+            
+                    print(False)
+            else:
+                print(False)
+    else:
+        print(False)
+
+
+eu = valida_user()

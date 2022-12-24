@@ -248,7 +248,6 @@ def roda_app(star):
 
             if resultadoMatricula == True:
                 consulta = test_conex.consulta_matricula(matricula=valores['-mat-'])
-                print(consulta)
 
                 if consulta == True:
                     window['-img_v_mat-'].update(verificado)
@@ -334,7 +333,7 @@ def roda_app(star):
 
             ajuste_x = (f'{tamanho_atual[0]/2}')
             ajuste_y = (f'{tamanho_atual[1]/3}')
-            texto = 'A senha deve ser númerica e conter\n4 caracteres.'
+            texto = 'A senha deve ser númerica e\nconter 4 caracteres.'
             janela_adm.hide()
             janela_ref_popup = 'Senha'
             salva_janela_referencia = janela_adm

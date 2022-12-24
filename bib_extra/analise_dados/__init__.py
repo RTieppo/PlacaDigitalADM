@@ -24,26 +24,32 @@ class ValidaDados:
   
     def valida_novo_id(self):
 
-        padrao = re.compile('\.')
-        valida = padrao.findall(self.id)
+        padrao = r'[àèìòùáéíóúýâêîôûãñõäëïöüÿçå]'
 
-        if valida[0] == '.':
-            ajusta = self.id.split('.')
+        if '.' in self.id:
 
-            if len(ajusta) == 2:
-                conta = 0
-                for vare in ajusta:
-                    if vare.isalpha() and vare.islower():
-                        conta += 1
-                
-                if conta == 2:
-                    return True
-
-                else:
-            
-                    return False
-            else:
+            if re.search(padrao,self.id):
                 return False
+            
+            else:
+                ajusta = self.id.split('.')
+
+                if len(ajusta) == 2:
+                    conta = 0
+                    for vare in ajusta:
+                        if vare.isalpha() and vare.islower():
+                            conta += 1
+                    
+                    if conta == 2:
+                        return True
+
+                    else:
+                
+                        return False
+                else:
+                    return False
+        else:
+            return False
 
     def valida_senha(self):
         
