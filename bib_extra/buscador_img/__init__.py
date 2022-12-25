@@ -28,7 +28,6 @@ def baixa_img(link,mat):
         return 'Erro_img'
 
 
-
 def verifica_pasta_user(matricula):
 
     verifica_pasta = listdir(r'C:\Users\Public\AppPlaca')
@@ -38,6 +37,20 @@ def verifica_pasta_user(matricula):
     
     else:
         return False
+
+def verifica_ark_img(matricula):
+    
+    caminho_geral = (r'C:\Users\Public\AppPlaca')
+    unifica_caminho = path.join(caminho_geral,matricula)
+
+    lista_ark = listdir(unifica_caminho)
+
+    if len (lista_ark) == 5:
+        return True
+    
+    else:
+        return False
+
 
 def verifica_pasta_temp():
     
@@ -49,13 +62,16 @@ def verifica_pasta_temp():
     else:
         return False
 
-def ajusta_img():
+def ajusta_img(matricula,ark):
+
+    caminho_geral = (r'C:\Users\Public\AppPlaca')
+    unifica_caminho = path.join(caminho_geral,matricula,ark)
     
-    imagem = cv2.imread(r'img\original\3090\cansado.png')
+    imagem = cv2.imread(unifica_caminho)
 
-    imagem = cv2.resize(imagem,dsize=(150,150))
+    imagem = cv2.resize(imagem,dsize=(120,120))
 
-    temp = ('temp/img.png')
+    temp = (r'C:\Users\Public\AppPlaca\temp\img.png')
 
     cv2.imwrite(temp,imagem)
 

@@ -92,4 +92,13 @@ def ajusta_img():
 
     cv2.imwrite(temp,imagem)
 
-ajusta_img()
+
+def caminho_img(matricula):
+
+    caminho_geral = (r'C:\Users\Public\AppPlaca')
+
+    busca_caminho = os.path.join(caminho_geral,matricula)
+
+    lista = os.listdir(busca_caminho)
+
+caminho_img('3927')

@@ -489,22 +489,47 @@ def roda_app(star):
 
             
         elif window == janela_adm and eventos == '-ST_H-':
-            feliz = valores['-ST_H-']
 
-            if feliz == 5:
-                imagem = cv2.imread(r'img\original\3090\cansado.png')
+            valida_ark_img = img.verifica_ark_img(matricula=matri)
 
-                imagem = cv2.resize(imagem,dsize=(120,120))
+            if valida_ark_img == True:
 
-                temp = (r'C:\Users\Public\AppPlaca\temp\img.png')
+                if valores['-ST_H-'] == 5:
 
-                cv2.imwrite(temp,imagem)
+                    ajuste = img.ajusta_img(matricula=matri,ark='feliz.png')
 
-                window['-img_hu-'].update(temp)
-                window['-hu_r-'].update('Feliz',None,'darkgreen')
-        
-            print(feliz)
+                    window['-img_hu-'].update(ajuste)
+                    window['-hu_r-'].update('Feliz',None,'darkgreen')
+                
+                elif valores['-ST_H-'] == 4:
+
+                    ajuste = img.ajusta_img(matricula=matri,ark='pensativo.png')
+
+                    window['-img_hu-'].update(ajuste)
+                    window['-hu_r-'].update('Pensativo',None,'darkgreen')
+                    
+
+                elif valores['-ST_H-'] == 3:
+                    ajuste = img.ajusta_img(matricula=matri,ark='concentrado.png')
+
+                    window['-img_hu-'].update(ajuste)
+                    window['-hu_r-'].update('Concentrado',None,'darkgreen')
+
+                elif valores['-ST_H-'] == 2:
+                    ajuste = img.ajusta_img(matricula=matri,ark='cansado.png')
+
+                    window['-img_hu-'].update(ajuste)
+                    window['-hu_r-'].update('Cansado',None,'darkred')
+
+                elif valores['-ST_H-'] == 1:
+                    ajuste = img.ajusta_img(matricula=matri,ark='serio.png')
+
+                    window['-img_hu-'].update(ajuste)
+                    window['-hu_r-'].update('Serio',None,'darkred')
             
+            else:
+                window['-hu_r-'].update('imagens indisponíveis!',None,'darkred')
+                
 inicia = start_serve()
 roda_app(inicia)
 
