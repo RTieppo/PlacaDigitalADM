@@ -7,6 +7,7 @@ import zlib
 import urllib.request
 import urllib.error
 import os
+import cv2
 
 conex = mysql.connector.connect(host=d.host,user=d.user, database=d.database,
 password=d.password)
@@ -81,4 +82,14 @@ def valida_user():
         print(False)
 
 
-eu = valida_user()
+def ajusta_img():
+    
+    imagem = cv2.imread(r'img\original\3090\cansado.png')
+
+    imagem = cv2.resize(imagem,dsize=(150,150))
+
+    temp = ('temp/img.png')
+
+    cv2.imwrite(temp,imagem)
+
+ajusta_img()

@@ -1,5 +1,6 @@
 from PySimpleGUI import PySimpleGUI as sg
 from time import sleep
+import cv2
 
 from bib_extra import telas as t
 from bib_extra import txt_fun as txt
@@ -120,6 +121,11 @@ def roda_app(star):
                                 coleta_link = test_conex.coleta_link(matricula=matri)
                                 if coleta_link != None:
                                     img.baixa_img(link=coleta_link,mat=matri)
+                            
+                            verifica_pasta_temp_img = img.verifica_pasta_temp()
+
+                            if verifica_pasta_temp_img == False:
+                                pasta.cria_pasta_temp()
 
 
                             if valores['-save-'] == True:
@@ -222,7 +228,6 @@ def roda_app(star):
                     entra_info=True, texto_entrada='Novo Senha:',senha='*')
 
 
- 
     #Janela esqueci senha
 
         if window == janela_esqueci and eventos == sg.WIN_CLOSED:
@@ -487,11 +492,17 @@ def roda_app(star):
             feliz = valores['-ST_H-']
 
             if feliz == 5:
+                imagem = cv2.imread(r'img\original\3090\cansado.png')
 
-                
-                window['-img_hu-'].update(r'img\100_100\Feliz_100.png')
+                imagem = cv2.resize(imagem,dsize=(120,120))
+
+                temp = (r'C:\Users\Public\AppPlaca\temp\img.png')
+
+                cv2.imwrite(temp,imagem)
+
+                window['-img_hu-'].update(temp)
                 window['-hu_r-'].update('Feliz',None,'darkgreen')
-            
+        
             print(feliz)
             
 inicia = start_serve()

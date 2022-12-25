@@ -39,14 +39,25 @@ def verifica_pasta_user(matricula):
     else:
         return False
 
+def verifica_pasta_temp():
+    
+    valida_pasta = listdir(r'C:\Users\Public\AppPlaca')
+
+    if 'temp' in valida_pasta:
+        return True
+    
+    else:
+        return False
 
 def ajusta_img():
     
     imagem = cv2.imread(r'img\original\3090\cansado.png')
 
-    imagem = cv2.resize(imagem[150,150])
+    imagem = cv2.resize(imagem,dsize=(150,150))
 
     temp = ('temp/img.png')
 
     cv2.imwrite(temp,imagem)
+
+    return temp
     
