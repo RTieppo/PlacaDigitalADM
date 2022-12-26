@@ -79,3 +79,18 @@ class ValidaDados:
         else:
             return False
     
+
+    def valida_link(self,links):
+        
+        padrao = (r'(https://)?[a-z0-9/_.]+.png')
+        contador = 0
+
+        for link in link:
+            if re.search(padrao,link):
+                contador+=1
+        
+        if contador == 5:
+            return True
+        
+        else:
+            return False

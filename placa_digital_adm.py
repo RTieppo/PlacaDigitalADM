@@ -45,16 +45,12 @@ def roda_app(star):
     janela_login = star
 
     janela_adm = janela_esqueci = janela_novo_user = janela_emoji = janela_popup = None
-
-    limitador_info_atendimento = 0
-    
     id_ref = apelido = matri = ''
 
     salva_janela_referencia = valor_coletado = tamanho_atual = janela_ref_popup = None
 
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
-    icone = (r'img\icon\ico_p.ico')
 
     limitador_caracter = ('-senha-','-entrada_padrao-','-senhaN1-','-senhaN2-','-n_mat-','-mat-')
     
@@ -386,7 +382,11 @@ def roda_app(star):
             janela_adm.un_hide()
 
         elif window == janela_emoji and eventos == 'Aplicar':
-            pass
+
+            verifica_valores = ('-mat_emo-','-sta_link_f-','-sta_link_can-',
+            '-sta_link_con-','-sta_link_p-','-sta_link_se-')
+            
+            
 
         elif window == janela_emoji and eventos == 'Ajuda':
             pass
@@ -486,8 +486,7 @@ def roda_app(star):
     # janela adm
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':
             break
-
-            
+   
         elif window == janela_adm and eventos == '-ST_H-':
 
             valida_ark_img = img.verifica_ark_img(matricula=matri)

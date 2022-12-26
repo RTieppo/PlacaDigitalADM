@@ -252,7 +252,7 @@ def tela_emoji(status_ser):
 
     ]
 
-    return sg.Window('Emoji', finalize=True, size=(300,470), layout = janela,
+    return sg.Window('Emoji', finalize=True, size=(300,500), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))

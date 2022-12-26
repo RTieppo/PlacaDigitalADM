@@ -101,4 +101,15 @@ def caminho_img(matricula):
 
     lista = os.listdir(busca_caminho)
 
-caminho_img('3927')
+def valid_link():
+
+    texto = 'https://images2.imgbox.com/0f/da/LRq7k3dv_o.png'
+    padrao = (r'(https://)?[a-z0-9/_.]+.png')
+
+    if re.search(padrao,texto):
+        print(True)
+    
+    else:
+        print(False)
+
+valid_link()
