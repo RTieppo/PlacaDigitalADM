@@ -52,7 +52,8 @@ def roda_app(star):
     erro = (r'img\20_20\erro.png')
     verificado = (r'img\20_20\verificado.png')
 
-    limitador_caracter = ('-senha-','-entrada_padrao-','-senhaN1-','-senhaN2-','-n_mat-','-mat-')
+    limitador_caracter = ('-senha-','-entrada_padrao-','-senhaN1-','-senhaN2-',
+    '-n_mat-','-mat-','-mat_emo-')
     
     while True:
 
@@ -382,10 +383,88 @@ def roda_app(star):
             janela_adm.un_hide()
 
         elif window == janela_emoji and eventos == 'Aplicar':
+            window['-info_emoji-'].update('')
 
             verifica_valores = ('-mat_emo-','-sta_link_f-','-sta_link_can-',
             '-sta_link_con-','-sta_link_p-','-sta_link_se-')
-            
+
+            contador_links = 0
+            status_atualiza_new = None
+
+            for valor in verifica_valores:
+                
+                if valores[valor]!= '':
+
+                    if valor == '-mat_emo-':
+                        inicia = dados.ValidaDados(matricula=valores['-mat_emo-'])
+                        valida_mat = inicia.valida_matricula()
+
+                        if valida_mat == True:
+                            contador_links += 1
+                            window['-img_mat_emo-'].update(verificado)
+                            verifica_existencia = test_conex.verifica_duplicata(new_id=valores['-mat_emo-'])
+
+                            if verifica_existencia == True:
+                                status_atualiza_new = '-new-'
+
+                            else:
+                                status_atualiza_new = '-atualiza-'
+
+                        else:
+                            window['-mat_emo-'].update(erro)
+
+                    elif valor == '-sta_link_f-':
+                        valida_link = dados.valida_link(valores['-sta_link_f-'])
+                        
+                        if valida_link == True:
+                            window['-status_f-'].update(verificado)
+                            contador_links += 1
+
+                        else:
+                            window['-status_f-'].update(erro)
+
+                    elif valor == '-sta_link_can-':
+                        valida_link = dados.valida_link(valores['-sta_link_can-'])
+                        
+                        if valida_link == True:
+                            window['-status_can-'].update(verificado)
+                            contador_links += 1
+
+                        else:
+                            window['-status_can-'].update(erro)
+
+                    elif valor == '-sta_link_con-':
+                        valida_link = dados.valida_link(valores['-sta_link_con-'])
+                        
+                        if valida_link == True:
+                            window['-status_con-'].update(verificado)
+                            contador_links += 1
+
+                        else:
+                            window['-status_con-'].update(erro)
+
+                    elif valor == '-sta_link_p-':
+                        valida_link = dados.valida_link(valores['-sta_link_p-'])
+                        
+                        if valida_link == True:
+                            window['-status_p-'].update(verificado)
+                            contador_links += 1
+
+                        else:
+                            window['-status_p-'].update(erro)
+
+                    elif valor == '-sta_link_se-':
+                        valida_link = dados.valida_link(valores['-sta_link_se-'])
+                        
+                        if valida_link == True:
+                            window['-status_se-'].update(verificado)
+                            contador_links += 1
+
+                        else:
+                            window['-status_se-'].update(erro)
+                else:
+                    window['-info_emoji-'].update('Preencha Todos os campos!',None,'darkred')
+
             
 
         elif window == janela_emoji and eventos == 'Ajuda':

@@ -201,7 +201,8 @@ def tela_emoji(status_ser):
 
     entradas = [
         [sg.Text('Matricula:', font=font_input)],
-        [sg.Input(key='-mat_emo-', justification='c',font=font_input,size=(20,1)),
+        [sg.Input(key='-mat_emo-', justification='c',font=font_input,
+        size=(20,1),enable_events=True),
         sg.Image('',key='-img_mat_emo-')],
 
         [sg.Text('Link Feliz:', font=font_input)],
@@ -226,11 +227,6 @@ def tela_emoji(status_ser):
 
     ]
 
-    seletor = [
-        [sg.Radio('Atualização','def', key='-atu-', font=font_input),
-        sg.Radio('Novo cadastro', 'def', key='-new-',  font=font_input)]
-    ]
-
     botoes = [
         [sg.B('Aplicar', font=font_login,size=(7,1),pad=(10,10)),
         sg.B('Ajuda',font=font_login,size=(7,1),pad=(10,10)),
@@ -242,8 +238,6 @@ def tela_emoji(status_ser):
 
         [sg.Column(layout= entradas)],
 
-        [sg.Column(layout=seletor)],
-
         [sg.Text('',key='-info_emoji-', font=font_input)],
 
         [sg.Column(layout=botoes)],
@@ -252,7 +246,7 @@ def tela_emoji(status_ser):
 
     ]
 
-    return sg.Window('Emoji', finalize=True, size=(300,500), layout = janela,
+    return sg.Window('Emoji', finalize=True, size=(300,460), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))

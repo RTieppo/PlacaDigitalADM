@@ -20,7 +20,6 @@ class ValidaDados:
         
         else:
             return False
-
   
     def valida_novo_id(self):
 
@@ -78,19 +77,14 @@ class ValidaDados:
                 return False
         else:
             return False
+
+
+def valida_link(link):
     
-
-    def valida_link(self,links):
-        
-        padrao = (r'(https://)?[a-z0-9/_.]+.png')
-        contador = 0
-
-        for link in link:
-            if re.search(padrao,link):
-                contador+=1
-        
-        if contador == 5:
-            return True
-        
-        else:
-            return False
+    padrao = (r'(https://)?[a-z0-9/_.]+.png')
+    
+    if re.search(padrao,link):
+        return True
+    
+    else:
+        return False
