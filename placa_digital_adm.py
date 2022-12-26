@@ -464,8 +464,37 @@ def roda_app(star):
                             window['-status_se-'].update(erro)
                 else:
                     window['-info_emoji-'].update('Preencha Todos os campos!',None,'darkred')
-
             
+            if contador_links == 6:
+                if status_atualiza_new == '-new-':
+
+                    window['-info_emoji-'].update('Dados validos',None,'darkgreen')
+                    window.refresh()
+                    sleep(1)
+
+                    window['-info_emoji-'].update('Gravando novo cadastro...',None,'darkgreen')
+                    window.refresh()
+                    sleep(1)
+
+                    add_novo_cadastro = test_conex.add_novos_emoji(matricula=valores['-mat_emo-'],
+                    feliz=valores['-sta_link_f-'],cansado=valores['-sta_link_can-'],
+                    concentrado=valores['-sta_link_con-'],pensativo=valores['-sta_link_p-'],
+                    serio=valores['-sta_link_se-'])
+
+
+                    if add_novo_cadastro == True:
+                        window['-info_emoji-'].update('Dados gravados',None,'darkgreen')
+                        window.refresh()
+                    
+                    elif add_novo_cadastro == 'Erro no cadastro':
+                        window['-img_status_esq-'].update(erro)
+                    
+                    else:
+                        window['-info_emoji-'].update('Erro de cadastro',None,'darkred')
+                        
+                else:
+                    pass
+
 
         elif window == janela_emoji and eventos == 'Ajuda':
             pass

@@ -151,11 +151,38 @@ class BancoDeDados:
                 cursor.execute(novo_user)
                 conex.commit()
                 return True
+            
+            else:
+                return False
 
-        except Error as erro:
-            print(erro)
+        except Error:
             return 'Erro ao cadastrar'
+    
+    def add_novos_emoji(self,matricula,feliz,cansado,concentrado,pensativo,serio):
+        try:
 
+            if conex.is_connected():
+                novos_emoji = (f"""
+                insert into emoji
+                (matricula,link_fe,link_ca,link_co,link_pe,link_se)
+                values
+                ('{matricula}','{feliz}','{cansado}','{concentrado}','{pensativo}','{serio}');""")
+                cursor = conex.cursor()
+                cursor.execute(novos_emoji)
+                conex.commit()
+                return True
+            
+            else:
+                return False
+
+        
+        except Error as erro:
+            print(novos_emoji)
+            print(erro)
+            return 'Erro no cadastro'
+
+    def atualiza_emoji(self):
+        pass
 
     def coleta_matricula(self,user):
         try:
