@@ -518,7 +518,19 @@ def roda_app(star):
                         window['-info_emoji-'].update('Erro de cadastro',None,'darkred')
 
         elif window == janela_emoji and eventos == 'Ajuda':
-            pass
+            sg.user_settings_set_entry('-last position-', janela_emoji.current_location())
+
+            tamanho_atual = window.Size
+
+            ajuste_x = (f'{tamanho_atual[0]/1.1}')
+            ajuste_y = (f'{tamanho_atual[1]/1.3}')
+
+            texto = open(r'ark_txt\ajuda_links.txt','r', encoding='utf-8').read()
+            janela_emoji.hide()
+            salva_janela_referencia = janela_emoji
+
+            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+            info=texto,tipo_button='OK',nome_janela='Ajuda emoji')
 
 
     #janela novo user

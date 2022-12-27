@@ -1,0 +1,14 @@
+O que cada campo deve conter?
+
+Matrícula:
+É a matrícula gerado pelo Senac,
+disponível para consulta
+no MyPlace.
+
+Links:
+Os links podem ser obtidos através
+do site imgbox.com assim que as
+imagens forem upadas no mesmo.
+Para mais informações de como
+upar as imagens no site acesse
+o menu ajuda na tela principal.
