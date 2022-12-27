@@ -111,5 +111,3 @@ def valid_link():
     
     else:
         print(False)
-
-valid_link()
