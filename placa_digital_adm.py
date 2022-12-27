@@ -371,7 +371,21 @@ def roda_app(star):
             else:
                 janela_adm.hide()
                 janela_emoji = t.tela_adm(erro)
-                
+        
+        elif window == janela_adm and eventos == 'Cadastro emoji':
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+            tamanho_atual = window.Size
+            
+            ajuste_x = (f'{tamanho_atual[0]/1.4}')
+            ajuste_y = (f'{tamanho_atual[1]/1}')
+
+            texto = open(r'ark_txt\ajuda_up_links.txt','r', encoding='utf-8').read()
+            janela_adm.hide()
+            salva_janela_referencia = janela_adm
+
+            janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
+            info=texto,tipo_button='OK',nome_janela='Ajuda emoji')
+
     #janela emoji
 
         if window == janela_emoji and eventos == sg.WIN_CLOSED:

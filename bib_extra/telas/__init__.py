@@ -62,7 +62,7 @@ def tela_adm(apelido_user=''):
     bara_menu =[
         ['Menu',['Alterar',['Senha'],
         'Cadastro',['Aviso','Emoji','Informativo','Novo user']]],
-        ['Help',['About']]
+        ['Help',['About','Cadastro emoji']]
     ]
 
     status_1 = [
