@@ -103,7 +103,7 @@ def tela_adm(apelido_user=''):
 
         [sg.HSeparator()],
 
-        [sg.B('Aplicar', font=font_geral), sg.B('Sair', font=font_geral, size=(6,0))],
+        [sg.B('Aplicar', font=font_geral),sg.B('Logoff', font=font_geral, size=(6,0)) ,sg.B('Sair', font=font_geral, size=(6,0))],
 
         [sg.Image('',key='-serve-')]
 
