@@ -66,18 +66,18 @@ def tela_adm(apelido_user=''):
     ]
 
     status_1 = [
-        [sg.Radio('Atendando','ST1', key='-ST_A-'),
-        sg.Radio('Disponível', 'ST1', key='-ST_D-'),
-        sg.Radio('Reunião','ST1',key='ST_R')],
+        [sg.Radio('Atendando','ST1', key='-ST_A-',enable_events=True),
+        sg.Radio('Disponível', 'ST1', key='-ST_D-',enable_events=True),
+        sg.Radio('Reunião','ST1',key='ST_R',enable_events=True)],
 
-        [sg.Radio('Volto logo','ST1',key='-ST_volto-'),
-        sg.Radio('Intervalo','ST1',key='-ST_int-')],
+        [sg.Radio('Volto logo','ST1',key='-ST_volto-',enable_events=True),
+        sg.Radio('Intervalo','ST1',key='-ST_int-',enable_events=True)],
 
-        [sg.Text('Unidade:'),sg.Radio('Faculdade','-UN-', key='-FC-'),
-        sg.Radio('Saúde e Beleza','-UN-', key='-SS-')],
+        [sg.Text('Unidade:'),sg.Radio('Faculdade','-UN-', key='-FC-',enable_events=True),
+        sg.Radio('Saúde e Beleza','-UN-', key='-SS-',enable_events=True)],
 
         [sg.Text('Sala ou Setor:'), sg.In(key='-local-',
-        justification='c', size=(25,0))]
+        justification='c', size=(25,0),enable_events=True)]
 
     ]
 

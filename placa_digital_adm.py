@@ -54,6 +54,8 @@ def roda_app(star):
 
     limitador_caracter = ('-senha-','-entrada_padrao-','-senhaN1-','-senhaN2-',
     '-n_mat-','-mat-','-mat_emo-')
+
+    status = unidade = local_ss = humor = None
     
     while True:
 
@@ -642,8 +644,9 @@ def roda_app(star):
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':
             break
 
-        if window == janela_adm and eventos == 'Logoff':
+        elif window == janela_adm and eventos == 'Logoff':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+            status = unidade = local_ss = humor = None
             testa_conex = test_conex.conecta()
 
             if testa_conex [0] == True:
@@ -675,6 +678,7 @@ def roda_app(star):
                 if valores['-ST_H-'] == 5:
 
                     ajuste = img.ajusta_img(matricula=matri,ark='feliz.png')
+                    humor = 'Feliz'
 
                     window['-img_hu-'].update(ajuste)
                     window['-hu_r-'].update('Feliz',None,'darkgreen')
@@ -682,32 +686,67 @@ def roda_app(star):
                 elif valores['-ST_H-'] == 4:
 
                     ajuste = img.ajusta_img(matricula=matri,ark='pensativo.png')
+                    humor = 'Pensativo'
 
                     window['-img_hu-'].update(ajuste)
                     window['-hu_r-'].update('Pensativo',None,'darkgreen')
                     
 
                 elif valores['-ST_H-'] == 3:
+
                     ajuste = img.ajusta_img(matricula=matri,ark='concentrado.png')
+                    humor = 'Concentrado'
 
                     window['-img_hu-'].update(ajuste)
                     window['-hu_r-'].update('Concentrado',None,'darkgreen')
 
                 elif valores['-ST_H-'] == 2:
+
                     ajuste = img.ajusta_img(matricula=matri,ark='cansado.png')
+                    humor = 'Cansado'
 
                     window['-img_hu-'].update(ajuste)
                     window['-hu_r-'].update('Cansado',None,'darkred')
 
                 elif valores['-ST_H-'] == 1:
+
                     ajuste = img.ajusta_img(matricula=matri,ark='serio.png')
+                    humor = 'Serio'
 
                     window['-img_hu-'].update(ajuste)
                     window['-hu_r-'].update('Serio',None,'darkred')
             
             else:
                 window['-hu_r-'].update('imagens indisponíveis!',None,'darkred')
-                
+
+        elif window == janela_adm and eventos == '-ST_A-':
+            status = 'Atendendo'
+        
+        elif window == janela_adm and eventos == '-ST_D-':
+            status = 'Disponível'
+        
+        elif window == janela_adm and eventos == 'ST_R':
+            status = 'Reunião'
+        
+        elif window == janela_adm and eventos == '-ST_volto-':
+            status = 'Volto logo'
+        
+        elif window == janela_adm and eventos == '-ST_int-':
+            status = 'Intervalo'
+
+        elif window == janela_adm and eventos == '-FC-':
+            unidade = 'Faculdade'
+        
+        elif window == janela_adm and eventos == '-SS-':
+            unidade = 'Saúde e Beleza'
+
+        elif window == janela_adm and eventos == '-local-':
+            local_ss = valores['-local-']
+
+        elif window == janela_adm and eventos == 'Aplicar':
+            pass
+
+
 inicia = start_serve()
 roda_app(inicia)
 
