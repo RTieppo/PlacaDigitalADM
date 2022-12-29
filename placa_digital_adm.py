@@ -644,25 +644,25 @@ def roda_app(star):
 
         if window == janela_adm and eventos == 'Logoff':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
-            texta_conex = test_conex.conecta()
+            testa_conex = test_conex.conecta()
 
-            if texta_conex [0] == True:
+            if testa_conex [0] == True:
                 abre_txt = txt.le_txt()
                 
                 if abre_txt[1] == True:
-                    
+
                     if len(abre_txt) > 1:
                         janela_login = t.tela_login(user_login = abre_txt[0][0],
-                        status=texta_conex[1], memoria=abre_txt[0][1])
+                        status=testa_conex[1], memoria=abre_txt[0][1])
                         janela_adm.close()
 
                     else:
                         janela_login = t.tela_login(user_login = '',
-                        status= texta_conex[1], memoria='')
+                        status= testa_conex[1], memoria='')
                         janela_adm.close()
 
                 else:
-                    janela_login = t.tela_login(user_login = '', status= texta_conex[1],
+                    janela_login = t.tela_login(user_login = '', status= testa_conex[1],
                     memoria='')
                     janela_adm.close()
 
