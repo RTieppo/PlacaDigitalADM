@@ -744,8 +744,24 @@ def roda_app(star):
             local_ss = valores['-local-']
 
         elif window == janela_adm and eventos == 'Aplicar':
-            pass
+            window['-info_adm-'].update('')
+            
+            if status and unidade!= None:
 
+                if status == 'Atendendo':
+
+                    if local_ss != None:
+
+                        print(status, unidade, local_ss, humor)
+                    
+                    else:
+                        window['-info_adm-'].update('Informe o local do atendimento',None,'Darkred')
+
+                else:
+                    pass
+            
+            else:
+                window['-info_adm-'].update('Preencha todos os campos',None,'Darkred')
 
 inicia = start_serve()
 roda_app(inicia)

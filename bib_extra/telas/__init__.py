@@ -103,6 +103,8 @@ def tela_adm(apelido_user=''):
 
         [sg.HSeparator()],
 
+        [sg.Text('',key='-info_adm-', font=font_input)],
+
         [sg.B('Aplicar', font=font_geral),sg.B('Logoff', font=font_geral, size=(6,0)) ,sg.B('Sair', font=font_geral, size=(6,0))],
 
         [sg.Image('',key='-serve-')]
