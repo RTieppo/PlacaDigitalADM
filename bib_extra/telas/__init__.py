@@ -55,7 +55,7 @@ def tela_login(user_login = '', status='',memoria=''):
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c')
 
-def tela_adm(apelido_user=''):
+def tela_adm(status,apelido_user=''):
 
     sg.theme('DarkBlue2')
 
@@ -107,9 +107,10 @@ def tela_adm(apelido_user=''):
 
         [sg.B('Aplicar', font=font_geral),sg.B('Logoff', font=font_geral, size=(6,0)) ,sg.B('Sair', font=font_geral, size=(6,0))],
 
-        [sg.Image('',key='-serve-')]
+        [sg.Image(status,key='-serve-')]
 
     ]
+
     return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,580), layout = janela,
     element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'),
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
@@ -292,3 +293,4 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',modal=True,
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
+

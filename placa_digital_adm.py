@@ -58,13 +58,12 @@ def roda_app(star):
     
     while True:
 
-        window, eventos, valores = sg.read_all_windows()
+        window, eventos, valores = sg.read_all_windows(timeout=3000)
 
         for limita in limitador_caracter:
             if eventos == limita and len(valores[limita])>4:
                 window.Element(limita).update(valores[limita][:-1])
-
-
+            
         if window == janela_login and eventos == sg.WIN_CLOSED:
             break
 
@@ -117,6 +116,7 @@ def roda_app(star):
                             else:
                                 pasta.cria_pasta_user(matricula=matri)
                                 coleta_link = test_conex.coleta_link(matricula=matri)
+
                                 if coleta_link != None:
                                     img.baixa_img(link=coleta_link,mat=matri)
                             
@@ -138,7 +138,7 @@ def roda_app(star):
                             sleep(1)
 
                             janela_login.close()
-                            janela_adm = t.tela_adm(apelido_user=apelido)
+                            janela_adm = t.tela_adm(apelido_user=apelido,status=verificado)
                     
                     elif retorno_user[0] or retorno_senha == True:
 
@@ -647,6 +647,9 @@ def roda_app(star):
     # janela adm
         if window == janela_adm and eventos == sg.WIN_CLOSED or janela_adm and eventos == 'Sair':
             break
+
+        elif janela_adm and eventos == sg.TIMEOUT_EVENT:
+            janela_adm['-info_adm-'].update(' ')
 
         elif window == janela_adm and eventos == 'Logoff':
             sg.user_settings_set_entry('-last position-', janela_adm.current_location())
