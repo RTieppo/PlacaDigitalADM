@@ -110,7 +110,7 @@ def tela_adm(apelido_user=''):
         [sg.Image('',key='-serve-')]
 
     ]
-    return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,540), layout = janela,
+    return sg.Window('Gerenciador de Paninel', finalize=True, size=(500,580), layout = janela,
     element_justification='c', text_justification='c',margins=(0,0),icon= (r'img\icon\ico_p.ico'),
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
 
@@ -252,7 +252,6 @@ def tela_emoji(status_ser):
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
-
 
 def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entrada='',senha=''):
     sg.theme('DarkBlue2')

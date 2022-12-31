@@ -110,7 +110,8 @@ class BancoDeDados:
 
         except Error:
             return 'Error matricula'
-          
+
+
     def altera_senha(self,n_senha,matricula):
         try:
            
@@ -137,6 +138,8 @@ class BancoDeDados:
 
         except Error:
             return'erro_alteração_apelido'
+
+
 
     def add_novo_user(self,Nmat,Nid):
         try:
@@ -179,6 +182,8 @@ class BancoDeDados:
         except Error:
             return 'Erro no cadastro'
 
+
+
     def atualiza_emoji(self,matricula,feliz,cansado,concentrado,pensativo,serio):
         try:
 
@@ -197,10 +202,56 @@ class BancoDeDados:
             else:
                 return False
 
-        
         except Error:
             return 'Erro no cadastro'
-        
+
+    def atualiza_status(self,matricula,status_agora,unidade,local_ss,humor):
+        try:
+
+            if conex.is_connected():
+                atualiza_status =(f"""
+                update status_atendimento
+                set status_agora = '{status_agora}', unidade ='{unidade}',
+                local_ss = '{local_ss}', humor = '{humor}'
+                where matricula = '{matricula}';
+                """)
+                cursor = conex.cursor()
+                cursor.execute(atualiza_status)
+                conex.commit()
+                return True
+            
+            else:
+                return False
+
+
+        except Error as erro:
+            print(erro)
+            return 'Erro na atualização'
+    
+    def atualiza_status_sem_humor(self,matricula,status_agora,unidade,local_ss):
+        try:
+
+            if conex.is_connected():
+                atualiza_status =(f"""
+                update status_atendimento
+                set status_agora = '{status_agora}', unidade ='{unidade}',
+                local_ss = '{local_ss}'
+                where matricula = '{matricula}';
+                """)
+                cursor = conex.cursor()
+                cursor.execute(atualiza_status)
+                conex.commit()
+                return True
+            
+            else:
+                return False
+
+
+        except Error:
+            return 'Erro na atualização'
+
+
+
 
     def coleta_matricula(self,user):
         try:
@@ -213,28 +264,6 @@ class BancoDeDados:
         
         except Error:
             return 'erro_nv_acesso'
-
-
-    def verifica_duplicata(self,new_id):
-        try:
-            
-            if conex.is_connected():
-                info = ('select matricula from login;')
-                cursor = conex.cursor()
-                cursor.execute(info)
-                linhas = cursor.fetchall()
-
-                for linha in linhas:
-                    formata = str(linha[0])
-
-                    if formata in new_id:
-                        return False
-
-                else:
-                    return True
-
-        except Error:
-            return 'Error verificação'
 
     def coleta_link(self,matricula):
         try:
@@ -256,3 +285,24 @@ class BancoDeDados:
                         
         except Error:
             return 'erro_coleta_de_links'
+
+    def verifica_duplicata(self,new_id):
+        try:
+            
+            if conex.is_connected():
+                info = ('select matricula from login;')
+                cursor = conex.cursor()
+                cursor.execute(info)
+                linhas = cursor.fetchall()
+
+                for linha in linhas:
+                    formata = str(linha[0])
+
+                    if formata in new_id:
+                        return False
+
+                else:
+                    return True
+
+        except Error:
+            return 'Error verificação'

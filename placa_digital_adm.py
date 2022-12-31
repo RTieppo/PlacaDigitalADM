@@ -1,6 +1,5 @@
 from PySimpleGUI import PySimpleGUI as sg
 from time import sleep
-import cv2
 
 from bib_extra import telas as t
 from bib_extra import txt_fun as txt
@@ -140,7 +139,6 @@ def roda_app(star):
 
                             janela_login.close()
                             janela_adm = t.tela_adm(apelido_user=apelido)
-                            #colocar tratamento para erro de coleta de informações
                     
                     elif retorno_user[0] or retorno_senha == True:
 
@@ -387,6 +385,12 @@ def roda_app(star):
 
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='OK',nome_janela='Ajuda emoji')
+
+        elif window == janela_adm and eventos == 'Aviso':
+            pass
+
+        elif window == janela_adm and eventos == 'Informativo':
+            pass
 
     #janela emoji
 
@@ -724,15 +728,21 @@ def roda_app(star):
         
         elif window == janela_adm and eventos == '-ST_D-':
             status = 'Disponível'
-        
+            window['-local-'].update('Informática')
+            local_ss = 'Informática'
+ 
         elif window == janela_adm and eventos == 'ST_R':
             status = 'Reunião'
+            window['-local-'].update('Informática')
+            local_ss = 'Informática'
         
         elif window == janela_adm and eventos == '-ST_volto-':
             status = 'Volto logo'
         
         elif window == janela_adm and eventos == '-ST_int-':
             status = 'Intervalo'
+            window['-local-'].update('Copa')
+            local_ss = 'Copa'
 
         elif window == janela_adm and eventos == '-FC-':
             unidade = 'Faculdade'
@@ -751,15 +761,50 @@ def roda_app(star):
                 if status == 'Atendendo':
 
                     if local_ss != None:
+                        
+                        grava_status = test_conex.atualiza_status(matricula=matri,status_agora=status,
+                        unidade=unidade,local_ss=local_ss, humor=humor)
 
-                        print(status, unidade, local_ss, humor)
+                        if grava_status == True:
+                            window['-info_adm-'].update('Status Gravado',None,'darkgreen')
+
+                        elif grava_status == 'Erro na atualização':
+                            window['-serve-'].update(erro)
+
+                        else:
+                            window['-info_adm-'].update('Erro na gravação dos Status',None,'darkred')
                     
                     else:
                         window['-info_adm-'].update('Informe o local do atendimento',None,'Darkred')
 
                 else:
-                    pass
-            
+
+                    if humor != None:
+                        grava_status = test_conex.atualiza_status(matricula=matri,status_agora=status,
+                        unidade=unidade,local_ss=local_ss, humor=humor)
+
+                        if grava_status == True:
+                            window['-info_adm-'].update('Status Gravado',None,'darkgreen')
+
+                        elif grava_status == 'Erro na atualização':
+                            window['-serve-'].update(erro)
+
+                        else:
+                            window['-info_adm-'].update('Erro na gravação dos Status',None,'darkred')
+                    
+                    else:
+                        grava_status = test_conex.atualiza_status_sem_humor(matricula=matri,status_agora=status,
+                        unidade=unidade,local_ss=local_ss)
+
+                        if grava_status == True:
+                            window['-info_adm-'].update('Status Gravado',None,'darkgreen')
+
+                        elif grava_status == 'Erro na atualização':
+                            window['-serve-'].update(erro)
+
+                        else:
+                            window['-info_adm-'].update('Erro na gravação dos Status',None,'darkred')
+
             else:
                 window['-info_adm-'].update('Preencha todos os campos',None,'Darkred')
 
