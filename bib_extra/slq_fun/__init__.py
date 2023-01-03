@@ -16,13 +16,13 @@ class BancoDeDados:
             database = self.database, password = self.password)
 
             if conex.is_connected():
-                return (True,r'img\20_20\verificado.png')
+                return True
 
             else:
-                return (False,r'img\20_20\erro.png')
+                return False
 
         except Error as erro:
-            return popup(erro,title='Erro durante conexão')
+            return erro
 
     def reconecta(self):
         try:

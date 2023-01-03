@@ -35,6 +35,12 @@ def tela_login(user_login = '', status='',memoria=''):
         [sg.Image(status, key='-img_status-')]
     ]
 
+    info_ao_user = [
+        [sg.Text(' ', key='-info_user-',
+        font=font_login)],
+        [sg.Text('', key='-progressbar-')]
+    ]
+
     janela =[
 
         [sg.Column(layout=va_login)],
@@ -43,15 +49,15 @@ def tela_login(user_login = '', status='',memoria=''):
 
         [sg.Column(layout = va_senha)],
 
-        [sg.Text(' ', key='-info_user-',
-        font=font_login, justification='c')],
+        [sg.Column(layout=info_ao_user,element_justification='c'
+        ,expand_x=True,expand_y=True)],
 
         [sg.Column(layout = avi_but)],
 
         [sg.Column(layout=status_serv,element_justification='c')]
     ]
 
-    return sg.Window('Login', finalize=True, size=(300,280), layout = janela,
+    return sg.Window('Login', finalize=True, size=(300,300), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c')
 

@@ -1,5 +1,10 @@
 from PySimpleGUI import PySimpleGUI as sg
+from os import listdir,path
 from time import sleep
+
+import urllib.request
+import urllib.error
+
 
 from bib_extra import telas as t
 from bib_extra import txt_fun as txt
@@ -9,7 +14,6 @@ from bib_extra import buscador_img as img
 from bib_extra import criador_pasta as pasta
 import DadosBancoDeDados as d
 
-
 def start_serve():
     global test_conex
 
@@ -18,24 +22,57 @@ def start_serve():
 
     retorno = test_conex.conecta()
 
-    if retorno[0] == True:
+    verificado = (r'img\20_20\verificado.png')
+
+    if retorno == True:
         abre_txt = txt.le_txt()
         
         if abre_txt[1] == True:
+
             if len(abre_txt) > 1:
                 pasta.cria_pasta_geral()
                 return (t.tela_login(user_login = abre_txt[0][0],
-                status=retorno[1], memoria=abre_txt[0][1]))
+                status=verificado, memoria=abre_txt[0][1]))
             
             else:
                 pasta.cria_pasta_geral()
                 return (t.tela_login(user_login = '',
-                status= retorno[1], memoria=''))
+                status= verificado, memoria=''))
 
         else:
             pasta.cria_pasta_geral()
-            return (t.tela_login(user_login = '', status= retorno[1],
+            return (t.tela_login(user_login = '', status= verificado,
             memoria=''))
+    
+    elif retorno == False:
+
+        texto = 'Erro ao conectar\nno banco de dados\n\nContate o administrador!'
+        
+        janela_erro  = t.tela_popup(tamanho=(200,140),info=texto,tipo_button='OK',
+        nome_janela='Erro')
+
+        while True:
+            event,values = janela_erro.read()
+
+            if event == sg.WINDOW_CLOSED or 'OK':
+                break
+        
+        return False
+    
+    else:
+        tratamento_erro = str(retorno).split("'")
+
+        janela_erro = t.tela_popup(tamanho=(300,120),
+        info=(f'{tratamento_erro[0]}\n\nContate o administrador!'),tipo_button='OK',
+        nome_janela='Erro')
+
+        while True:
+            events, values = janela_erro.read()
+
+            if events == sg.WIN_CLOSED or 'OK':
+                break
+        
+        return False
 
 
 def roda_app(star):
@@ -108,18 +145,65 @@ def roda_app(star):
 
                             verifica_pasta_u = img.verifica_pasta_user(matricula=matri)
 
+
+                            caminho_geral = (r'C:\Users\Public\AppPlaca')
+
+                            nome_save = ('feliz.png','cansado.png','concentrado.png','pensativo.png','serio.png')
+
+                            conta = porcentagem = 0
+
                             if verifica_pasta_u == True:
+
                                 coleta_link = test_conex.coleta_link(matricula=matri)
+
+                                window.extend_layout(janela_login['-progressbar-'],
+                                [[sg.ProgressBar(5,orientation='h',size=(20,2),border_width=4,key='-progress-')]])
+                                window.refresh()
+
                                 if coleta_link != None:
-                                    img.baixa_img(link=coleta_link,mat=matri)
-                            
+
+                                    try:
+
+                                        while conta <5:
+
+                                            unifica = path.join(caminho_geral,matri,nome_save[conta])
+                                            
+                                            img_d = open(f"{unifica}",'wb')
+                                            img_d.write(urllib.request.urlopen(coleta_link[conta]).read())
+                                            img_d.close()
+                                            conta += 1
+                                            porcentagem += 20
+
+                                            window['-progress-'].update(conta)
+                                            window['-info_user-'].update(f'{porcentagem}%')
+                                            window.refresh()
+                                    
+                                    except urllib.error:
+                                        pass
+
                             else:
                                 pasta.cria_pasta_user(matricula=matri)
                                 coleta_link = test_conex.coleta_link(matricula=matri)
 
                                 if coleta_link != None:
-                                    img.baixa_img(link=coleta_link,mat=matri)
-                            
+                                    try:
+
+                                        while conta <5:
+
+                                            unifica = path.join(caminho_geral,matri,nome_save[conta])
+                                            
+                                            img_d = open(f"{unifica}",'wb')
+                                            img_d.write(urllib.request.urlopen(coleta_link[conta]).read())
+                                            img_d.close()
+                                            conta += 1
+
+                                            window['-progress-'].update(conta)
+                                            window.refresh()
+                                    
+                                    except urllib.error:
+                                        pass
+                                
+
                             verifica_pasta_temp_img = img.verifica_pasta_temp()
 
                             if verifica_pasta_temp_img == False:
@@ -335,6 +419,7 @@ def roda_app(star):
 
             ajuste_x = (f'{tamanho_atual[0]/2}')
             ajuste_y = (f'{tamanho_atual[1]/3}')
+
             texto = 'A senha deve ser númerica e\nconter 4 caracteres.'
             janela_adm.hide()
             janela_ref_popup = 'Senha'
@@ -812,5 +897,7 @@ def roda_app(star):
                 window['-info_adm-'].update('Preencha todos os campos',None,'Darkred')
 
 inicia = start_serve()
-roda_app(inicia)
+
+if inicia != False:
+    roda_app(inicia)
 
