@@ -36,7 +36,7 @@ def tela_login(user_login = '', status='',memoria=''):
     ]
 
     info_ao_user = [
-        [sg.Text(' ', key='-info_user-',
+        [sg.Text('', key='-info_user-',
         font=font_login)],
         [sg.Text('', key='-progressbar-')]
     ]
@@ -49,8 +49,7 @@ def tela_login(user_login = '', status='',memoria=''):
 
         [sg.Column(layout = va_senha)],
 
-        [sg.Column(layout=info_ao_user,element_justification='c'
-        ,expand_x=True,expand_y=True)],
+        [sg.Column(layout=info_ao_user,element_justification='c')],
 
         [sg.Column(layout = avi_but)],
 
@@ -180,6 +179,11 @@ def tela_novo_user(status_ser):
 
         ]
 
+    horario = [
+        [sg.Text('Horário de trabalho:',font=font_input)],
+        [sg.Radio('Matutino','HR',key='-HRM-'),sg.Radio('Vespertino','HR',key='-HRV-')]
+    ]
+
     botoes = [
         [sg.B('Aplicar', font=font_login,size=(7,1),pad=(10,10)),
         sg.B('Ajuda',font=font_login,size=(7,1),pad=(10,10)),
@@ -190,6 +194,8 @@ def tela_novo_user(status_ser):
 
         [sg.Column(layout=entradas)],
 
+        [sg.Column(layout=horario,justification='c',element_justification='c')],
+
         [sg.Text('',key='-info_n_ca-', font=font_login)],
 
         [sg.Column(layout=botoes)],
@@ -199,7 +205,7 @@ def tela_novo_user(status_ser):
 
     ]
 
-    return sg.Window('Novo cadastro', finalize=True, size=(300,250), layout = janela,
+    return sg.Window('Novo cadastro', finalize=True, size=(300,270), layout = janela,
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
@@ -299,4 +305,3 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',modal=True,
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
-

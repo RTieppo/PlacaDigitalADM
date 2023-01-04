@@ -1,5 +1,4 @@
 import mysql.connector
-from PySimpleGUI import popup
 from mysql.connector import Error
 
 class BancoDeDados:
@@ -126,20 +125,6 @@ class BancoDeDados:
         except Error:
             return 'Erro alteração senha'
 
-    def altera_apelido(self,matricula,nv_apel):
-        try:
-
-            if conex.is_connected():
-                alterador= (f"update login set apelido='{nv_apel}' where matricula='{matricula}';")
-                cursor = conex.cursor()
-                cursor.execute(alterador)
-                conex.commit()
-                return True
-
-        except Error:
-            return'erro_alteração_apelido'
-
-
 
     def add_novo_user(self,Nmat,Nid):
         try:
@@ -182,7 +167,27 @@ class BancoDeDados:
         except Error:
             return 'Erro no cadastro'
 
+    def add_info_primaria_status(self,matricula,hora):
+        try:
 
+            if conex.is_connected():
+
+                novo_user = (f"""
+                insert into status_atendimento
+                (matricula,horario)
+                values
+                ('{matricula}','{hora}');
+                """)
+                cursor = conex.cursor()
+                cursor.execute(novo_user)
+                conex.commit()
+                return True
+            
+            else:
+                return False
+        
+        except Error:
+            return'Erro no cadastro'
 
     def atualiza_emoji(self,matricula,feliz,cansado,concentrado,pensativo,serio):
         try:

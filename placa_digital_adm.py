@@ -14,6 +14,8 @@ from bib_extra import buscador_img as img
 from bib_extra import criador_pasta as pasta
 import DadosBancoDeDados as d
 
+
+
 def start_serve():
     global test_conex
 
@@ -156,11 +158,10 @@ def roda_app(star):
 
                                 coleta_link = test_conex.coleta_link(matricula=matri)
 
-                                window.extend_layout(janela_login['-progressbar-'],
-                                [[sg.ProgressBar(5,orientation='h',size=(20,2),border_width=4,key='-progress-')]])
-                                window.refresh()
-
                                 if coleta_link != None:
+                                    window.extend_layout(janela_login['-progressbar-'],
+                                    [[sg.ProgressBar(5,orientation='h',size=(20,2),border_width=4,key='-progress-')]])
+                                    window.refresh()
 
                                     try:
 
@@ -186,6 +187,11 @@ def roda_app(star):
                                 coleta_link = test_conex.coleta_link(matricula=matri)
 
                                 if coleta_link != None:
+
+                                    window.extend_layout(janela_login['-progressbar-'],
+                                    [[sg.ProgressBar(5,orientation='h',size=(20,2),border_width=4,key='-progress-')]])
+                                    window.refresh()
+
                                     try:
 
                                         while conta <5:
@@ -657,6 +663,16 @@ def roda_app(star):
 
             contadorDeValidação = 0
 
+            turno = None
+
+            if valores['-HRM-'] == True:
+                contadorDeValidação +=1
+                turno = '08:00:00-17:30:00'
+
+            elif valores['-HRV-'] == True:
+                contadorDeValidação +=1
+                turno = '12:45:00-22:15:00'
+
             for valor in listaValores:
                 if valores[valor] != '':
                     
@@ -679,6 +695,7 @@ def roda_app(star):
                         
                         else:
                             window['-img_n_mat-'].update(erro)
+    
                         
                     elif valor == '-n_id-':
                         inicia = dados.ValidaDados(id=valores['-n_id-'])
@@ -693,8 +710,10 @@ def roda_app(star):
 
                 else:
                     window['-info_n_ca-'].update('Preencha Todos os campos',None,'darkred')
+            
+            print(contadorDeValidação)
                 
-            if contadorDeValidação == 2:
+            if contadorDeValidação == 3:
                 window['-info_n_ca-'].update('Informações validas',None,'darkgreen')
                 window.refresh()
                 sleep(1)
@@ -706,6 +725,9 @@ def roda_app(star):
                 cadastra = test_conex.add_novo_user(Nmat=valores['-n_mat-'],
                 Nid=valores['-n_id-'])
 
+                cadastra_primaria = test_conex.add_info_primaria_status(matricula=valores['-n_mat-'],
+                hora=turno)
+
                 if cadastra == True:
                     window['-info_n_ca-'].update('Cadastrado com Sucesso!',None,'darkgreen')
                 
@@ -714,6 +736,9 @@ def roda_app(star):
                 
                 else:
                     window['-info_n_ca-'].update('Erro ao cadastrar!',None,'darkred')
+            
+            else:
+                window['-info_n_ca-'].update('Preencha Todos os campos',None,'darkred')
 
         elif window == janela_novo_user and eventos == 'Ajuda':
             sg.user_settings_set_entry('-last position-', janela_novo_user.current_location())
