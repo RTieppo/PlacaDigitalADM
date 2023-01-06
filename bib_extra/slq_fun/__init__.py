@@ -188,6 +188,48 @@ class BancoDeDados:
         
         except Error:
             return'Erro no cadastro'
+    
+    def deleta_info_primaria(self,matricula):
+        try:
+            if conex.is_connected():
+
+                deleta = (f"""
+                delete from status_atendimento
+                where matricula = '{matricula}';
+                """)
+
+                cursor = conex.cursor()
+                cursor.execute(deleta)
+                conex.commit
+                return True
+            
+            else:
+                return False
+
+        except Error:
+            return 'Erro ao deletar'
+
+
+    def delata_novo_user(self,matricula):
+        try:
+
+            if conex.is_connected():
+
+                deleta = (f"""
+                delete from login
+                where matricula = '{matricula}';
+                """)
+
+                cursor = conex.cursor()
+                cursor.execute(deleta)
+                conex.commit
+                return True
+            
+            else:
+                return False
+
+        except Error:
+            return 'Erro ao deletar'
 
     def atualiza_emoji(self,matricula,feliz,cansado,concentrado,pensativo,serio):
         try:
@@ -254,9 +296,6 @@ class BancoDeDados:
 
         except Error:
             return 'Erro na atualização'
-
-
-
 
     def coleta_matricula(self,user):
         try:

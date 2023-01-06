@@ -168,7 +168,6 @@ def roda_app(star):
                                         while conta <5:
 
                                             unifica = path.join(caminho_geral,matri,nome_save[conta])
-                                            
                                             img_d = open(f"{unifica}",'wb')
                                             img_d.write(urllib.request.urlopen(coleta_link[conta]).read())
                                             img_d.close()
@@ -477,9 +476,6 @@ def roda_app(star):
             janela_popup = t.tela_popup(tamanho=(ajuste_x[0:3],ajuste_y[0:3]),
             info=texto,tipo_button='OK',nome_janela='Ajuda emoji')
 
-        elif window == janela_adm and eventos == 'Aviso':
-            pass
-
         elif window == janela_adm and eventos == 'Informativo':
             pass
 
@@ -711,7 +707,6 @@ def roda_app(star):
                 else:
                     window['-info_n_ca-'].update('Preencha Todos os campos',None,'darkred')
             
-            print(contadorDeValidação)
                 
             if contadorDeValidação == 3:
                 window['-info_n_ca-'].update('Informações validas',None,'darkgreen')
@@ -728,13 +723,23 @@ def roda_app(star):
                 cadastra_primaria = test_conex.add_info_primaria_status(matricula=valores['-n_mat-'],
                 hora=turno)
 
-                if cadastra == True:
+                if cadastra == True and cadastra_primaria == True:
                     window['-info_n_ca-'].update('Cadastrado com Sucesso!',None,'darkgreen')
                 
+
                 elif cadastra == 'Erro ao cadastrar':
+                    test_conex.deleta_info_primaria(matricula=matri)
                     window['-img_status_esq-'].update(erro)
-                
+
+
+                elif cadastra_primaria == 'Erro no cadastro':
+                    test_conex.delata_novo_user(matricula=matri)
+                    window['-img_status_esq-'].update(erro)
+
+
                 else:
+                    test_conex.deleta_info_primaria(matricula=matri)
+                    test_conex.delata_novo_user(matricula=matri)
                     window['-info_n_ca-'].update('Erro ao cadastrar!',None,'darkred')
             
             else:
@@ -766,23 +771,23 @@ def roda_app(star):
             status = unidade = local_ss = humor = None
             testa_conex = test_conex.conecta()
 
-            if testa_conex [0] == True:
+            if testa_conex == True:
                 abre_txt = txt.le_txt()
                 
                 if abre_txt[1] == True:
 
                     if len(abre_txt) > 1:
                         janela_login = t.tela_login(user_login = abre_txt[0][0],
-                        status=testa_conex[1], memoria=abre_txt[0][1])
+                        status=verificado, memoria=abre_txt[0][1])
                         janela_adm.close()
 
                     else:
                         janela_login = t.tela_login(user_login = '',
-                        status= testa_conex[1], memoria='')
+                        status= verificado, memoria='')
                         janela_adm.close()
 
                 else:
-                    janela_login = t.tela_login(user_login = '', status= testa_conex[1],
+                    janela_login = t.tela_login(user_login = '', status= verificado,
                     memoria='')
                     janela_adm.close()
 
