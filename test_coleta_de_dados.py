@@ -111,3 +111,19 @@ def valid_link():
     
     else:
         print(False)
+
+def consulta_info(matricula):
+
+    if conex.is_connected():
+
+        info = (f"""select id from login
+        where matricula = '{matricula}';""")
+        cursor = conex.cursor()
+        print(info)
+
+        cursor.execute(info)
+        linhas = cursor.fetchall()
+
+    print(linhas)
+
+consulta_info(matricula=1515)

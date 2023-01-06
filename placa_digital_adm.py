@@ -196,13 +196,14 @@ def roda_app(star):
                                         while conta <5:
 
                                             unifica = path.join(caminho_geral,matri,nome_save[conta])
-                                            
                                             img_d = open(f"{unifica}",'wb')
                                             img_d.write(urllib.request.urlopen(coleta_link[conta]).read())
                                             img_d.close()
                                             conta += 1
+                                            porcentagem += 20
 
                                             window['-progress-'].update(conta)
+                                            window['-info_user-'].update(f'{porcentagem}%')
                                             window.refresh()
                                     
                                     except urllib.error:
@@ -663,7 +664,7 @@ def roda_app(star):
 
             if valores['-HRM-'] == True:
                 contadorDeValidação +=1
-                turno = '08:00:00-17:30:00'
+                turno = '07:45:00-17:15:00'
 
             elif valores['-HRV-'] == True:
                 contadorDeValidação +=1
