@@ -200,7 +200,7 @@ class BancoDeDados:
 
                 cursor = conex.cursor()
                 cursor.execute(deleta)
-                conex.commit
+                conex.commit()
                 return True
             
             else:
@@ -208,6 +208,30 @@ class BancoDeDados:
 
         except Error:
             return 'Erro ao deletar'
+
+    def add_info(self,titulo,texto):
+        try:
+            
+            if conex.is_connected():
+                
+                add_info = (f"""
+                insert into avisos
+                (titulo,texto)
+                values
+                ('{titulo}','{texto}');
+                """)
+
+                cursor = conex.cursor()
+                cursor.execute(add_info)
+                conex.commit()
+
+                return True
+
+            else:
+                return False
+
+        except Error:
+            return 'Erro ao aplicar info'
 
 
     def delata_novo_user(self,matricula):
@@ -222,7 +246,7 @@ class BancoDeDados:
 
                 cursor = conex.cursor()
                 cursor.execute(deleta)
-                conex.commit
+                conex.commit()
                 return True
             
             else:

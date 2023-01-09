@@ -115,11 +115,16 @@ def valid_link():
 def consulta_info():
 
     if conex.is_connected():
-        consulta = (f'select * from status_atendimento;')
-        cursor = conex.cursor()
-        cursor.execute(consulta)
-        linhas = cursor.fetchall()
+        add_info = (f"""
+        insert into avisos
+        (id,titulo,texto)
+        values
+        ('60','aaaaa','aaaaaaa');
+        """)
 
-    print(len(linhas))
+        cursor = conex.cursor()
+        cursor.execute(add_info)
+        conex.commit
+
 
 consulta_info()

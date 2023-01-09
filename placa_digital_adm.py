@@ -83,6 +83,9 @@ def roda_app(star):
     janela_login = star
 
     janela_adm = janela_esqueci = janela_novo_user = janela_emoji = janela_popup = None
+    
+    janela_info = None
+    
     id_ref = apelido = matri = ''
 
     salva_janela_referencia = valor_coletado = tamanho_atual = janela_ref_popup = None
@@ -478,7 +481,19 @@ def roda_app(star):
             info=texto,tipo_button='OK',nome_janela='Ajuda emoji')
 
         elif window == janela_adm and eventos == 'Informativo':
-            pass
+
+            sg.user_settings_set_entry('-last position-', janela_adm.current_location())
+            
+            consultaConex = test_conex.consulta_conex()
+
+            if consultaConex == True:
+                janela_adm.hide()
+                janela_info = t.tela_informitivo(verificado)
+            
+            else:
+                janela_adm.hide()
+                janela_info = t.tela_informitivo(erro)
+
 
     #janela emoji
 
@@ -758,6 +773,31 @@ def roda_app(star):
 
             janela_popup = t.tela_popup(tamanho=tamanho_atual,
             info=texto,tipo_button='OK',nome_janela='Ajuda cadastro')
+
+    #janela info
+
+        if window == janela_info and eventos == sg.WIN_CLOSED:
+            break
+        
+        elif window == janela_info and eventos == 'Aplicar':
+
+            if valores['-titulo_info-'] and valores['-texto_info-'] != '':
+                cadastra_info = test_conex.add_info(titulo=valores['-titulo_info-'],
+                texto=valores['-texto_info-'])
+
+                if cadastra_info == 'Erro ao aplicar info':
+                    window['-status_info-'].update(erro)
+
+                else:
+                    window['-info_info-'].update('Aviso Cadastrado',None, 'green')
+            
+            else:
+                window['-info_info-'].update('Preencha Todos os campos',None, 'yellow')
+
+
+        elif window == janela_info and eventos == 'Voltar':
+            janela_adm.un_hide()
+            janela_info.close()
 
 
     # janela adm

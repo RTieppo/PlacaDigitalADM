@@ -305,3 +305,38 @@ def tela_popup(tamanho,info,tipo_button,nome_janela ,entra_info=False,texto_entr
     margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
     text_justification='c',modal=True,
     location=tuple(sg.user_settings_get_entry('-last position-', (None, None))))
+
+
+def tela_informitivo(status_ser=''):
+    sg.theme('DarkBlue2')
+
+    entradas = [
+        [sg.Text('Título:', font=font_login)],
+        [sg.Input('',key='-titulo_info-',size=(30,2), justification='c')],
+        
+        [sg.Text('Informativo:', font= font_login)],
+        [sg.Input('',key='-texto_info-', size=(30,2),justification='c')]
+
+    ]
+
+
+    botoes = [
+        [sg.Button('Aplicar', font=font_geral,size=(7,1)),
+        sg.Button('Voltar',font=font_geral,size=(7,1))],
+    ]
+
+
+    layout = [
+        [sg.Column(layout=entradas)],
+
+        [sg.Text('',key='-info_info-', font=font_input)],
+
+        [sg.Column(layout=botoes)],
+
+        [sg.Image(status_ser,key='-status_info-')]
+
+    ]
+
+    return sg.Window('Informativo', finalize=True, size=(300,240), layout = layout,
+    margins=(0,0), element_justification='c', icon= (r'img\icon\ico_p.ico'),
+    text_justification='c')
