@@ -127,4 +127,5 @@ def consulta_info():
         conex.commit
 
 
+
 consulta_info()
