@@ -1,6 +1,8 @@
 import DadosBancoDeDados as d
 import mysql.connector
 
+from PySimpleGUI import PySimpleGUI as sg
+
 import re
 
 import zlib
@@ -120,6 +122,15 @@ def consulta_info():
         cursor = conex.cursor()
         cursor.execute(add_info)
         linha = cursor.fetchall()
-        print(linha)
+        return linha
 
-consulta_info()
+eus = consulta_info()
+
+layout = list()
+
+for eu in eus:
+    
+    um = [sg.Text(f'{eu[1]}'),sg.Text(f'{eu[2]}')]
+    layout.append(um)
+
+print(layout[0])
