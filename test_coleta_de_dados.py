@@ -133,4 +133,5 @@ for eu in eus:
     um = [sg.Text(f'{eu[1]}'),sg.Text(f'{eu[2]}')]
     layout.append(um)
 
-print(layout[0])
+for n,l in enumerate(layout):
+    print(l)
